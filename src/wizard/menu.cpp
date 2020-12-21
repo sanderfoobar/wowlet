@@ -14,6 +14,7 @@ MenuPage::MenuPage(AppContext *ctx, WalletKeysFilesModel *wallets, QWidget *pare
         , m_walletKeysFilesModel(wallets)
 {
     ui->setupUi(this);
+    this->setTitle("Welcome to feather-WOW");
     this->setButtonText(QWizard::FinishButton, "Open recent wallet");
 }
 

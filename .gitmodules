@@ -1,9 +1,3 @@
-[submodule "monero"]
-	path = monero
-	url = https://git.wownero.com/feather/monero.git
-[submodule "contrib/tor"]
-	path = contrib/tor
-	url = https://git.torproject.org/tor.git
 [submodule "contrib/KDMacTouchBar"]
 	path = contrib/KDMacTouchBar
 	url = https://github.com/KDAB/KDMacTouchBar.git

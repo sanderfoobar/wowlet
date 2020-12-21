@@ -12,8 +12,8 @@ AboutDialog::AboutDialog(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowIcon(QIcon("://assets/images/appicons/64x64.png"));
-    // cute fox (c) Diego "rehrar" Salazar :-D
-    QPixmap p(":assets/images/cutexmrfox.png");
+
+    QPixmap p(":assets/images/photos/illiterate_illuminati.png");
     ui->aboutImage->setPixmap(p.scaled(128, 128, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     auto about = Utils::fileOpenQRC(":assets/about.txt");
     auto about_text = Utils::barrayToString(about);

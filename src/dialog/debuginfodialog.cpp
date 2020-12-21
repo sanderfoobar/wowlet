@@ -90,7 +90,7 @@ void DebugInfoDialog::copyToClipboad() {
     // Two spaces at the end of each line are for newlines in Markdown
     QString text = "";
     text += QString("Feather version: %1  \n").arg(ui->label_featherVersion->text());
-    text += QString("Monero version: %1  \n").arg(ui->label_moneroVersion->text());
+    text += QString("Wownero version: %1  \n").arg(ui->label_moneroVersion->text());
 
     text += QString("Wallet height: %1  \n").arg(ui->label_walletHeight->text());
     text += QString("Daemon height: %1  \n").arg(ui->label_daemonHeight->text());

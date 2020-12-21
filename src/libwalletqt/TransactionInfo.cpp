@@ -91,7 +91,7 @@ quint64 TransactionInfo::confirmations() const
 
 quint64 TransactionInfo::confirmationsRequired() const
 {
-    return (m_blockHeight < m_unlockTime) ? m_unlockTime - m_blockHeight : 10;
+    return (m_blockHeight < m_unlockTime) ? m_unlockTime - m_blockHeight : 4;
 }
 
 quint64 TransactionInfo::unlockTime() const

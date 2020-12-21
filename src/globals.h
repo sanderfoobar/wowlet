@@ -8,7 +8,7 @@
 
 namespace globals
 {
-    const qreal cdiv = 1e12;
+    const qreal cdiv = 1e11;
 }
 
 #endif //FEATHER_GLOBALS_H

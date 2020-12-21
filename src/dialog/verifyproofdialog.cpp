@@ -93,6 +93,6 @@ void VerifyProofDialog::checkTxProof(const QString &txId, const QString &address
         return;
     }
 
-    QString msg = QString("This address received %1 monero, with %2 confirmation(s)").arg(WalletManager::displayAmount(r.received), QString::number(r.confirmations));
+    QString msg = QString("This address received %1 wownero, with %2 confirmation(s)").arg(WalletManager::displayAmount(r.received), QString::number(r.confirmations));
     QMessageBox::information(this, "Information", QString("Proof is valid.\n\n%1").arg(msg));
 }

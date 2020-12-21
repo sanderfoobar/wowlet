@@ -31,7 +31,7 @@ void CCSProgressDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
     progressBarOption.textVisible = true;
 
     QSharedPointer<CCSEntry> entry = m_model->entry(index.row());
-    auto target = QString("%1/%2 XMR").arg(entry->raised_amount).arg(entry->target_amount);
+    auto target = QString("%1/%2 WOW").arg(entry->raised_amount).arg(entry->target_amount);
     auto progress = (int)entry->percentage_funded;
     progressBarOption.progress = progress < 0 ? 0 : progress;
     progressBarOption.text = target;

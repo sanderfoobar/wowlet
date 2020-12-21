@@ -123,7 +123,7 @@ void CalcWidget::initComboBox() {
     ui->comboCalcFrom->addItems(marketsKeys);
     ui->comboCalcFrom->insertSeparator(marketsKeys.count());
     ui->comboCalcFrom->addItems(ratesKeys);
-    ui->comboCalcFrom->setCurrentIndex(marketsKeys.indexOf("XMR"));
+    ui->comboCalcFrom->setCurrentIndex(marketsKeys.indexOf("WOW"));
 
     ui->comboCalcTo->addItems(marketsKeys);
     ui->comboCalcTo->insertSeparator(marketsKeys.count());

@@ -41,7 +41,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     }
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("feather");
+    parser.setApplicationDescription("feather-wow");
     parser.addHelpOption();
     parser.addVersionOption();
 
@@ -57,11 +57,11 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     QCommandLineOption quietModeOption(QStringList() << "quiet", "Limit console output");
     parser.addOption(quietModeOption);
 
-    QCommandLineOption stagenetOption(QStringList() << "stagenet", "Stagenet is for development purposes only.");
-    parser.addOption(stagenetOption);
-
-    QCommandLineOption testnetOption(QStringList() << "testnet", "Testnet is for development purposes only.");
-    parser.addOption(testnetOption);
+//    QCommandLineOption stagenetOption(QStringList() << "stagenet", "Stagenet is for development purposes only.");
+//    parser.addOption(stagenetOption);
+//
+//    QCommandLineOption testnetOption(QStringList() << "testnet", "Testnet is for development purposes only.");
+//    parser.addOption(testnetOption);
 
     QCommandLineOption walletPathOption(QStringList() << "wallet-file", "Path to wallet keys file.", "file");
     parser.addOption(walletPathOption);
@@ -87,8 +87,8 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     const QStringList args = parser.positionalArguments();
     bool debugMode = parser.isSet(debugModeOption);
     bool localTor = parser.isSet(useLocalTorOption);
-    bool stagenet = parser.isSet(stagenetOption);
-    bool testnet = parser.isSet(testnetOption);
+    bool stagenet = false;
+    bool testnet = false;
     bool quiet = parser.isSet(quietModeOption);
     bool exportContacts = parser.isSet(exportContactsOption);
     bool exportTxHistory = parser.isSet(exportTxHistoryOption);
@@ -96,7 +96,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 
     if(cliMode) {
         QCoreApplication cli_app(argc, argv);
-        QCoreApplication::setApplicationName("feather");
+        QCoreApplication::setApplicationName("feather-wow");
         QCoreApplication::setOrganizationDomain("featherwallet.org");
         QCoreApplication::setOrganizationName("featherwallet.org");
 
@@ -129,7 +129,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 
     QApplication app(argc, argv);
 
-    QApplication::setApplicationName("feather");
+    QApplication::setApplicationName("feather-wow");
     QApplication::setOrganizationDomain("featherwallet.org");
     QApplication::setOrganizationName("featherwallet.org");
 
@@ -138,7 +138,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     if(!quiet) {
         QMap<QString, QString> info;
         info["Qt"] = QT_VERSION_STR;
-        info["Feather"] = FEATHER_VERSION;
+        info["Feather-WOW"] = FEATHER_VERSION;
         if (stagenet) info["Mode"] = "Stagenet";
         else if (testnet) info["Mode"] = "Testnet";
         else info["Mode"] = "Mainnet";

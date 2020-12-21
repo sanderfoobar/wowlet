@@ -141,17 +141,7 @@
         <widget class="QComboBox" name="comboBox_blockExplorer">
          <item>
           <property name="text">
-           <string>exploremonero.com</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>xmrchain.net</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>moneroblocks.info</string>
+           <string>explore.wownero.com</string>
           </property>
          </item>
          <item>

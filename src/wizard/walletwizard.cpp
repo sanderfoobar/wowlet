@@ -19,7 +19,7 @@ WalletWizard::WalletWizard(AppContext *ctx, WalletWizard::Page startPage, QWidge
         : QWizard(parent)
         , m_ctx(ctx)
 {
-    this->setWindowTitle("Welcome to Feather Wallet");
+    this->setWindowTitle("Welcome to Feather-WOW");
     this->setWindowIcon(QIcon(":/assets/images/appicons/64x64.png"));
 
     m_walletKeysFilesModel = new WalletKeysFilesModel(m_ctx, this);

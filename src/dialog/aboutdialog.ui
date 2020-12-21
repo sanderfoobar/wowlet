@@ -43,7 +43,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>a free, open-source Monero wallet</string>
+          <string>a free, open-source Wownero wallet</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

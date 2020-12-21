@@ -145,7 +145,7 @@ void SendWidget::sendClicked() {
     }
 
     quint64 amount;
-    if (currency == "XMR") {
+    if (currency == "WOW") {
         amount = this->amount();
         bool sendAll = (ui->lineAmount->text() == "all");
         if (amount == 0 && !sendAll) {
@@ -190,12 +190,12 @@ void SendWidget::updateConversionLabel() {
 
     QString conversionAmountStr = [this]{
         QString currency = ui->comboCurrencySelection->currentText();
-        if (currency != "XMR") {
-            return QString("~%1 XMR").arg(QString::number(this->conversionAmount(), 'f'));
+        if (currency != "WOW") {
+            return QString("~%1 WOW").arg(QString::number(this->conversionAmount(), 'f'));
 
         } else {
             auto preferredFiatCurrency = config()->get(Config::preferredFiatCurrency).toString();
-            double conversionAmount = AppContext::prices->convert("XMR", preferredFiatCurrency, this->amountDouble());
+            double conversionAmount = AppContext::prices->convert("WOW", preferredFiatCurrency, this->amountDouble());
             return QString("~%1 %2").arg(QString::number(conversionAmount, 'f', 2), preferredFiatCurrency);
         }
     }();

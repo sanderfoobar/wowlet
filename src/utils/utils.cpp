@@ -233,32 +233,7 @@ QString Utils::copyFromClipboard() {
 }
 
 QString Utils::blockExplorerLink(const QString &blockExplorer, NetworkType::Type nettype, const QString &txid) {
-    if (blockExplorer == "exploremonero.com") {
-        if (nettype == NetworkType::MAINNET) {
-            return QString("https://exploremonero.com/transaction/%1").arg(txid);
-        }
-    }
-    else if (blockExplorer == "moneroblocks.info") {
-        if (nettype == NetworkType::MAINNET) {
-            return QString("https://moneroblocks.info/tx/%1").arg(txid);
-        }
-    }
-    else if (blockExplorer == "blockchair.com") {
-        if (nettype == NetworkType::MAINNET) {
-            return QString("https://blockchair.com/monero/transaction/%1").arg(txid);
-        }
-    }
-
-    switch (nettype) {
-        case NetworkType::MAINNET:
-            return QString("https://xmrchain.net/tx/%1").arg(txid);
-        case NetworkType::STAGENET:
-            return QString("https://stagenet.xmrchain.net/tx/%1").arg(txid);
-        case NetworkType::TESTNET:
-            return QString("https://testnet.xmrchain.net/tx/%1").arg(txid);
-    }
-
-    return QString("");
+    return QString("https://explore.wownero.com/tx/%1").arg(txid);
 }
 
 QStandardItem *Utils::qStandardItem(const QString& text) {
@@ -286,11 +261,11 @@ QString Utils::getUnixAccountName() {
 QString Utils::xdgDesktopEntry(){
     return QString(
         "[Desktop Entry]\n"
-        "Name=Feather\n"
-        "GenericName=Feather\n"
-        "X-GNOME-FullName=Feather\n"
-        "Comment=a free Monero desktop wallet\n"
-        "Keywords=Monero;\n"
+        "Name=Feather-WOW\n"
+        "GenericName=Feather-WOW\n"
+        "X-GNOME-FullName=Feather-WOW\n"
+        "Comment=a free Wownero desktop wallet\n"
+        "Keywords=Wownero;\n"
         "Exec=\"%1\" %u\n"
         "Terminal=false\n"
         "Type=Application\n"

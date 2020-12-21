@@ -3,7 +3,7 @@
     <file>assets/about.txt</file>
     <file>assets/ack.txt</file>
     <file>assets/contributors.txt</file>
-    <file>assets/feather.desktop</file>
+    <file>assets/feather-wow.desktop</file>
     <file>assets/nodes.json</file>
     <file>assets/images/appicons/32x32.png</file>
     <file>assets/images/appicons/48x48.png</file>
@@ -56,6 +56,54 @@
     <file>assets/images/network.png</file>
     <file>assets/images/offline_tx.png</file>
     <file>assets/images/person.svg</file>
+    <file>assets/images/photos/illiterate_illuminati.png</file>
+    <file>assets/images/photos/wow1.png</file>
+    <file>assets/images/photos/wow2.png</file>
+    <file>assets/images/photos/wow3.png</file>
+    <file>assets/images/photos/wow4.png</file>
+    <file>assets/images/photos/wow5.png</file>
+    <file>assets/images/photos/wow6.png</file>
+    <file>assets/images/photos/wow7.png</file>
+    <file>assets/images/photos/wow8.png</file>
+    <file>assets/images/photos/wow9.png</file>
+    <file>assets/images/photos/wow10.png</file>
+    <file>assets/images/photos/wow11.png</file>
+    <file>assets/images/photos/wow12.png</file>
+    <file>assets/images/photos/wow13.png</file>
+    <file>assets/images/photos/wow14.png</file>
+    <file>assets/images/photos/wow15.png</file>
+    <file>assets/images/photos/wow16.png</file>
+    <file>assets/images/photos/wow17.png</file>
+    <file>assets/images/photos/wow18.png</file>
+    <file>assets/images/photos/wow19.png</file>
+    <file>assets/images/photos/wow20.png</file>
+    <file>assets/images/photos/wow21.png</file>
+    <file>assets/images/photos/wow22.png</file>
+    <file>assets/images/photos/wow23.png</file>
+    <file>assets/images/photos/wow24.png</file>
+    <file>assets/images/photos/wow25.png</file>
+    <file>assets/images/photos/wow26.png</file>
+    <file>assets/images/photos/wow27.png</file>
+    <file>assets/images/photos/wow28.png</file>
+    <file>assets/images/photos/wow29.png</file>
+    <file>assets/images/photos/wow30.png</file>
+    <file>assets/images/photos/wow31.png</file>
+    <file>assets/images/photos/wow32.png</file>
+    <file>assets/images/photos/wow33.png</file>
+    <file>assets/images/photos/wow34.png</file>
+    <file>assets/images/photos/wow35.png</file>
+    <file>assets/images/photos/wow36.png</file>
+    <file>assets/images/photos/wow37.png</file>
+    <file>assets/images/photos/wow38.png</file>
+    <file>assets/images/photos/wow39.png</file>
+    <file>assets/images/photos/wow40.png</file>
+    <file>assets/images/photos/wow41.png</file>
+    <file>assets/images/photos/wow42.png</file>
+    <file>assets/images/photos/wow43.png</file>
+    <file>assets/images/photos/wow44.png</file>
+    <file>assets/images/photos/wow45.png</file>
+    <file>assets/images/photos/wow46.png</file>
+    <file>assets/images/photos/wow47.png</file>
     <file>assets/images/preferences.png</file>
     <file>assets/images/preferences.svg</file>
     <file>assets/images/qrcode.png</file>
@@ -102,7 +150,6 @@
     <file>assets/images/xmrig.svg</file>
     <file>assets/images/zoom.png</file>
     <file>assets/mnemonic_25_english.txt</file>
-    <file>assets/restore_heights_monero_mainnet.txt</file>
-    <file>assets/restore_heights_monero_stagenet.txt</file>
+    <file>assets/restore_heights_wownero_mainnet.txt</file>
 </qresource>
 </RCC>

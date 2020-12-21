@@ -88,7 +88,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     connect(ui->actionReport_bug, &QAction::triggered, [this](){
         QMessageBox::information(this, "Reporting Bugs",
                                  "<body>Please report any bugs as issues on our git repo:<br>\n"
-                                 "<a href=\"https://git.wownero.com/feather/feather/issues\" style=\"color: #33A4DF\">https://git.wownero.com/feather/feather/issues</a><br/><br/>"
+                                 "<a href=\"https://git.wownero.com/feather/feather-wow/issues\" style=\"color: #33A4DF\">https://git.wownero.com/feather/feather-wow/issues</a><br/><br/>"
                                  "\n"
                                  "Before reporting a bug, upgrade to the most recent version of Feather "
                                  "(latest release or git HEAD), and include the version number in your report. "
@@ -106,7 +106,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     m_trayActionCalc->setStatusTip("Calculator");
 
     m_trayActionSend = new QAction("Send", this);
-    m_trayActionSend->setStatusTip("Send XMR payment");
+    m_trayActionSend->setStatusTip("Send WOW payment");
 
     m_trayActionHistory = new QAction("History", this);
     m_trayActionHistory->setStatusTip("View incoming transfers");
@@ -128,13 +128,13 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
 #endif
 
     // ticker widgets
-    m_tickerWidgets.append(new TickerWidget(this, "XMR"));
+    m_tickerWidgets.append(new TickerWidget(this, "WOW"));
     m_tickerWidgets.append(new TickerWidget(this, "BTC"));
     for(auto tickerWidget: m_tickerWidgets) {
         ui->tickerLayout->addWidget(tickerWidget);
     }
 
-    m_balanceWidget = new TickerWidget(this, "XMR", "Balance", true, true);
+    m_balanceWidget = new TickerWidget(this, "WOW", "Balance", true, true);
     ui->fiatTickerLayout->addWidget(m_balanceWidget);
 
     // Send widget
@@ -462,7 +462,7 @@ void MainWindow::initMenu() {
         if(targetDir.isEmpty()) return;
 
         qint64 now = QDateTime::currentDateTime().currentMSecsSinceEpoch();
-        QString fn = QString("%1/monero-contacts_%2.csv").arg(targetDir, QString::number(now / 1000));
+        QString fn = QString("%1/wownero-contacts_%2.csv").arg(targetDir, QString::number(now / 1000));
         if(model->writeCSV(fn))
             QMessageBox::information(this, "Address book exported", QString("Address book exported to %1").arg(fn));
     });
@@ -625,9 +625,9 @@ void MainWindow::onBalanceUpdated(quint64 balance, quint64 spendable) {
     qDebug() << Q_FUNC_INFO;
     bool hide = config()->get(Config::hideBalance).toBool();
 
-    QString label_str = QString("Balance: %1 XMR").arg(Utils::balanceFormat(spendable));
+    QString label_str = QString("Balance: %1 WOW").arg(Utils::balanceFormat(spendable));
     if (balance > spendable)
-        label_str += QString(" (+%1 XMR unconfirmed)").arg(Utils::balanceFormat(balance - spendable));
+        label_str += QString(" (+%1 WOW unconfirmed)").arg(Utils::balanceFormat(balance - spendable));
 
     if (hide)
         label_str = "Balance: HIDDEN";
@@ -811,7 +811,8 @@ void MainWindow::create_status_bar() {
     this->statusBar()->addWidget(m_statusLabelNetStats);
 
     m_statusLabelBalance = new ClickableLabel(this);
-    m_statusLabelBalance->setText("Balance: 0 XMR");
+    m_statusLabelBalance->setText("Balance: 0 WOW");
+
     m_statusLabelBalance->setTextInteractionFlags(Qt::TextSelectableByMouse);
     this->statusBar()->addPermanentWidget(m_statusLabelBalance);
     connect(m_statusLabelBalance, &ClickableLabel::clicked, this, &MainWindow::showBalanceDialog);
@@ -1023,7 +1024,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 }
 
 void MainWindow::donateButtonClicked() {
-    double donation = AppContext::prices->convert("EUR", "XMR", m_ctx->donationAmount);
+    double donation = AppContext::prices->convert("EUR", "WOW", m_ctx->donationAmount);
     if (donation <= 0)
         donation = 0.1337;
 

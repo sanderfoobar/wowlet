@@ -54,7 +54,7 @@ void XmRig::start(const QString &path,
 
     QStringList arguments;
     arguments << "-o" << address;
-    arguments << "-a" << "rx/0";
+    arguments << "-a" << "rx/wow";
     arguments << "-u" << username;
     if(!password.isEmpty())
         arguments << "-p" << password;

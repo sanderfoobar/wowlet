@@ -45,11 +45,11 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
             QString appImagePath = qgetenv("APPIMAGE");
             if (appImagePath.isEmpty()) {
                 qDebug() << "Not an appimage, using currentPath()";
-                return QDir::currentPath() + "/.feather";
+                return QDir::currentPath() + "/.feather-wow";
             }
 
             QFileInfo appImageDir(appImagePath);
-            return appImageDir.absoluteDir().path() + "/.feather";
+            return appImageDir.absoluteDir().path() + "/.feather-wow";
         }();
 
 
@@ -66,10 +66,10 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     QString walletDir = config()->get(Config::walletDirectory).toString();
     if (walletDir.isEmpty()) {
 #if defined(Q_OS_LINUX) or defined(Q_OS_MAC)
-        this->defaultWalletDir = QString("%1/Monero/wallets").arg(this->configRoot);
-        this->defaultWalletDirRoot = QString("%1/Monero").arg(this->configRoot);
+        this->defaultWalletDir = QString("%1/Wownero/wallets").arg(this->configRoot);
+        this->defaultWalletDirRoot = QString("%1/Wownero").arg(this->configRoot);
 #elif defined(Q_OS_WIN)
-        this->defaultWalletDir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/Monero";
+        this->defaultWalletDir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/Wownero";
         this->defaultWalletDirRoot = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 #endif
     } else {
@@ -81,7 +81,7 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     if (!QDir().mkpath(defaultWalletDir))
         qCritical() << "Unable to create dir: " << defaultWalletDir;
 
-    this->configDirectory = QString("%1/.config/feather/").arg(this->configRoot);
+    this->configDirectory = QString("%1/.config/feather-wow/").arg(this->configRoot);
 #if defined(Q_OS_UNIX)
     if(!this->configDirectory.endsWith('/'))
         this->configDirectory = QString("%1/").arg(this->configDirectory);
@@ -90,12 +90,12 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     // Config
     createConfigDirectory(this->configDirectory);
 
-    if(this->cmdargs->isSet("stagenet"))
-        this->networkType = NetworkType::STAGENET;
-    else if(this->cmdargs->isSet("testnet"))
-        this->networkType = NetworkType::TESTNET;
-    else
-        this->networkType = NetworkType::MAINNET;
+//    if(this->cmdargs->isSet("stagenet"))
+//        this->networkType = NetworkType::STAGENET;
+//    else if(this->cmdargs->isSet("testnet"))
+//        this->networkType = NetworkType::TESTNET;
+//    else
+    this->networkType = NetworkType::MAINNET;
 
 //    auto nodeSourceUInt = config()->get(Config::nodeSource).toUInt();
 //    AppContext::nodeSource = static_cast<NodeSource>(nodeSourceUInt);
@@ -426,7 +426,7 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
         this->onWSReddit(reddit_data);
     }
 
-    else if(cmd == "ccs") {
+    else if(cmd == "wfs") {
         auto ccs_data = msg.value("data").toArray();
         this->onWSCCS(ccs_data);
     }
@@ -602,9 +602,9 @@ void AppContext::createWalletFinish(const QString &password) {
 }
 
 void AppContext::initRestoreHeights() {
-    restoreHeights[NetworkType::TESTNET] = new RestoreHeightLookup(NetworkType::TESTNET);
-    restoreHeights[NetworkType::STAGENET] = RestoreHeightLookup::fromFile(":/assets/restore_heights_monero_stagenet.txt", NetworkType::STAGENET);
-    restoreHeights[NetworkType::MAINNET] = RestoreHeightLookup::fromFile(":/assets/restore_heights_monero_mainnet.txt", NetworkType::MAINNET);
+    restoreHeights[NetworkType::TESTNET] = RestoreHeightLookup::fromFile(":/assets/restore_heights_wownero_mainnet.txt", NetworkType::TESTNET);
+    restoreHeights[NetworkType::STAGENET] = RestoreHeightLookup::fromFile(":/assets/restore_heights_wownero_mainnet.txt", NetworkType::STAGENET);
+    restoreHeights[NetworkType::MAINNET] = RestoreHeightLookup::fromFile(":/assets/restore_heights_wownero_mainnet.txt", NetworkType::MAINNET);
 }
 
 void AppContext::onSetRestoreHeight(quint64 height){
@@ -703,7 +703,7 @@ void AppContext::onUnconfirmedMoneyReceived(const QString &txId, quint64 amount)
     qDebug() << Q_FUNC_INFO << txId << " " << QString::number(amount_num);
 
     if(this->currentWallet->synchronized()) {
-        auto notify = QString("%1 XMR (pending)").arg(amount_num);
+        auto notify = QString("%1 WOW (pending)").arg(amount_num);
         Utils::desktopNotify("Payment received", notify, 5000);
     }
 }

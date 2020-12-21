@@ -20,7 +20,7 @@ XMRigWidget::XMRigWidget(AppContext *ctx, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QPixmap p(":assets/images/xmrig.svg");
+    QPixmap p(":assets/images/mining.png");
     ui->lbl_logo->setPixmap(p.scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     // table
@@ -167,6 +167,7 @@ void XMRigWidget::onStartClicked() {
     }
 
     m_ctx->XMRig->start(xmrigPath, m_threads, address, username, password, ui->relayTor->isChecked(), ui->check_tls->isChecked());
+
     ui->btn_start->setEnabled(false);
     ui->btn_stop->setEnabled(true);
     emit miningStarted();

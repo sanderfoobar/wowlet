@@ -26,7 +26,7 @@ TxConfDialog::TxConfDialog(AppContext *ctx, PendingTransaction *tx, const QStrin
     QString preferredCur = config()->get(Config::preferredFiatCurrency).toString();
 
     auto convert = [preferredCur](double amount){
-        return QString::number(AppContext::prices->convert("XMR", preferredCur, amount), 'f', 2);
+        return QString::number(AppContext::prices->convert("WOW", preferredCur, amount), 'f', 2);
     };
 
     QString amount = WalletManager::displayAmount(tx->amount());

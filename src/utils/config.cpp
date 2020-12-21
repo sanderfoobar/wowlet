@@ -26,12 +26,12 @@ static const QHash<Config::ConfigKey, ConfigDirective> configStrings = {
         {Config::donateBeg,{QS("donateBeg"), 1}},
         {Config::skin,{QS("skin"), "light"}},
         {Config::preferredFiatCurrency,{QS("preferredFiatCurrency"), "USD"}},
-        {Config::blockExplorer,{QS("blockExplorer"), "exploremonero.com"}},
+        {Config::blockExplorer,{QS("blockExplorer"), "explore.wownero.com"}},
         {Config::walletDirectory,{QS("walletDirectory"), ""}},
         {Config::autoOpenWalletPath,{QS("autoOpenWalletPath"), ""}},
         {Config::walletPath,{QS("walletPath"), ""}},
         {Config::xmrigPath,{QS("xmrigPath"), ""}},
-        {Config::xmrigPool,{QS("xmrigPool"), "pool.xmr.pt:9000"}},
+        {Config::xmrigPool,{QS("xmrigPool"), "cryptonote.social:2223"}},
         {Config::nodes,{QS("nodes"), "{}"}},
         {Config::websocketEnabled,{QS("websocketEnabled"), true}},
         {Config::nodeSource,{QS("nodeSource"), 0}},
@@ -113,7 +113,7 @@ Config::Config(QObject* parent)
         QString appImagePath = qgetenv("APPIMAGE");
         QFileInfo appImageDir(appImagePath);
 
-        QDir portablePath(appImageDir.absoluteDir().path() + "/.feather");
+        QDir portablePath(appImageDir.absoluteDir().path() + "/.feather-wow");
         if (portablePath.mkpath(".")) {
             configPath = portablePath.path();
         }
@@ -122,7 +122,7 @@ Config::Config(QObject* parent)
         }
     }
 
-    configPath += "/.config/feather/settings.json";
+    configPath += "/.config/feather-wow/settings.json";
 
     init(QDir::toNativeSeparators(configPath));
 }

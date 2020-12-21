@@ -8,5 +8,4 @@ Initial CMake support for the Monero GUI was coded by TheCharlatan/xiphon.
 
 Huge thanks to nioc, fluffypony, wowario, thrmo for help during development.
 
-Some more shoutouts for people for hosting nodes and/or having good ideas:
-dnale0r, dEBRUYNE, binaryFate, lza_menace, jwinterm, kico, wowario
+rottensox for testing :-)

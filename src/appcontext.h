@@ -42,13 +42,13 @@ public:
     bool isDebug = false;
 
     // Donation config
-    const QString donationAddress = "47ntfT2Z5384zku39pTM6hGcnLnvpRYW2Azm87GiAAH2bcTidtq278TL6HmwyL8yjMeERqGEBs3cqC8vvHPJd1cWQrGC65f";
+    const QString donationAddress = "WW2xGxtet29WxM6RBaxkTaBZoXC4mHGYoiHM5rPgViwNjnTLR452skNTsBMFp9JgMbdGucFQWF3PG95Hau9MnFjp2rmKgrcC7";
     const int donationAmount = 25;  // euro
     bool donationSending = false;
 
     QCommandLineParser *cmdargs;
 
-    QString coinName = "monero";
+    QString coinName = "wownero";
     bool isTorSocks = false;
     QString homeDir;
     QString accountName;
@@ -178,7 +178,7 @@ signals:
 private:
     const int m_donationBoundary = 15;
     QTimer m_storeTimer;
-    QUrl m_wsUrl = QUrl(QStringLiteral("ws://7e6egbawekbkxzkv4244pqeqgoo4axko2imgjbedwnn6s5yb6b7oliqd.onion/ws"));
+    QUrl m_wsUrl = QUrl(QStringLiteral("ws://7e6egbawekbkxzkv4244pqeqgoo4axko2imgjbedwnn6s5yb6b7oliqd.onion/wow/ws"));
 };
 
 #endif //FEATHER_APPCONTEXT_H

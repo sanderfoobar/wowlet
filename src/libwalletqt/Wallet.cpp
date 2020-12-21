@@ -444,20 +444,28 @@ quint64 Wallet::daemonBlockChainTargetHeight() const
 
 bool Wallet::exportKeyImages(const QString& path, bool all)
 {
-    return m_walletImpl->exportKeyImages(path.toStdString(), all);
+    // @TODO: remove after WOW 0.9.0.2 tagged + feather libwallet patch
+    //return m_walletImpl->exportKeyImages(path.toStdString(), all);
+    return false;
 }
 
 bool Wallet::importKeyImages(const QString& path)
 {
-    return m_walletImpl->importKeyImages(path.toStdString());
+    // @TODO: remove after WOW 0.9.0.2 tagged + feather libwallet patch
+    //return m_walletImpl->importKeyImages(path.toStdString());
+    return false;
 }
 
 bool Wallet::exportOutputs(const QString& path, bool all) {
-    return m_walletImpl->exportOutputs(path.toStdString(), all);
+    // @TODO: remove after WOW 0.9.0.2 tagged + feather libwallet patch
+    //return m_walletImpl->exportOutputs(path.toStdString(), all);
+    return false;
 }
 
 bool Wallet::importOutputs(const QString& path) {
-    return m_walletImpl->importOutputs(path.toStdString());
+    // @TODO: remove after WOW 0.9.0.2 tagged + feather libwallet patch
+    // return m_walletImpl->importOutputs(path.toStdString());
+    return false;
 }
 
 bool Wallet::importTransaction(const QString& txid, const QVector<quint64>& output_indeces, quint64 height, quint64 timestamp, bool miner_tx, bool pool, bool double_spend_seen) {

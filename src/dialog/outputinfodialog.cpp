@@ -25,7 +25,7 @@ OutputInfoDialog::OutputInfoDialog(CoinsInfo *cInfo, QWidget *parent)
 
     QString status = cInfo->spent() ? "spent" : (cInfo->frozen() ? "frozen" : "unspent");
     ui->label_status->setText(status);
-    ui->label_amount->setText(QString("%1 XMR").arg(cInfo->displayAmount()));
+    ui->label_amount->setText(QString("%1 WOW").arg(cInfo->displayAmount()));
     ui->label_creationHeight->setText(QString::number(cInfo->blockHeight()));
     ui->label_globalIndex->setText(QString::number(cInfo->globalOutputIndex()));
     ui->label_internalIndex->setText(QString::number(cInfo->internalOutputIndex()));
