@@ -125,7 +125,7 @@
           </widget>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
-            <string>/r/Monero</string>
+            <string>/r/Wownero</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_7">
             <property name="leftMargin">

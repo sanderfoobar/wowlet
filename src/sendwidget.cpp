@@ -261,7 +261,7 @@ void SendWidget::onEndTransaction() {
 void SendWidget::setupComboBox() {
     ui->comboCurrencySelection->clear();
 
-    QStringList defaultCurrencies = {"XMR", "USD", "EUR", "CNY", "JPY", "GBP"};
+    QStringList defaultCurrencies = {"WOW", "USD", "EUR", "CNY", "JPY", "GBP"};
     QString preferredCurrency = config()->get(Config::preferredFiatCurrency).toString();
 
     if (defaultCurrencies.contains(preferredCurrency)) {
