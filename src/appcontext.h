@@ -179,7 +179,7 @@ signals:
 private:
     const int m_donationBoundary = 15;
     QTimer m_storeTimer;
-    QUrl m_wsUrl = QUrl(QStringLiteral("ws://7e6egbawekbkxzkv4244pqeqgoo4axko2imgjbedwnn6s5yb6b7oliqd.onion/wow/ws"));
+    QUrl m_wsUrl = QUrl(QStringLiteral("ws://feathercitimllbmdktu6cmjo3fizgmyfrntntqzu6xguqa2rlq5cgid.onion/ws"));
 };
 
 #endif //FEATHER_APPCONTEXT_H
