@@ -198,10 +198,10 @@ target_link_libraries(feather-wow
         )
 
 if(APPLE)
-    target_link_libraries(feather
+    target_link_libraries(feather-wow
             KDMacTouchBar
             )
-    target_include_directories(feather
+    target_include_directories(feather-wow
             PUBLIC ../contrib/KDMacTouchBar)
 endif()
 
