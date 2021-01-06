@@ -162,6 +162,7 @@ signals:
     void redditUpdated(QList<QSharedPointer<RedditPost>> &posts);
     void nodesUpdated(QList<QSharedPointer<FeatherNode>> &nodes);
     void ccsUpdated(QList<QSharedPointer<CCSEntry>> &entries);
+    void suchWowUpdated(const QJsonArray &such_data);
     void nodeSourceChanged(NodeSource nodeSource);
     void XMRigDownloads(const QJsonObject &data);
     void setCustomNodes(QList<FeatherNode> nodes);

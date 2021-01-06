@@ -431,6 +431,11 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
         this->onWSCCS(ccs_data);
     }
 
+    else if(cmd == "suchwow") {
+        QJsonArray such_data = msg.value("data").toArray();
+        emit suchWowUpdated(such_data);
+    }
+
     else if(cmd == "txFiatHistory") {
         auto txFiatHistory_data = msg.value("data").toObject();
         AppContext::txFiatHistory->onWSData(txFiatHistory_data);

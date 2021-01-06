@@ -6,6 +6,7 @@
 #include <QDesktopServices>
 #include <QCoreApplication>
 #include <QSystemTrayIcon>
+#include <QMessageBox>
 #include <QFileDialog>
 
 #include "mainwindow.h"
@@ -166,6 +167,8 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     connect(ui->ccsWidget, &CCSWidget::selected, this, &MainWindow::showSendScreen);
     connect(m_ctx, &AppContext::ccsUpdated, ui->ccsWidget->model(), &CCSModel::updateEntries);
     connect(m_ctx, &AppContext::redditUpdated, ui->redditWidget->model(), &RedditModel::updatePosts);
+    connect(m_ctx, &AppContext::suchWowUpdated, ui->suchWowWidget, &SuchWowWidget::onWS);
+    connect(ui->suchWowWidget, &SuchWowWidget::donate, this, &MainWindow::suchDonate);
 
     connect(ui->redditWidget, &RedditWidget::setStatusText, this, &MainWindow::setStatusText);
 
@@ -1057,6 +1060,12 @@ void MainWindow::payToMany() {
 
 void MainWindow::showSendScreen(const CCSEntry &entry) {
     ui->sendWidget->fill(entry);
+    ui->tabWidget->setCurrentIndex(Tabs::SEND);
+}
+
+void MainWindow::suchDonate(const QString address) {
+    double donation = AppContext::prices->convert("EUR", "WOW", 2);
+    ui->sendWidget->fill(address, "SuchWow contribution :-)", donation);
     ui->tabWidget->setCurrentIndex(Tabs::SEND);
 }
 

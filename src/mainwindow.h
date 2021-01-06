@@ -109,6 +109,7 @@ public slots:
     void showSendTab();
     void showHistoryTab();
     void showSendScreen(const CCSEntry &entry);
+    void suchDonate(const QString address);
     void skinChanged(const QString &skinName);
     void menuTorClicked();
     void onBlockchainSync(int height, int target);
