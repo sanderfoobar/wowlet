@@ -1,13 +1,12 @@
-# Feather-WOW - a free Wownero desktop wallet 
+# EWDYM- a free Wownero desktop wallet 
 
-[![Build Status](https://build.featherwallet.org/api/badges/feather/feather-wow/status.svg)](https://build.featherwallet.org/feather/feather-wow)
+[![Build Status](https://ci.wownero.com/api/badges/wownero/ElonWillDoubleYourMoneyWallet/status.svg)](https://ci.wownero.com/wownero/ElonWillDoubleYourMoneyWallet)
 
-Feather is a free, open-source Wownero client for Linux with ports for Mac OS and Windows.
+EWDYM is a free, open-source Wownero client for Linux with ports for Mac OS and Windows.
 
 ## Development resources
-* Web: [featherwallet.org](https://featherwallet.org)
-* Git: [git.wownero.com/feather/feather-wow](https://git.wownero.com/feather/feather-wow)
-* IRC: `#feather` on OFTC
-* Development builds: [build.featherwallet.org/files-wow](https://build.featherwallet.org/files-wow/)
+* Web: [wownero.org](https://wownero.org)
+* Git: [git.wownero.com/wownero/ElonWillDoubleYourMoneyWallet](https://git.wownero.com/wownero/ElonWillDoubleYourMoneyWallet)
+* IRC: `#wownero` on Freenode
 
 Copyright (c) 2020-2021 The Monero Project.
