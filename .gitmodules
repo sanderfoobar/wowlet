@@ -1,3 +1,7 @@
 [submodule "contrib/KDMacTouchBar"]
 	path = contrib/KDMacTouchBar
 	url = https://github.com/KDAB/KDMacTouchBar.git
+[submodule "monero"]
+	path = monero
+	url = https://git.wownero.com/wownero/wownero
+	branch = feather
