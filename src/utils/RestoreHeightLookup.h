@@ -24,8 +24,8 @@ struct RestoreHeightLookup {
         // date: ((now - lastKnownDate) / blockTime) - clearance
 
         if(this->type == NetworkType::TESTNET) return 1;
-        int blockTime = 120;
-        int blocksPerDay = 86400 / blockTime;
+        int blockTime = 300;
+        int blocksPerDay = 288;
         int blockCalcClearance = blocksPerDay * 5;
         QList<int> values = this->data.keys();
         if(date <= values.at(0))
