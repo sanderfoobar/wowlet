@@ -4,7 +4,7 @@
 
 Please do not open an issue to report security issues.
 
-To report a vulnerability send an email to dev@featherwallet.org
+To report a vulnerability send an email to dev@wownero.org
 
 The following keys may be used to communicate sensitive information to developers:
 

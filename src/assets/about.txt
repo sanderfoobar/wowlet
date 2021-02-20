@@ -1,7 +1,7 @@
 Feather <feather_version> (<feather_git_head>)
 
-Website: https://featherwallet.org
-E-mail: dev@featherwallet.org
+Website: https://wownero.org
+E-mail: dev@wownero.org
 
 Created by dsc, tobtoht, and contributors.
 

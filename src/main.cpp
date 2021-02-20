@@ -97,8 +97,8 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     if(cliMode) {
         QCoreApplication cli_app(argc, argv);
         QCoreApplication::setApplicationName("wowllet");
-        QCoreApplication::setOrganizationDomain("featherwallet.org");
-        QCoreApplication::setOrganizationName("featherwallet.org");
+        QCoreApplication::setOrganizationDomain("wownero.org");
+        QCoreApplication::setOrganizationName("wownero.org");
 
         auto *ctx = new AppContext(&parser);
         ctx->applicationPath = QString(argv[0]);
@@ -130,8 +130,8 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     QApplication app(argc, argv);
 
     QApplication::setApplicationName("wowllet");
-    QApplication::setOrganizationDomain("featherwallet.org");
-    QApplication::setOrganizationName("featherwallet.org");
+    QApplication::setOrganizationDomain("wownero.org");
+    QApplication::setOrganizationName("wownero.org");
 
     parser.process(app); // Parse again for --help and --version
 

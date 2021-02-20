@@ -35,14 +35,14 @@ steps:
     - echo "writing to $TARGET_DIR/$FN"
     - strip -s build/bin/wowllet
     - zip -j "$TARGET_DIR/$FN" build/feather.log build/bin/wowllet
-    - echo "[*] written to https://build.featherwallet.org/files/linux-release/$DRONE_SOURCE_BRANCH/$FN"
+    - echo "[*] written to https://build.wownero.org/files/linux-release/$DRONE_SOURCE_BRANCH/$FN"
     - # AppImage
     - export FN="wowllet-`git rev-parse --short HEAD`.AppImage"
     - export TARGET_DIR="/linux-release-appimage/$DRONE_SOURCE_BRANCH"
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
     - mv "wowllet.AppImage" "$TARGET_DIR/$FN"
-    - echo "[*] written to https://build.featherwallet.org/files/linux-release-appimage/$DRONE_SOURCE_BRANCH/$FN"
+    - echo "[*] written to https://build.wownero.org/files/linux-release-appimage/$DRONE_SOURCE_BRANCH/$FN"
 
 volumes:
 - name: ccache_linux_release
@@ -87,7 +87,7 @@ steps:
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
     - zip -j "$TARGET_DIR/$FN" build/x86_64-w64-mingw32/release/bin/wowllet.exe
-    - echo "[*] written to https://build.featherwallet.org/files-wow/windows-release/$DRONE_SOURCE_BRANCH/$FN"
+    - echo "[*] written to https://build.wownero.org/files-wow/windows-release/$DRONE_SOURCE_BRANCH/$FN"
 volumes:
 - name: ccache_win_release
   host:
@@ -125,7 +125,7 @@ steps:
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
     - mv build/wowllet.zip "$TARGET_DIR/$FN"
-    - echo "[*] written to https://build.featherwallet.org/files-wow/mac-release/$DRONE_SOURCE_BRANCH/$FN"
+    - echo "[*] written to https://build.wownero.org/files-wow/mac-release/$DRONE_SOURCE_BRANCH/$FN"
 
 volumes:
 - name: files_mac_release

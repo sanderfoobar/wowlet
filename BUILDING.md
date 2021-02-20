@@ -1,6 +1,6 @@
 ## Buildbot builds
 
-The docker build bins can be found here: https://build.featherwallet.org/files/
+The docker build bins can be found here: https://build.wownero.org/files/
 
 ## Docker static builds
 

@@ -7,7 +7,7 @@ pkgrel=1
 pkgdesc='a free Monero desktop wallet'
 license=('BSD')
 arch=('x86_64')
-url="https://featherwallet.org"
+url="https://wownero.org"
 depends=('boost-libs' 'libunwind' 'openssl' 'readline' 'pcsclite' 'hidapi' 'protobuf' 'miniupnpc' 'libgcrypt' 'qrencode' 'libsodium' 'libpgm' 'expat' 'qt5-base' 'qt5-websockets' 'tor')
 makedepends=('git' 'cmake' 'boost')
 

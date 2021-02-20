@@ -96,7 +96,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
                                  "Try to explain not only what the bug is, but how it occurs.</body>");
     });
     connect(ui->actionShow_debug_info, &QAction::triggered, this, &MainWindow::showDebugInfo);
-    connect(ui->actionOfficialWebsite, &QAction::triggered, [=] { Utils::externalLinkWarning(this, "https://featherwallet.org"); });
+    connect(ui->actionOfficialWebsite, &QAction::triggered, [=] { Utils::externalLinkWarning(this, "https://wownero.org"); });
 
 #if defined(Q_OS_LINUX)
     // system tray
