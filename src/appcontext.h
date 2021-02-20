@@ -42,7 +42,7 @@ public:
     bool isDebug = false;
 
     // Donation config
-    const QString donationAddress = "WW2xGxtet29WxM6RBaxkTaBZoXC4mHGYoiHM5rPgViwNjnTLR452skNTsBMFp9JgMbdGucFQWF3PG95Hau9MnFjp2rmKgrcC7";
+    const QString donationAddress = "Wo3MWeKwtA918DU4c69hVSNgejdWFCRCuWjShRY66mJkU2Hv58eygJWDJS1MNa2Ge5M1WjUkGHuLqHkweDxwZZU42d16v94mP";
     const int donationAmount = 25;  // euro
     bool donationSending = false;
 
