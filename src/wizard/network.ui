@@ -139,7 +139,7 @@
           <item row="2" column="0">
            <widget class="QLineEdit" name="lineEdit_customNode">
             <property name="text">
-             <string>127.0.0.1:18089</string>
+             <string>127.0.0.1:34568</string>
             </property>
            </widget>
           </item>
