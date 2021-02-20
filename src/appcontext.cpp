@@ -45,11 +45,11 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
             QString appImagePath = qgetenv("APPIMAGE");
             if (appImagePath.isEmpty()) {
                 qDebug() << "Not an appimage, using currentPath()";
-                return QDir::currentPath() + "/.feather-wow";
+                return QDir::currentPath() + "/.wowllet";
             }
 
             QFileInfo appImageDir(appImagePath);
-            return appImageDir.absoluteDir().path() + "/.feather-wow";
+            return appImageDir.absoluteDir().path() + "/.wowllet";
         }();
 
 
@@ -81,7 +81,7 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     if (!QDir().mkpath(defaultWalletDir))
         qCritical() << "Unable to create dir: " << defaultWalletDir;
 
-    this->configDirectory = QString("%1/.config/feather-wow/").arg(this->configRoot);
+    this->configDirectory = QString("%1/.config/wowllet/").arg(this->configRoot);
 #if defined(Q_OS_UNIX)
     if(!this->configDirectory.endsWith('/'))
         this->configDirectory = QString("%1/").arg(this->configDirectory);

@@ -7,7 +7,7 @@ if(APPLE OR (WIN32 AND NOT STATIC))
         find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${_qt_bin_dir}")
         add_custom_command(TARGET deploy
                 POST_BUILD
-                COMMAND "${MACDEPLOYQT_EXECUTABLE}" "$<TARGET_FILE_DIR:feather-wow>/../.." -always-overwrite
+                COMMAND "${MACDEPLOYQT_EXECUTABLE}" "$<TARGET_FILE_DIR:wowllet>/../.." -always-overwrite
                 COMMENT "Running macdeployqt..."
                 )
 
@@ -16,11 +16,11 @@ if(APPLE OR (WIN32 AND NOT STATIC))
         if(_qt_svg_dylib)
             add_custom_command(TARGET deploy
                     POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy ${_qt_svg_dylib} $<TARGET_FILE_DIR:feather-wow>/../PlugIns/imageformats/
-                    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change "${CMAKE_PREFIX_PATH}/lib/QtGui.framework/Versions/5/QtGui" "@executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui" $<TARGET_FILE_DIR:feather-wow>/../PlugIns/imageformats/libqsvg.dylib
-                    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change "${CMAKE_PREFIX_PATH}/lib/QtWidgets.framework/Versions/5/QtWidgets" "@executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui" $<TARGET_FILE_DIR:feather-wow>/../PlugIns/imageformats/libqsvg.dylib
-                    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change "${CMAKE_PREFIX_PATH}/lib/QtSvg.framework/Versions/5/QtSvg" "@executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui" $<TARGET_FILE_DIR:feather-wow>/../PlugIns/imageformats/libqsvg.dylib
-                    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change "${CMAKE_PREFIX_PATH}/lib/QtCore.framework/Versions/5/QtCore" "@executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui" $<TARGET_FILE_DIR:feather-wow>/../PlugIns/imageformats/libqsvg.dylib
+                    COMMAND ${CMAKE_COMMAND} -E copy ${_qt_svg_dylib} $<TARGET_FILE_DIR:wowllet>/../PlugIns/imageformats/
+                    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change "${CMAKE_PREFIX_PATH}/lib/QtGui.framework/Versions/5/QtGui" "@executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui" $<TARGET_FILE_DIR:wowllet>/../PlugIns/imageformats/libqsvg.dylib
+                    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change "${CMAKE_PREFIX_PATH}/lib/QtWidgets.framework/Versions/5/QtWidgets" "@executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui" $<TARGET_FILE_DIR:wowllet>/../PlugIns/imageformats/libqsvg.dylib
+                    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change "${CMAKE_PREFIX_PATH}/lib/QtSvg.framework/Versions/5/QtSvg" "@executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui" $<TARGET_FILE_DIR:wowllet>/../PlugIns/imageformats/libqsvg.dylib
+                    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change "${CMAKE_PREFIX_PATH}/lib/QtCore.framework/Versions/5/QtCore" "@executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui" $<TARGET_FILE_DIR:wowllet>/../PlugIns/imageformats/libqsvg.dylib
                     COMMENT "Copying libqsvg.dylib, running install_name_tool"
                     )
         endif()

@@ -1,11 +1,11 @@
 [Desktop Entry]
 Comment=Lightweight Wownero Wallet
-Exec=feather-wow
+Exec=wowllet
 GenericName[en_US]=Wownero Wallet
 GenericName=Wownero Wallet
-Icon=feather-wow
-Name[en_US]=Feather-WOW
-Name=Feather-WOW
+Icon=wowllet
+Name[en_US]=WOWllet
+Name=WOWllet
 Categories=Finance;Network;
 StartupNotify=false
 StartupWMClass=feather

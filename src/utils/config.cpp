@@ -113,7 +113,7 @@ Config::Config(QObject* parent)
         QString appImagePath = qgetenv("APPIMAGE");
         QFileInfo appImageDir(appImagePath);
 
-        QDir portablePath(appImageDir.absoluteDir().path() + "/.feather-wow");
+        QDir portablePath(appImageDir.absoluteDir().path() + "/.wowllet");
         if (portablePath.mkpath(".")) {
             configPath = portablePath.path();
         }
@@ -122,7 +122,7 @@ Config::Config(QObject* parent)
         }
     }
 
-    configPath += "/.config/feather-wow/settings.json";
+    configPath += "/.config/wowllet/settings.json";
 
     init(QDir::toNativeSeparators(configPath));
 }

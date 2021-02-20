@@ -3,17 +3,17 @@
 set -e
 unset SOURCE_DATE_EPOCH
 
-APPDIR="$PWD/feather-wow.AppDir"
+APPDIR="$PWD/wowllet.AppDir"
 
 mkdir -p "$APPDIR"
 mkdir -p "$APPDIR/usr/share/applications/"
 mkdir -p "$APPDIR/usr/bin"
 
-cp "$PWD/src/assets/feather-wow.desktop" "$APPDIR/usr/share/applications/feather-wow.desktop"
-cp "$PWD/src/assets/images/appicons/64x64.png" "$APPDIR/feather-wow.png"
-cp "$PWD/build/bin/feather-wow" "$APPDIR/usr/bin/feather-wow"
+cp "$PWD/src/assets/wowllet.desktop" "$APPDIR/usr/share/applications/wowllet.desktop"
+cp "$PWD/src/assets/images/appicons/64x64.png" "$APPDIR/wowllet.png"
+cp "$PWD/build/bin/wowllet" "$APPDIR/usr/bin/wowllet"
 
-LD_LIBRARY_PATH=/usr/local/lib /linuxdeployqt/squashfs-root/AppRun feather.AppDir/usr/share/applications/feather-wow.desktop -bundle-non-qt-libs
+LD_LIBRARY_PATH=/usr/local/lib /linuxdeployqt/squashfs-root/AppRun feather.AppDir/usr/share/applications/wowllet.desktop -bundle-non-qt-libs
 
 find feather.AppDir/ -exec touch -h -a -m -t 202101010100.00 {} \;
 
@@ -27,7 +27,7 @@ mksquashfs feather.AppDir feather.squashfs -info -root-owned -no-xattrs -noappen
 # mksquashfs writes a timestamp to the header
 printf '\x00\x00\x00\x00' | dd conv=notrunc of=feather.squashfs bs=1 seek=$((0x8))
 
-rm -f feather-wow.AppImage
-cat runtime-x86_64 >> feather-wow.AppImage
-cat feather.squashfs >> feather-wow.AppImage
-chmod a+x feather-wow.AppImage
+rm -f wowllet.AppImage
+cat runtime-x86_64 >> wowllet.AppImage
+cat feather.squashfs >> wowllet.AppImage
+chmod a+x wowllet.AppImage

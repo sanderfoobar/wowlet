@@ -261,9 +261,9 @@ QString Utils::getUnixAccountName() {
 QString Utils::xdgDesktopEntry(){
     return QString(
         "[Desktop Entry]\n"
-        "Name=Feather-WOW\n"
-        "GenericName=Feather-WOW\n"
-        "X-GNOME-FullName=Feather-WOW\n"
+        "Name=WOWllet\n"
+        "GenericName=WOWllet\n"
+        "X-GNOME-FullName=WOWllet\n"
         "Comment=a free Wownero desktop wallet\n"
         "Keywords=Wownero;\n"
         "Exec=\"%1\" %u\n"

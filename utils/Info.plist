@@ -18,16 +18,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>feather-wow</string>
+  <string>wowllet</string>
   
   <key>CFBundleName</key>
-  <string>Feather-WOW</string>
+  <string>WOWllet</string>
 
   <key>NSHumanReadableCopyright</key>
   <string>Copyright © 2014-2021 The Monero Project</string>
 
   <key>CFBundleIdentifier</key>
-  <string>org.monero-project.feather-wow</string>
+  <string>org.monero-project.wowllet</string>
 
   <key>CFBundleVersion</key>
   <string>@VERSION_LONG@</string>
