@@ -1,4 +1,4 @@
-Feather <feather_version> (<feather_git_head>)
+WOWllet <feather_version> (<feather_git_head>)
 
 Website: https://wownero.org
 E-mail: dev@wownero.org

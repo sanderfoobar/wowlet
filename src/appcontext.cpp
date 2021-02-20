@@ -310,7 +310,7 @@ void AppContext::onWalletOpened(Wallet *wallet) {
         if(errMsg == QString("basic_string::_M_replace_aux") || errMsg == QString("std::bad_alloc")) {
             qCritical() << errMsg;
             this->walletManager->clearWalletCache(this->walletPath);
-            errMsg = QString("%1\n\nAttempted to clean wallet cache. Please restart Feather.").arg(errMsg);
+            errMsg = QString("%1\n\nAttempted to clean wallet cache. Please restart WOWllet.").arg(errMsg);
             this->closeWallet(false);
             emit walletOpenedError(errMsg);
         } else if(errMsg.contains("wallet cannot be opened as")) {
@@ -361,7 +361,7 @@ void AppContext::onWalletOpened(Wallet *wallet) {
 
 void AppContext::setWindowTitle(bool mining) {
     QFileInfo fileInfo(this->walletPath);
-    auto title = QString("Feather - [%1]").arg(fileInfo.fileName());
+    auto title = QString("WOWllet - [%1]").arg(fileInfo.fileName());
     if(this->walletViewOnly)
         title += " [view-only]";
     if(mining)

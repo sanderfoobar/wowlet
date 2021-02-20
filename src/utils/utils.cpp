@@ -308,7 +308,7 @@ bool Utils::xdgDesktopEntryRegister() {
     writeLocations += QString("- %1\n").arg(xdgPaths.pathApp);
     writeLocations += QString("- %1\n").arg(xdgPaths.pathIcon);
 
-    QPixmap appIcon(":assets/images/feather.png");
+    QPixmap appIcon(":assets/images/wowllet.png");
     if (!Utils::fileExists(xdgPaths.pathIcon))
         Utils::pixmapWrite(xdgPaths.pathIcon, appIcon);
     Utils::xdgDesktopEntryWrite(xdgPaths.pathApp);

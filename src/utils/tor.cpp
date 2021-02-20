@@ -44,7 +44,7 @@ Tor::Tor(AppContext *ctx, QObject *parent)
     }
 
 #ifndef HAS_TOR_BIN
-    qCritical() << "Feather built without embedded Tor. Assuming --use-local-tor";
+    qCritical() << "WOWllet built without embedded Tor. Assuming --use-local-tor";
     this->localTor = true;
     return;
 #endif

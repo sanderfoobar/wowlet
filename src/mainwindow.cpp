@@ -89,9 +89,9 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     connect(ui->actionReport_bug, &QAction::triggered, [this](){
         QMessageBox::information(this, "Reporting Bugs",
                                  "<body>Please report any bugs as issues on our git repo:<br>\n"
-                                 "<a href=\"https://git.wownero.com/feather/wowllet/issues\" style=\"color: #33A4DF\">https://git.wownero.com/feather/wowllet/issues</a><br/><br/>"
+                                 "<a href=\"https://git.wownero.com/wownero/wowllet/issues\" style=\"color: #33A4DF\">https://git.wownero.com/wownero/wowllet/issues</a><br/><br/>"
                                  "\n"
-                                 "Before reporting a bug, upgrade to the most recent version of Feather "
+                                 "Before reporting a bug, upgrade to the most recent version of WOWllet "
                                  "(latest release or git HEAD), and include the version number in your report. "
                                  "Try to explain not only what the bug is, but how it occurs.</body>");
     });
@@ -177,9 +177,9 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     });
 
     connect(m_ctx, &AppContext::donationNag, [=]{
-        auto msg = "Feather is a 100% community-sponsored endeavor. Please consider supporting "
+        auto msg = "WOWllet is a 100% community-sponsored endeavor. Please consider supporting "
                    "the project financially. Get rid of this message by donating any amount.";
-        int ret = QMessageBox::information(this, "Donate to Feather", msg, QMessageBox::Yes, QMessageBox::No);
+        int ret = QMessageBox::information(this, "Donate to WOWllet", msg, QMessageBox::Yes, QMessageBox::No);
         switch (ret) {
             case QMessageBox::Yes:
                 this->donateButtonClicked();
@@ -229,7 +229,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
 
 
     // testnet/stagenet warning
-    auto worthlessWarning = QString("Feather wallet is currently running in %1 mode. This is meant "
+    auto worthlessWarning = QString("WOWllet is currently running in %1 mode. This is meant "
                                     "for developers only. Your coins are WORTHLESS.");
     if(m_ctx->networkType == NetworkType::STAGENET) {
         if (config()->get(Config::warnOnStagenet).toBool()) {
@@ -245,8 +245,8 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     }
 
     if(config()->get(Config::warnOnAlpha).toBool()) {
-        QString warning = "Feather Wallet is currently in beta.\n\nPlease report any bugs "
-                          "you encounter on our Git repository, IRC or on /r/FeatherWallet.";
+        QString warning = "WOWllet is currently in beta.\n\nPlease report any bugs "
+                          "you encounter on our Git repository, IRC freenode #wownero or on /r/Wowonero.";
         QMessageBox::warning(this, "Beta Warning", warning);
         config()->set(Config::warnOnAlpha, false);
     }
@@ -327,7 +327,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     // init touchbar
 #ifdef Q_OS_MAC
     m_touchbar = new KDMacTouchBar(this);
-    m_touchbarActionWelcome = new QAction(QIcon(":/assets/images/feather.png"), "Welcome to Feather!");
+    m_touchbarActionWelcome = new QAction(QIcon(":/assets/images/wowllet.png"), "Welcome to WOWllet!");
     m_touchbarWalletItems = {ui->actionSettings, ui->actionCalculator, ui->actionKeys, ui->actionDonate_to_Feather};
     m_touchbarWizardItems = {m_touchbarActionWelcome};
 #endif
@@ -437,7 +437,7 @@ void MainWindow::initMenu() {
     connect(ui->actionChange_restore_height, &QAction::triggered, this, &MainWindow::showRestoreHeightDialog);
     connect(m_ctx, &AppContext::customRestoreHeightSet, [=](int height){
         auto msg = QString("The restore height for this wallet has been set to %1. "
-                   "Please re-open the wallet. Feather will now quit.").arg(height);
+                   "Please re-open the wallet. WOWllet will now quit.").arg(height);
         QMessageBox::information(this, "Cannot set custom restore height", msg);
         this->menuQuitClicked();
     });
@@ -570,7 +570,7 @@ void MainWindow::onWalletOpenPasswordRequired(bool invalidPassword, const QStrin
 void MainWindow::onWalletOpenedError(const QString &err) {
     qDebug() << Q_FUNC_INFO << QString("Wallet open error: %1").arg(err);
     QMessageBox::warning(this, "Wallet open error", err);
-    this->setWindowTitle("Feather");
+    this->setWindowTitle("WOWllet");
     this->showWizard(WalletWizard::Page_OpenWallet);
     this->touchbarShowWizard();
 }
@@ -1031,7 +1031,7 @@ void MainWindow::donateButtonClicked() {
     if (donation <= 0)
         donation = 0.1337;
 
-    ui->sendWidget->fill(m_ctx->donationAddress, "Donation to the Feather development team", donation);
+    ui->sendWidget->fill(m_ctx->donationAddress, "Donation to the WOWllet development team", donation);
     ui->tabWidget->setCurrentIndex(Tabs::SEND);
 }
 
@@ -1171,14 +1171,14 @@ void MainWindow::showWalletCacheDebugDialog() {
 void MainWindow::showNodeExhaustedMessage() {
     // Spawning dialogs inside a lambda can cause system freezes on linux so we have to do it this way ¯\_(ツ)_/¯
 
-    auto msg = "Feather is in 'custom node connection mode' but could not "
+    auto msg = "WOWllet is in 'custom node connection mode' but could not "
                "find an eligible node to connect to. Please go to Settings->Node "
                "and enter a node manually.";
     QMessageBox::warning(this, "Could not connect to a node", msg);
 }
 
 void MainWindow::showWSNodeExhaustedMessage() {
-    auto msg = "Feather is in 'automatic node connection mode' but the "
+    auto msg = "WOWllet is in 'automatic node connection mode' but the "
                "websocket server returned no available nodes. Please go to Settings->Node "
                "and enter a node manually.";
     QMessageBox::warning(this, "Could not connect to a node", msg);
@@ -1305,7 +1305,7 @@ void MainWindow::importTransaction() {
 
     auto result = QMessageBox::warning(this, "Warning", "Using this feature may allow a remote node to associate the transaction with your IP address.\n"
                                           "\n"
-                                          "Connect to a trusted node or run Feather over Tor if network level metadata leakage is included in your threat model.",
+                                          "Connect to a trusted node or run WOWllet over Tor if network level metadata leakage is included in your threat model.",
                                           QMessageBox::Ok | QMessageBox::Cancel);
     if (result == QMessageBox::Ok) {
         auto *dialog = new TxImportDialog(this, m_ctx);
