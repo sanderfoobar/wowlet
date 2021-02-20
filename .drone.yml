@@ -5,7 +5,7 @@ name: linux-release
 
 steps:
   - name: build
-    image: feather:linux
+    image: wowllet:linux
     volumes:
     - name: ccache_linux_release
       path: /root/.ccache
@@ -14,13 +14,13 @@ steps:
     - name: files_linux_release
       path: /files
     commands:
-    - TOR_BIN="/usr/local/tor/bin/tor" make -j11 release-static
+    - TOR_BIN="/usr/local/tor/bin/tor" make -j2 release-static
     - contrib/build-appimage.sh
     environment:
       OPENSSL_ROOT_DIR: /usr/local/openssl/
       CMAKEFLAGS_EXTRA: -DFETCH_DEPS=Off
   - name: deploy
-    image: feather:linux
+    image: wowllet:linux
     volumes:
     - name: ccache_linux_release
       path: /root/.ccache
@@ -34,15 +34,15 @@ steps:
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
     - strip -s build/bin/wowllet
-    - zip -j "$TARGET_DIR/$FN" build/feather.log build/bin/wowllet
-    - echo "[*] written to https://build.wownero.org/files/linux-release/$DRONE_SOURCE_BRANCH/$FN"
+    - zip -j "$TARGET_DIR/$FN" build/wowllet.log build/bin/wowllet
+    - echo "[*] written to https://ci.wownero.com/files/linux-release/$DRONE_SOURCE_BRANCH/$FN"
     - # AppImage
     - export FN="wowllet-`git rev-parse --short HEAD`.AppImage"
     - export TARGET_DIR="/linux-release-appimage/$DRONE_SOURCE_BRANCH"
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
     - mv "wowllet.AppImage" "$TARGET_DIR/$FN"
-    - echo "[*] written to https://build.wownero.org/files/linux-release-appimage/$DRONE_SOURCE_BRANCH/$FN"
+    - echo "[*] written to https://vi.wownero.com/files/linux-release-appimage/$DRONE_SOURCE_BRANCH/$FN"
 
 volumes:
 - name: ccache_linux_release
@@ -53,10 +53,10 @@ volumes:
     path: /var/drone/monero
 - name: files_linux_release
   host:
-    path: /build/feather_files/files-wow/linux-release/
+    path: /build/wowllet_files/linux-release/
 - name: files_linux_appimage
   host:
-    path: /build/feather_files/files-wow/linux-release-appimage/
+    path: /build/wowllet_files/linux-release-appimage/
 
 ---
 kind: pipeline
@@ -64,7 +64,7 @@ type: docker
 name: windows-release
 steps:
   - name: build
-    image: feather:win
+    image: wowllet:win
     volumes:
     - name: ccache_win_release
       path: /root/.ccache
@@ -73,11 +73,11 @@ steps:
     - name: monero
       path: /drone/src/monero
     commands:
-    - TOR_BIN="/usr/local/tor/bin/tor.exe" make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j11
+    - TOR_BIN="/usr/local/tor/bin/tor.exe" make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j2
     environment:
       CMAKEFLAGS_EXTRA: -DFETCH_DEPS=Off
   - name: deploy
-    image: feather:win
+    image: wowllet:win
     volumes:
     - name: files_win_release
       path: /files
@@ -87,14 +87,14 @@ steps:
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
     - zip -j "$TARGET_DIR/$FN" build/x86_64-w64-mingw32/release/bin/wowllet.exe
-    - echo "[*] written to https://build.wownero.org/files-wow/windows-release/$DRONE_SOURCE_BRANCH/$FN"
+    - echo "[*] written to https://ci.wownero.com/files-wow/windows-release/$DRONE_SOURCE_BRANCH/$FN"
 volumes:
 - name: ccache_win_release
   host:
     path: /var/drone/ccache_wow_win_release/
 - name: files_win_release
   host:
-    path: /build/feather_files/files-wow/windows-release/
+    path: /build/wowllet_files/windows-release/
 - name: monero
   host:
     path: /var/drone/monero
@@ -106,7 +106,7 @@ name: mac-release
 
 steps:
   - name: build
-    image: feather:mac
+    image: wowllet:mac
     volumes:
     - name: files_mac_release
       path: /files
@@ -115,7 +115,7 @@ steps:
     - ssh administrator@steve.jobs.xmr.pm "chmod +x build_wow_macos.sh && PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin ~/build_wow_macos.sh $DRONE_COMMIT_SHA"
     - scp -P22 administrator@steve.jobs.xmr.pm:wowllet.zip build/wowllet.zip
   - name: deploy
-    image: feather:mac
+    image: wowllet:mac
     volumes:
     - name: files_mac_release
       path: /files
@@ -125,12 +125,12 @@ steps:
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
     - mv build/wowllet.zip "$TARGET_DIR/$FN"
-    - echo "[*] written to https://build.wownero.org/files-wow/mac-release/$DRONE_SOURCE_BRANCH/$FN"
+    - echo "[*] written to https://ci.wownero.com/mac-release/$DRONE_SOURCE_BRANCH/$FN"
 
 volumes:
 - name: files_mac_release
   host:
-    path: /build/feather-wow_files/files-wow/mac-release/
+    path: /build/wowllet_files/mac-release/
 ---
 kind: signature
 hmac: f16a0379280e2e89987930d635ec6fb938d67732fdaf4ddc488f2a9db64bda2c
