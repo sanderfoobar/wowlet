@@ -301,29 +301,6 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabExchange">
-       <attribute name="icon">
-        <iconset resource="assets.qrc">
-         <normaloff>:/assets/images/update.png</normaloff>:/assets/images/update.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>Exchange</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_8">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-       </layout>
-      </widget>
       <widget class="QWidget" name="tabXmrRig">
        <attribute name="icon">
         <iconset resource="assets.qrc">
@@ -464,7 +441,6 @@
     <addaction name="actionShow_Home"/>
     <addaction name="actionShow_Coins"/>
     <addaction name="actionShow_calc"/>
-    <addaction name="actionShow_Exchange"/>
     <addaction name="actionShow_XMRig"/>
    </widget>
    <addaction name="menuFile"/>
@@ -701,11 +677,6 @@
   <action name="actionImport_transaction">
    <property name="text">
     <string>Import transaction</string>
-   </property>
-  </action>
-  <action name="actionShow_Exchange">
-   <property name="text">
-    <string>Show Exchange</string>
    </property>
   </action>
   <action name="actionRescan_spent">

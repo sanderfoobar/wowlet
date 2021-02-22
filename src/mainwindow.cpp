@@ -393,9 +393,6 @@ void MainWindow::initMenu() {
     m_tabShowHideMapper["Calc"] = new ToggleTab(ui->tabCalc, "Calc", "Calc", ui->actionShow_calc, Config::showTabCalc);
     m_tabShowHideSignalMapper->setMapping(ui->actionShow_calc, "Calc");
 
-    ui->actionShow_Exchange->setVisible(false);
-    ui->tabWidget->setTabVisible(Tabs::EXCHANGES, false);
-
 #if defined(HAS_XMRIG)
     connect(ui->actionShow_XMRig, &QAction::triggered, m_tabShowHideSignalMapper, QOverload<>::of(&QSignalMapper::map));
     m_tabShowHideMapper["Mining"] = new ToggleTab(ui->tabXmrRig, "Mining", "Mining", ui->actionShow_XMRig, Config::showTabXMRig);
