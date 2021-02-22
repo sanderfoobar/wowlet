@@ -132,7 +132,7 @@
           </widget>
           <widget class="QWidget" name="tab">
            <attribute name="title">
-            <string>CCS</string>
+            <string>WFS</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_6">
             <property name="leftMargin">
