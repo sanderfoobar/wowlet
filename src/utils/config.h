@@ -40,7 +40,6 @@ public:
         useOnionNodes,
         showTabHome,
         showTabCoins,
-        showTabExchange,
         showTabCalc,
         showTabXMRig,
         geometry,

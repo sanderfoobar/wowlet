@@ -77,7 +77,6 @@ public:
         RECEIVE,
         COINS,
         CALC,
-        EXCHANGES,
         XMRIG
     };
 
