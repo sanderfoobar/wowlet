@@ -76,7 +76,7 @@ QVariant CCSModel::headerData(int section, Qt::Orientation orientation, int role
     {
         switch(section) {
             case Title:
-                return QString("Community Crowdfunding Proposal");
+                return QString("Wownero Funding System");
             case Author:
                 return QString("Author");
             case Progress:
