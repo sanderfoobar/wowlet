@@ -41,7 +41,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     }
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("wowllet");
+    parser.setApplicationDescription("wowlet");
     parser.addHelpOption();
     parser.addVersionOption();
 
@@ -96,7 +96,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 
     if(cliMode) {
         QCoreApplication cli_app(argc, argv);
-        QCoreApplication::setApplicationName("wowllet");
+        QCoreApplication::setApplicationName("wowlet");
         QCoreApplication::setOrganizationDomain("wownero.org");
         QCoreApplication::setOrganizationName("wownero.org");
 
@@ -129,7 +129,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 
     QApplication app(argc, argv);
 
-    QApplication::setApplicationName("wowllet");
+    QApplication::setApplicationName("wowlet");
     QApplication::setOrganizationDomain("wownero.org");
     QApplication::setOrganizationName("wownero.org");
 
@@ -138,7 +138,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     if(!quiet) {
         QMap<QString, QString> info;
         info["Qt"] = QT_VERSION_STR;
-        info["WOWllet"] = FEATHER_VERSION;
+        info["WOWlet"] = FEATHER_VERSION;
         if (stagenet) info["Mode"] = "Stagenet";
         else if (testnet) info["Mode"] = "Testnet";
         else info["Mode"] = "Mainnet";

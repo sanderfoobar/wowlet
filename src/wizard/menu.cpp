@@ -14,7 +14,7 @@ MenuPage::MenuPage(AppContext *ctx, WalletKeysFilesModel *wallets, QWidget *pare
         , m_walletKeysFilesModel(wallets)
 {
     ui->setupUi(this);
-    this->setTitle("Welcome to WOWllet");
+    this->setTitle("Welcome to WOWlet");
     this->setButtonText(QWizard::FinishButton, "Open recent wallet");
 }
 

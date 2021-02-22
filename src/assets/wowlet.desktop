@@ -1,14 +1,14 @@
 [Desktop Entry]
 Comment=Lightweight Wownero Wallet
-Exec=wowllet
+Exec=wowlet
 GenericName[en_US]=Wownero Wallet
 GenericName=Wownero Wallet
-Icon=wowllet
-Name[en_US]=WOWllet
-Name=WOWllet
+Icon=wowlet
+Name[en_US]=WOWlet
+Name=WOWlet
 Categories=Finance;Network;
 StartupNotify=false
-StartupWMClass=feather
+StartupWMClass=wowlet
 Terminal=false
 Type=Application
 MimeType=x-scheme-handler/wownero;

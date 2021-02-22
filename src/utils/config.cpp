@@ -113,7 +113,7 @@ Config::Config(QObject* parent)
         QString appImagePath = qgetenv("APPIMAGE");
         QFileInfo appImageDir(appImagePath);
 
-        QDir portablePath(appImageDir.absoluteDir().path() + "/.wowllet");
+        QDir portablePath(appImageDir.absoluteDir().path() + "/.wowlet");
         if (portablePath.mkpath(".")) {
             configPath = portablePath.path();
         }
@@ -122,7 +122,7 @@ Config::Config(QObject* parent)
         }
     }
 
-    configPath += "/.config/wowllet/settings.json";
+    configPath += "/.config/wowlet/settings.json";
 
     init(QDir::toNativeSeparators(configPath));
 }

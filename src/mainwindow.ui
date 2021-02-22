@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>WOWllet</string>
+   <string>WOWlet</string>
   </property>
   <property name="windowIcon">
    <iconset resource="assets.qrc">
@@ -530,7 +530,7 @@
   </action>
   <action name="actionDonate_to_Feather">
    <property name="text">
-    <string>Donate to WOWllet</string>
+    <string>Donate to WOWlet</string>
    </property>
   </action>
   <action name="actionExport_CSV">

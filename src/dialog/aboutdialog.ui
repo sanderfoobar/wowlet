@@ -27,7 +27,7 @@
      </property>
      <widget class="QWidget" name="Feather">
       <attribute name="title">
-       <string>WOWllet</string>
+       <string>WOWlet</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>

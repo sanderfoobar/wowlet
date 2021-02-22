@@ -45,11 +45,11 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
             QString appImagePath = qgetenv("APPIMAGE");
             if (appImagePath.isEmpty()) {
                 qDebug() << "Not an appimage, using currentPath()";
-                return QDir::currentPath() + "/.wowllet";
+                return QDir::currentPath() + "/.wowlet";
             }
 
             QFileInfo appImageDir(appImagePath);
-            return appImageDir.absoluteDir().path() + "/.wowllet";
+            return appImageDir.absoluteDir().path() + "/.wowlet";
         }();
 
 
@@ -81,7 +81,7 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     if (!QDir().mkpath(defaultWalletDir))
         qCritical() << "Unable to create dir: " << defaultWalletDir;
 
-    this->configDirectory = QString("%1/.config/wowllet/").arg(this->configRoot);
+    this->configDirectory = QString("%1/.config/wowlet/").arg(this->configRoot);
 #if defined(Q_OS_UNIX)
     if(!this->configDirectory.endsWith('/'))
         this->configDirectory = QString("%1/").arg(this->configDirectory);
@@ -310,7 +310,7 @@ void AppContext::onWalletOpened(Wallet *wallet) {
         if(errMsg == QString("basic_string::_M_replace_aux") || errMsg == QString("std::bad_alloc")) {
             qCritical() << errMsg;
             this->walletManager->clearWalletCache(this->walletPath);
-            errMsg = QString("%1\n\nAttempted to clean wallet cache. Please restart WOWllet.").arg(errMsg);
+            errMsg = QString("%1\n\nAttempted to clean wallet cache. Please restart WOWlet.").arg(errMsg);
             this->closeWallet(false);
             emit walletOpenedError(errMsg);
         } else if(errMsg.contains("wallet cannot be opened as")) {
@@ -361,7 +361,7 @@ void AppContext::onWalletOpened(Wallet *wallet) {
 
 void AppContext::setWindowTitle(bool mining) {
     QFileInfo fileInfo(this->walletPath);
-    auto title = QString("WOWllet - [%1]").arg(fileInfo.fileName());
+    auto title = QString("WOWlet - [%1]").arg(fileInfo.fileName());
     if(this->walletViewOnly)
         title += " [view-only]";
     if(mining)
