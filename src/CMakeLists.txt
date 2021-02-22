@@ -70,29 +70,29 @@ if(APPLE)
     list(APPEND RESOURCES ${ICON})
 endif()
 
-add_executable(wowllet ${EXECUTABLE_FLAG} main.cpp
+add_executable(wowlet ${EXECUTABLE_FLAG} main.cpp
         ${SOURCE_FILES}
         ${RESOURCES}
         ${ASSETS_TOR}
 )
 
 # mac os bundle
-set_target_properties(wowllet PROPERTIES
+set_target_properties(wowlet PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/utils/Info.plist"
         LINK_FLAGS_RELEASE -s
 )
 
-set_property(TARGET wowllet PROPERTY RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set_property(TARGET wowlet PROPERTY RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-target_include_directories(wowllet PUBLIC ${OPENGL_INCLUDE_DIR})
-target_include_directories(wowllet PUBLIC ${Qt5Gui_PRIVATE_INCLUDE_DIRS})
+target_include_directories(wowlet PUBLIC ${OPENGL_INCLUDE_DIR})
+target_include_directories(wowlet PUBLIC ${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 
 file(GLOB_RECURSE SRC_SOURCES *.cpp)
 file(GLOB_RECURSE SRC_HEADERS *.h)
 
-target_include_directories(wowllet PUBLIC
+target_include_directories(wowlet PUBLIC
         ${CMAKE_BINARY_DIR}/src/feather_autogen/include
         ${CMAKE_SOURCE_DIR}/monero/include
         ${CMAKE_SOURCE_DIR}/monero/src
@@ -119,38 +119,38 @@ target_include_directories(wowllet PUBLIC
         )
 
 if(DONATE_BEG)
-    target_compile_definitions(wowllet PRIVATE DONATE_BEG=1)
+    target_compile_definitions(wowlet PRIVATE DONATE_BEG=1)
 endif()
 
 if(TOR_BIN)
-    target_compile_definitions(wowllet PRIVATE HAS_TOR_BIN=1)
+    target_compile_definitions(wowlet PRIVATE HAS_TOR_BIN=1)
 endif()
 
 if(XMRIG)
-    target_compile_definitions(wowllet PRIVATE HAS_XMRIG=1)
+    target_compile_definitions(wowlet PRIVATE HAS_XMRIG=1)
 endif()
 
 if(HAVE_SYS_PRCTL_H)
-    target_compile_definitions(wowllet PRIVATE HAVE_SYS_PRCTL_H=1)
+    target_compile_definitions(wowlet PRIVATE HAVE_SYS_PRCTL_H=1)
 endif()
 
 if(STATIC)
-    target_compile_definitions(wowllet PRIVATE STATIC=1)
+    target_compile_definitions(wowlet PRIVATE STATIC=1)
 endif()
 
 if(STATIC)
-    target_compile_definitions(wowllet PRIVATE STATIC=1)
+    target_compile_definitions(wowlet PRIVATE STATIC=1)
 endif()
 
 if("$ENV{DRONE}" STREQUAL "true")
-    target_compile_definitions(wowllet PRIVATE DRONE=1)
+    target_compile_definitions(wowlet PRIVATE DRONE=1)
 endif()
 
 if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(wowllet PRIVATE QT_NO_DEBUG=1)
+    target_compile_definitions(wowlet PRIVATE QT_NO_DEBUG=1)
 endif()
 
-target_compile_definitions(wowllet
+target_compile_definitions(wowlet
         PUBLIC
         ${Qt5Core_DEFINITIONS}
         ${Qt5Widgets_DEFINITIONS}
@@ -166,12 +166,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 if(UNIX AND NOT APPLE)
     # https://stackoverflow.com/questions/57766620/cmake-add-library-doesnt-initialize-static-global-variable
     # so that contrib/monero-seed/src/gf_elem.cpp properly initializes. A better solution is welcome.
-    target_link_libraries(wowllet -Wl,--whole-archive monero-seed::monero-seed -Wl,--no-whole-archive)
+    target_link_libraries(wowlet -Wl,--whole-archive monero-seed::monero-seed -Wl,--no-whole-archive)
 else()
-    target_link_libraries(wowllet monero-seed::monero-seed)
+    target_link_libraries(wowlet monero-seed::monero-seed)
 endif()
 
-target_link_libraries(wowllet
+target_link_libraries(wowlet
         wallet_merged
         ${LMDB_LIBRARY}
         epee
@@ -198,38 +198,38 @@ target_link_libraries(wowllet
         )
 
 if(APPLE)
-    target_link_libraries(wowllet
+    target_link_libraries(wowlet
             KDMacTouchBar
             )
-    target_include_directories(wowllet
+    target_include_directories(wowlet
             PUBLIC ../contrib/KDMacTouchBar)
 endif()
 
 if(NOT APPLE)
-    target_link_libraries(wowllet
+    target_link_libraries(wowlet
             Qt5::QSvgIconPlugin
             Qt5::QSvgPlugin
     )
 endif()
 
 if(STATIC)
-    target_link_libraries(wowllet
+    target_link_libraries(wowlet
             Qt5::QSvgIconPlugin
             Qt5::QSvgPlugin)
     if(UNIX AND NOT APPLE)
-        target_link_libraries(wowllet
+        target_link_libraries(wowlet
             Qt5::QXcbIntegrationPlugin)
     endif()
 endif()
 
 if(X11_FOUND)
-    target_link_libraries(wowllet ${X11_LIBRARIES})
+    target_link_libraries(wowlet ${X11_LIBRARIES})
 endif()
 
 if(APPLE)
     include(Deploy)
 endif()
 
-install(TARGETS wowllet
+install(TARGETS wowlet
         DESTINATION ${CMAKE_INSTALL_PREFIX}
         )

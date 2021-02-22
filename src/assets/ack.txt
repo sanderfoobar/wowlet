@@ -1,8 +1,8 @@
-WOWllet is a fork of Feather (https://git.featherwallet.org/feather/feather).
+WOWlet is a fork of Feather (https://git.featherwallet.org/feather/feather).
 
 The wallet UI is heavily inspired by Electrum. We would like to recognize Thomas Voegtlin for his pioneering work on Bitcoin.
 
-WOWllet uses monero-seed written by Tevador, for 14 word mnemonic seeds.
+WOWlet uses monero-seed written by Tevador, for 14 word mnemonic seeds.
 
 Wizard banner art was adapted from a paper wallet design by the themonera (themonera.art).
 

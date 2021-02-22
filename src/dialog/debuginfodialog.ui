@@ -19,7 +19,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>WOWllet version:</string>
+        <string>WOWlet version:</string>
        </property>
       </widget>
      </item>

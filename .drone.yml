@@ -5,7 +5,7 @@ name: linux-release
 
 steps:
   - name: build
-    image: wowllet:linux
+    image: wowlet:linux
     volumes:
     - name: ccache_linux_release
       path: /root/.ccache
@@ -20,7 +20,7 @@ steps:
       OPENSSL_ROOT_DIR: /usr/local/openssl/
       CMAKEFLAGS_EXTRA: -DFETCH_DEPS=Off
   - name: deploy
-    image: wowllet:linux
+    image: wowlet:linux
     volumes:
     - name: ccache_linux_release
       path: /root/.ccache
@@ -29,19 +29,19 @@ steps:
     - name: files_linux_appimage
       path: /linux-release-appimage
     commands:
-    - export FN="wowllet-`echo $DRONE_COMMIT_AFTER | cut -c 1-7`.zip"
+    - export FN="wowlet-`echo $DRONE_COMMIT_AFTER | cut -c 1-7`.zip"
     - export TARGET_DIR="/linux-release/$DRONE_SOURCE_BRANCH"
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
-    - strip -s build/bin/wowllet
-    - zip -j "$TARGET_DIR/$FN" build/wowllet.log build/bin/wowllet
+    - strip -s build/bin/wowlet
+    - zip -j "$TARGET_DIR/$FN" build/wowlet.log build/bin/wowlet
     - echo "[*] written to https://ci.wownero.com/files/linux-release/$DRONE_SOURCE_BRANCH/$FN"
     - # AppImage
-    - export FN="wowllet-`git rev-parse --short HEAD`.AppImage"
+    - export FN="wowlet-`git rev-parse --short HEAD`.AppImage"
     - export TARGET_DIR="/linux-release-appimage/$DRONE_SOURCE_BRANCH"
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
-    - mv "wowllet.AppImage" "$TARGET_DIR/$FN"
+    - mv "wowlet.AppImage" "$TARGET_DIR/$FN"
     - echo "[*] written to https://vi.wownero.com/files/linux-release-appimage/$DRONE_SOURCE_BRANCH/$FN"
 
 volumes:
@@ -64,7 +64,7 @@ type: docker
 name: windows-release
 steps:
   - name: build
-    image: wowllet:win
+    image: wowlet:win
     volumes:
     - name: ccache_win_release
       path: /root/.ccache
@@ -77,16 +77,16 @@ steps:
     environment:
       CMAKEFLAGS_EXTRA: -DFETCH_DEPS=Off
   - name: deploy
-    image: wowllet:win
+    image: wowlet:win
     volumes:
     - name: files_win_release
       path: /files
     commands:
-    - export FN="wowllet-`echo $DRONE_COMMIT_AFTER | cut -c 1-7`.zip"
+    - export FN="wowlet-`echo $DRONE_COMMIT_AFTER | cut -c 1-7`.zip"
     - export TARGET_DIR="/files/$DRONE_SOURCE_BRANCH"
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
-    - zip -j "$TARGET_DIR/$FN" build/x86_64-w64-mingw32/release/bin/wowllet.exe
+    - zip -j "$TARGET_DIR/$FN" build/x86_64-w64-mingw32/release/bin/wowlet.exe
     - echo "[*] written to https://ci.wownero.com/files-wow/windows-release/$DRONE_SOURCE_BRANCH/$FN"
 volumes:
 - name: ccache_win_release
@@ -106,25 +106,25 @@ name: mac-release
 
 steps:
   - name: build
-    image: wowllet:mac
+    image: wowlet:mac
     volumes:
     - name: files_mac_release
       path: /files
     commands:
     - mkdir -p build
     - ssh administrator@steve.jobs.xmr.pm "chmod +x build_wow_macos.sh && PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin ~/build_wow_macos.sh $DRONE_COMMIT_SHA"
-    - scp -P22 administrator@steve.jobs.xmr.pm:wowllet.zip build/wowllet.zip
+    - scp -P22 administrator@steve.jobs.xmr.pm:wowlet.zip build/wowlet.zip
   - name: deploy
-    image: wowllet:mac
+    image: wowlet:mac
     volumes:
     - name: files_mac_release
       path: /files
     commands:
-    - export FN="wowllet-`echo $DRONE_COMMIT_AFTER | cut -c 1-7`.zip"
+    - export FN="wowlet-`echo $DRONE_COMMIT_AFTER | cut -c 1-7`.zip"
     - export TARGET_DIR="/files/$DRONE_SOURCE_BRANCH"
     - mkdir -p "$TARGET_DIR"
     - echo "writing to $TARGET_DIR/$FN"
-    - mv build/wowllet.zip "$TARGET_DIR/$FN"
+    - mv build/wowlet.zip "$TARGET_DIR/$FN"
     - echo "[*] written to https://ci.wownero.com/mac-release/$DRONE_SOURCE_BRANCH/$FN"
 
 volumes:

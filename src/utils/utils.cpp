@@ -261,9 +261,9 @@ QString Utils::getUnixAccountName() {
 QString Utils::xdgDesktopEntry(){
     return QString(
         "[Desktop Entry]\n"
-        "Name=WOWllet\n"
-        "GenericName=WOWllet\n"
-        "X-GNOME-FullName=WOWllet\n"
+        "Name=WOWlet\n"
+        "GenericName=WOWlet\n"
+        "X-GNOME-FullName=WOWlet\n"
         "Comment=a free Wownero desktop wallet\n"
         "Keywords=Wownero;\n"
         "Exec=\"%1\" %u\n"
@@ -308,7 +308,7 @@ bool Utils::xdgDesktopEntryRegister() {
     writeLocations += QString("- %1\n").arg(xdgPaths.pathApp);
     writeLocations += QString("- %1\n").arg(xdgPaths.pathIcon);
 
-    QPixmap appIcon(":assets/images/wowllet.png");
+    QPixmap appIcon(":assets/images/wowlet.png");
     if (!Utils::fileExists(xdgPaths.pathIcon))
         Utils::pixmapWrite(xdgPaths.pathIcon, appIcon);
     Utils::xdgDesktopEntryWrite(xdgPaths.pathApp);
