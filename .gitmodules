@@ -4,4 +4,4 @@
 [submodule "monero"]
 	path = monero
 	url = https://git.wownero.com/wownero/wownero
-	branch = feather
+	branch = wowlet
