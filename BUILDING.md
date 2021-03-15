@@ -18,8 +18,8 @@ so that the resulting Feather binary is static. For more information, check the 
 #### 1. Clone
 
 ```bash
-git clone --branch master --recursive https://git.wownero.com/feather/feather.git
-cd feather
+git clone --branch master --recursive https://git.wownero.com/wowlet/wowlet.git
+cd wowlet
 ```
 
 Replace `master` with the desired version tag (e.g. `beta-4`) to build the release binary.
@@ -27,7 +27,7 @@ Replace `master` with the desired version tag (e.g. `beta-4`) to build the relea
 #### 2. Base image
 
 ```bash
-docker build --tag feather:linux --build-arg THREADS=4 .
+docker build --tag wowlet:linux --build-arg THREADS=4 .
 ```
 
 Building the base image takes a while. You only need to build the base image once.
@@ -37,19 +37,19 @@ Building the base image takes a while. You only need to build the base image onc
 ##### Standalone binary
 
 ```bash
-docker run --rm -it -v $PWD:/feather -w /feather feather:linux sh -c 'make release-static -j4'
+docker run --rm -it -v $PWD:/wowlet -w /wowlet wowlet:linux sh -c 'make release-static -j4'
 ```
 
 If you're re-running a build make sure to `rm -rf build/` first.
 
-The resulting binary can be found in `build/bin/feather`.
+The resulting binary can be found in `build/bin/wowlet`.
 
 ##### AppImage
 
 First create the standalone binary using the Docker command in the previous step.
 
 ```bash
-docker run --rm -it -v $PWD:/feather -w /feather feather:linux contrib/build-appimage.sh
+docker run --rm -it -v $PWD:/wowlet -w /wowlet wowlet:linux contrib/build-appimage.sh
 ```
 
 ### Windows (reproducible)
@@ -57,8 +57,8 @@ docker run --rm -it -v $PWD:/feather -w /feather feather:linux contrib/build-app
 #### 1. Clone
 
 ```bash
-git clone --branch master --recursive https://git.wownero.com/feather/feather.git
-cd feather
+git clone --branch master --recursive https://git.wownero.com/wowlet/wowlet.git
+cd wowlet
 ```
 
 Replace `master` with the desired version tag (e.g. `beta-4`) to build the release binary.
@@ -67,7 +67,7 @@ Replace `master` with the desired version tag (e.g. `beta-4`) to build the relea
 
 
 ```bash
-docker build -f Dockerfile.windows --tag feather:win --build-arg THREADS=4 .
+docker build -f Dockerfile.windows --tag wowlet:win --build-arg THREADS=4 .
 ```
 
 Building the base image takes a while. You only need to build the base image once.
@@ -75,12 +75,12 @@ Building the base image takes a while. You only need to build the base image onc
 #### 3. Build
 
 ```bash
-docker run --rm -it -v $PWD:/feather -w /feather feather:win sh -c 'make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j4'
+docker run --rm -it -v $PWD:/wowlet -w /wowlet wowlet:win sh -c 'make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j4'
 ```
 
 If you're re-running a build make sure to `rm -rf build/` first.
 
-The resulting binary can be found in `build/x86_64-w64-mingw32/release/bin/feather.exe`.
+The resulting binary can be found in `build/x86_64-w64-mingw32/release/bin/wowlet.exe`.
 
 ## macOS
 
@@ -94,7 +94,7 @@ HOMEBREW_OPTFLAGS="-march=core2" HOMEBREW_OPTIMIZATION_LEVEL="O0" \
 Clone the repository.
 
 ```bash
-git clone --recursive https://git.wownero.com/feather/feather.git
+git clone --recursive https://git.wownero.com/wowlet/wowlet.git
 ``` 
 
 Get the latest LTS from here: https://www.qt.io/offline-installers and install.
@@ -105,4 +105,4 @@ Build Feather.
 CMAKE_PREFIX_PATH=~/Qt5.15.1/5.15.1/clang_64 make mac-release
 ```
 
-The resulting Mac OS application can be found `build/bin/feather.app` and will **not** have Tor embedded.
+The resulting Mac OS application can be found `build/bin/wowlet.app` and will **not** have Tor embedded.
