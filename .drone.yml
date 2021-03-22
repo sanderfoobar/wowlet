@@ -5,7 +5,7 @@ name: linux-build
 
 steps:
   - name: linux-build
-    image: wowlet-linux:latest
+    image: wowlet/wowlet-linux:v0.1
     commands:
     - make release-static -j2
 
@@ -14,8 +14,8 @@ kind: pipeline
 type: docker
 name: windows-build
 steps:
-  - name: build
-    image: wowlet-windows:latest
+  - name: windows-build
+    image: wowlet/wowlet-win:v0.1
     commands:
     - make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j2
 
