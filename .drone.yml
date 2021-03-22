@@ -38,7 +38,7 @@ steps:
     commands:
     - make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j3
     - export WOW="wowlet-`echo $DRONE_COMMIT_AFTER | cut -c 1-10`.exe"
-    - cp build/x86_64-w64-mingw32/release/bin/wowlet.exe /tmp/wowlet_windows/$WOW.exe
+    - cp build/x86_64-w64-mingw32/release/bin/wowlet.exe /tmp/wowlet_windows/$WOW
 volumes:
 - name: cache
   host:
