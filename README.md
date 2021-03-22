@@ -1,3 +1,5 @@
+[![Build Status](https://ci.wownero.com/api/badges/wowlet/wowlet/status.svg)](https://ci.wownero.com/wowlet/wowlet)
+
 # WOWlet- a free Wownero desktop wallet 
 
 
