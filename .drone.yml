@@ -7,6 +7,7 @@ steps:
   - name: linux-build
     image: wowlet/wowlet-linux:v0.1
     commands:
+    - git submodule update --init --recursive
     - make release-static -j2
 
 ---
