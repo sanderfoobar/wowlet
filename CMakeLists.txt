@@ -28,6 +28,15 @@ if(DEBUG)
     set(CMAKE_VERBOSE_MAKEFILE ON)
 endif()
 
+# Update and init submodules by default
+if(NOT MANUAL_SUBMODULES)
+  find_package(Git)
+  if(GIT_FOUND)
+    message(STATUS "Initializing submodules")
+    execute_process(COMMAND git "submodule" "update" "--init" "--recursive")
+  endif()
+endif()
+
 set(WOWNERO_HEAD "f611d5c9e32bc62f1735f6571b0bdb95cc020531")
 set(BUILD_GUI_DEPS ON)
 set(ARCH "x86-64")
