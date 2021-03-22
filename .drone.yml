@@ -6,9 +6,22 @@ name: linux-build
 steps:
   - name: linux-build
     image: wowlet/wowlet-linux:v0.1
+    volumes:
+    - name: cache
+      path: /drone/src/monero
+    - name: files
+      path: /tmp/wowlet_linux
     commands:
-    - git submodule update --init --recursive
-    - make release-static -j2
+    - make release-static -j3
+    - export WOW="wowlet-`echo $DRONE_COMMIT_AFTER | cut -c 1-10`"
+    - cp build/bin/wowlet /tmp/wowlet_linux/$WOW
+volumes:
+- name: cache
+  host:
+    path: /home/wow/wowlet_wownero
+- name: files
+  host:
+    path: /home/wow/wowlet_linux
 
 ---
 kind: pipeline
@@ -17,7 +30,21 @@ name: windows-build
 steps:
   - name: windows-build
     image: wowlet/wowlet-win:v0.1
+    volumes:
+    - name: cache
+      path: /drone/src/monero
+    - name: files
+      path: /tmp/wowlet_windows
     commands:
-    - make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j2
+    - make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j3
+    - export WOW="wowlet-`echo $DRONE_COMMIT_AFTER | cut -c 1-10`.exe"
+    - cp build/x86_64-w64-mingw32/release/bin/wowlet.exe /tmp/wowlet_windows/$WOW.exe
+volumes:
+- name: cache
+  host:
+    path: /home/wow/wowlet_wownero
+- name: files
+  host:
+    path: /home/wow/wowlet_windows
 
 ...
