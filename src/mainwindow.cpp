@@ -246,7 +246,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
 
     if(config()->get(Config::warnOnAlpha).toBool()) {
         QString warning = "WOWlet is currently in beta.\n\nPlease report any bugs "
-                          "you encounter on our Git repository, IRC freenode #wownero or on /r/Wowonero.";
+                          "you encounter on our Git repository, IRC freenode #wownero or on /r/Wownero.";
         QMessageBox::warning(this, "Beta Warning", warning);
         config()->set(Config::warnOnAlpha, false);
     }
