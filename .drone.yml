@@ -26,9 +26,9 @@ volumes:
 ---
 kind: pipeline
 type: docker
-name: windows-build
+name: windows-deploy
 steps:
-  - name: windows-build
+  - name: windows-deploy
     image: wowlet/wowlet-win:v0.1
     volumes:
     - name: cache
@@ -46,5 +46,9 @@ volumes:
 - name: files
   host:
     path: /home/wow/wowlet_windows
-
+trigger:
+  branch:
+  - master
+  event:
+  - tag
 ...
