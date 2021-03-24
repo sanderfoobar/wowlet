@@ -1,0 +1,12 @@
+Package: wowlet
+Version: 0.1.0.0
+Section: net
+Priority: optional
+Architecture: amd64
+Essential: no
+Installed-Size: 76800
+Maintainer: wowario <wowario@protonmail.com>
+Description: a free Wownero desktop wallet
+Tag: office::finance
+Homepage: https://git.wownero.com/wowlet/wowlet
+Depends: libxcb-icccm4, libxcb-image0, libxcb-keysyms1, libxcb-render-util0, libxcb-xkb1, libxkbcommon-x11-0
