@@ -1,5 +1,45 @@
 <RCC>
   <qresource>
+    <file>wow/hmovetoolbar.svg</file>
+    <file>wow/vmovetoolbar.svg</file>
+    <file>wow/hsepartoolbar.svg</file>
+    <file>wow/vsepartoolbars.svg</file>
+    <file>wow/stylesheet-branch-end.svg</file>
+    <file>wow/stylesheet-branch-end-closed.svg</file>
+    <file>wow/stylesheet-branch-end-open.svg</file>
+    <file>wow/stylesheet-vline.svg</file>
+    <file>wow/stylesheet-branch-more.svg</file>
+    <file>wow/branch_closed.svg</file>
+    <file>wow/branch_closed-on.svg</file>
+    <file>wow/branch_open.svg</file>
+    <file>wow/branch_open-on.svg</file>
+    <file>wow/down_arrow.svg</file>
+    <file>wow/down_arrow_disabled.svg</file>
+    <file>wow/down_arrow-hover.svg</file>
+    <file>wow/left_arrow.svg</file>
+    <file>wow/left_arrow_disabled.svg</file>
+    <file>wow/right_arrow.svg</file>
+    <file>wow/right_arrow_disabled.svg</file>
+    <file>wow/up_arrow.svg</file>
+    <file>wow/up_arrow_disabled.svg</file>
+    <file>wow/up_arrow-hover.svg</file>
+    <file>wow/sizegrip.svg</file>
+    <file>wow/transparent.svg</file>
+    <file>wow/close.svg</file>
+    <file>wow/close-hover.svg</file>
+    <file>wow/close-pressed.svg</file>
+    <file>wow/undock.svg</file>
+    <file>wow/undock-hover.svg</file>
+    <file>wow/checkbox_checked.svg</file>
+    <file>wow/checkbox_checked_disabled.svg</file>
+    <file>wow/checkbox_indeterminate.svg</file>
+    <file>wow/checkbox_indeterminate_disabled.svg</file>
+    <file>wow/checkbox_unchecked.svg</file>
+    <file>wow/checkbox_unchecked_disabled.svg</file>
+    <file>wow/radio_checked.svg</file>
+    <file>wow/radio_checked_disabled.svg</file>
+    <file>wow/radio_unchecked.svg</file>
+    <file>wow/radio_unchecked_disabled.svg</file>
     <file>light/hmovetoolbar.svg</file>
     <file>light/vmovetoolbar.svg</file>
     <file>light/hsepartoolbar.svg</file>
@@ -83,6 +123,7 @@
     <file>dark/radio_checked_disabled.svg</file>
     <file>dark/radio_unchecked.svg</file>
     <file>dark/radio_unchecked_disabled.svg</file>
+    <file>wow.qss</file>
     <file>light.qss</file>
     <file>dark.qss</file>
   </qresource>

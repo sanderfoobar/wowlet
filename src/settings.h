@@ -40,7 +40,7 @@ public slots:
     void comboBox_redditFrontendChanged(int pos);
 
 private:
-    QStringList m_skins{"Native", "QDarkStyle", "Breeze/Dark", "Breeze/Light"};
+    QStringList m_skins{"Native", "WOW", "QDarkStyle", "Breeze/Dark", "Breeze/Light"};
 
 private:
     void setupSkinCombobox();

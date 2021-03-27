@@ -1113,6 +1113,10 @@ AppContext *MainWindow::getContext(){
 }
 
 void MainWindow::loadSkins() {
+    QString breeze_wow = this->loadStylesheet(":/wow.qss");
+    if (!breeze_wow.isEmpty())
+        m_skins.insert("WOW", breeze_wow);
+    
     QString qdarkstyle = this->loadStylesheet(":qdarkstyle/style.qss");
     if (!qdarkstyle.isEmpty())
         m_skins.insert("QDarkStyle", qdarkstyle);
