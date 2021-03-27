@@ -77,7 +77,7 @@ void WSClient::onError(QAbstractSocket::SocketError error) {
 
 void WSClient::onbinaryMessageReceived(const QByteArray &message) {
 #ifdef QT_DEBUG
-    qDebug() << "WebSocket received:" << message;
+    qDebug() << "WebSocket (client) received:" << message;
 #endif
     if (!Utils::validateJSON(message)) {
         qCritical() << "Could not interpret WebSocket message as JSON";

@@ -138,7 +138,7 @@ public slots:
     // libwalletqt
     void onBalanceUpdated(quint64 balance, quint64 spendable);
     void onSynchronized();
-    void onWalletOpened();
+    void onWalletOpened(Wallet *wallet);
     void onWalletClosed(WalletWizard::Page page = WalletWizard::Page_Menu);
     void onConnectionStatusChanged(int status);
     void onCreateTransactionError(const QString &message);

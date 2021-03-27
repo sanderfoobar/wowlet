@@ -80,16 +80,6 @@
      </property>
     </spacer>
    </item>
-   <item>
-    <widget class="QLabel" name="label_2">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>by dsc &amp; tobtoht</string>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <resources/>

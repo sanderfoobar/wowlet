@@ -19,6 +19,8 @@ public:
     int networkType() const;
     QString address() const;
 
+    QJsonObject toJsonObject() const;
+
 private:
     QString m_fileName;
     qint64 m_modified;
@@ -51,6 +53,10 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QStringList walletDirectories;
+
+    QList<WalletKeysFiles> listWallets() {
+        return m_walletKeyFiles;
+    }
 
 private:
     void updateDirectories();

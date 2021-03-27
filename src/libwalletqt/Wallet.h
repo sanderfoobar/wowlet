@@ -450,6 +450,9 @@ public:
     Q_INVOKABLE quint64 getBytesReceived() const;
     Q_INVOKABLE quint64 getBytesSent() const;
 
+    // return as json object
+    QJsonObject toJsonObject();
+
     // TODO: setListenter() when it implemented in API
 signals:
     // emitted on every event happened with wallet

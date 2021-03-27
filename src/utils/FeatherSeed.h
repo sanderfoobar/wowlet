@@ -34,7 +34,7 @@ struct FeatherSeed {
             : lookup(lookup), coin(coin), language(language), mnemonic(mnemonic)
     {
         // Generate a new mnemonic if none was given
-        if (mnemonic.length() == 0) {
+        if (this->mnemonic.length() == 0) {
             this->time = std::time(nullptr);
             monero_seed seed(this->time, coin.toStdString());
 
@@ -49,10 +49,10 @@ struct FeatherSeed {
             this->setRestoreHeight();
         }
 
-        if (mnemonic.length() == 25) {
+        if (this->mnemonic.length() == 25) {
             this->seedType = SeedType::MONERO;
         }
-        else if (mnemonic.length() == 14) {
+        else if (this->mnemonic.length() == 14) {
             this->seedType = SeedType::TEVADOR;
         } else {
             this->errorString = "Mnemonic seed does not match known type";
@@ -61,7 +61,7 @@ struct FeatherSeed {
 
         if (seedType == SeedType::TEVADOR) {
             try {
-                monero_seed seed(mnemonic.join(" ").toStdString(), coin.toStdString());
+                monero_seed seed(this->mnemonic.join(" ").toStdString(), coin.toStdString());
 
                 this->time = seed.date();
                 this->setRestoreHeight();

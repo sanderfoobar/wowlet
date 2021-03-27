@@ -24,6 +24,7 @@ public:
     Q_INVOKABLE bool getRow(int index, std::function<void (AddressBookInfo &)> callback) const;
     Q_INVOKABLE bool addRow(const QString &address, const QString &payment_id, const QString &description);
     Q_INVOKABLE bool deleteRow(int rowId);
+    Q_INVOKABLE bool deleteByAddress(const QString &description);
     Q_INVOKABLE void setDescription(int index, const QString &label);
     quint64 count() const;
     Q_INVOKABLE QString errorString() const;

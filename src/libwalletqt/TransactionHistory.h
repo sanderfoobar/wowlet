@@ -32,6 +32,7 @@ public:
     Q_INVOKABLE void refresh(quint32 accountIndex);
     Q_INVOKABLE void setTxNote(const QString &txid, const QString &note);
     Q_INVOKABLE bool writeCSV(const QString &path);
+    Q_INVOKABLE QJsonArray toJsonArray();
     quint64 count() const;
     QDateTime firstDateTime() const;
     QDateTime lastDateTime() const;
