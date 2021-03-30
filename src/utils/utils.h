@@ -33,8 +33,8 @@ struct xdgDesktopEntryPaths {
 };
 
 const xdgDesktopEntryPaths xdgPaths = {
-    QString("%1/wowlet.desktop").arg(QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation)),
-    QString("%1/.local/share/icons/wownero.png").arg(QDir::homePath()),
+    QString("%1/org.wowlet.wowlet.desktop").arg(QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation)),
+    QString("%1/usr/share/icons/hicolor/64x64/apps/wowlet.png").arg(QDir::homePath()),
     QString("/")
 };
 
