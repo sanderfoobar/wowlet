@@ -9,11 +9,11 @@ mkdir -p "$APPDIR"
 mkdir -p "$APPDIR/usr/share/applications/"
 mkdir -p "$APPDIR/usr/bin"
 
-cp "$PWD/src/assets/wowlet.desktop" "$APPDIR/usr/share/applications/wowlet.desktop"
+cp "$PWD/src/assets/org.wowlet.wowlet.desktop" "$APPDIR/usr/share/applications/org.wowlet.wowlet.desktop"
 cp "$PWD/src/assets/images/appicons/64x64.png" "$APPDIR/wowlet.png"
 cp "$PWD/build/bin/wowlet" "$APPDIR/usr/bin/wowlet"
 
-LD_LIBRARY_PATH=/usr/local/lib /linuxdeployqt/squashfs-root/AppRun wowlet.AppDir/usr/share/applications/wowlet.desktop -bundle-non-qt-libs
+LD_LIBRARY_PATH=/usr/local/lib /linuxdeployqt/squashfs-root/AppRun wowlet.AppDir/usr/share/applications/org.wowlet.wowlet.desktop -bundle-non-qt-libs
 
 find wowlet.AppDir/ -exec touch -h -a -m -t 202101010100.00 {} \;
 
