@@ -17,7 +17,7 @@ cp "/Users/administrator/tor/libevent-2.1.7.dylib" "/Users/administrator/wowlet/
 CMAKE_PREFIX_PATH="~/Qt/5.15.1/clang_64" TOR_BIN="/Users/administrator/tor/tor" make -j3 mac-release
 
 if [[ $? -eq 0 ]]; then
-    echo "[+] Feather built OK"
+    echo "[+] WOWlet built OK"
     cd ~/wowlet/build/bin
     zip -qr ~/wowlet.zip wowlet.app
 else

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_RINGS_H
-#define FEATHER_RINGS_H
+#ifndef WOWLET_RINGS_H
+#define WOWLET_RINGS_H
 
 #include <wallet/api/wallet2_api.h>
 #include <QObject>
@@ -25,4 +25,4 @@ public:
     std::vector<uint64_t> ringMembers() const { return m_ringMembers; }
 };
 
-#endif //FEATHER_RINGS_H
+#endif //WOWLET_RINGS_H

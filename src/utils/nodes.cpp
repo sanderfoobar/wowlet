@@ -12,7 +12,7 @@ Nodes::Nodes(AppContext *ctx, QNetworkAccessManager *networkAccessManager, QObje
         QObject(parent),
         m_ctx(ctx),
         m_networkAccessManager(networkAccessManager),
-        m_connection(FeatherNode()),
+        m_connection(WowletNode()),
         modelWebsocket(new NodeModel(NodeSource::websocket, this)),
         modelCustom(new NodeModel(NodeSource::custom, this)) {
     this->loadConfig();
@@ -41,7 +41,7 @@ void Nodes::loadConfig() {
     // load custom nodes
     auto nodes = obj.value("custom").toArray();
     for (auto value: nodes) {
-        auto customNode = FeatherNode(value.toString());
+        auto customNode = WowletNode(value.toString());
         customNode.custom = true;
 
         if(m_connection == customNode) {
@@ -57,7 +57,7 @@ void Nodes::loadConfig() {
     // load cached websocket nodes
     auto ws = obj.value("ws").toArray();
     for (auto value: ws) {
-        auto wsNode = FeatherNode(value.toString());
+        auto wsNode = WowletNode(value.toString());
         wsNode.custom = false;
         wsNode.online = true;  // assume online
 
@@ -104,7 +104,7 @@ void Nodes::loadConfig() {
                 nodes_list = nodes_json[netKey].toObject()["clearnet"].toArray();
             }
             for (auto node: nodes_list) {
-                auto wsNode = FeatherNode(node.toString());
+                auto wsNode = WowletNode(node.toString());
                 wsNode.custom = false;
                 wsNode.online = true;
                 m_websocketNodes.append(wsNode);
@@ -134,7 +134,7 @@ void Nodes::connectToNode() {
     this->autoConnect(true);
 }
 
-void Nodes::connectToNode(const FeatherNode &node) {
+void Nodes::connectToNode(const WowletNode &node) {
     if (node.address.isEmpty())
         return;
 
@@ -169,7 +169,7 @@ void Nodes::autoConnect(bool forceReconnect) {
 
     if (wsMode && !m_wsNodesReceived && m_websocketNodes.count() == 0) {
         // this situation should rarely occur due to the usage of the websocket node cache on startup.
-        qInfo() << "Feather is in websocket connection mode but was not able to receive any nodes (yet).";
+        qInfo() << "WOWlet is in websocket connection mode but was not able to receive any nodes (yet).";
         return;
     }
 
@@ -200,9 +200,9 @@ void Nodes::autoConnect(bool forceReconnect) {
     this->updateModels();
 }
 
-FeatherNode Nodes::pickEligibleNode() {
+WowletNode Nodes::pickEligibleNode() {
     // Pick a node at random to connect to
-    auto rtn = FeatherNode();
+    auto rtn = WowletNode();
     auto wsMode = (this->source() == NodeSource::websocket);
     auto nodes = wsMode ? m_websocketNodes : m_customNodes;
 
@@ -224,7 +224,7 @@ FeatherNode Nodes::pickEligibleNode() {
     // Pick random eligible node
     int mode_height = this->modeHeight(nodes);
     for (int index : node_indeces) {
-        const FeatherNode &node = nodes.at(index);
+        const WowletNode &node = nodes.at(index);
 
         // This may fail to detect bad nodes if cached nodes are used
         // Todo: wait on websocket before connecting, only use cache if websocket is unavailable
@@ -258,7 +258,7 @@ FeatherNode Nodes::pickEligibleNode() {
     return rtn;
 }
 
-void Nodes::onWSNodesReceived(const QList<QSharedPointer<FeatherNode>> &nodes) {
+void Nodes::onWSNodesReceived(const QList<QSharedPointer<WowletNode>> &nodes) {
     m_websocketNodes.clear();
     m_wsNodesReceived = true;
 
@@ -303,7 +303,7 @@ void Nodes::onNodeSourceChanged(NodeSource nodeSource) {
     this->autoConnect(true);
 }
 
-void Nodes::setCustomNodes(const QList<FeatherNode> &nodes) {
+void Nodes::setCustomNodes(const QList<WowletNode> &nodes) {
     m_customNodes.clear();
     auto key = QString::number(m_ctx->networkType);
     auto obj = m_configJson.value(key).toObject();
@@ -329,7 +329,7 @@ void Nodes::updateModels() {
 }
 
 void Nodes::resetLocalState() {
-    auto resetState = [this](QList<FeatherNode> *model){
+    auto resetState = [this](QList<WowletNode> *model){
         for (auto&& node: *model) {
             node.isConnecting = false;
             node.isActive = false;
@@ -372,11 +372,11 @@ void Nodes::WSNodeExhaustedWarning() {
     m_wsExhaustedWarningEmitted = true;
 }
 
-QList<FeatherNode> Nodes::customNodes() {
+QList<WowletNode> Nodes::customNodes() {
     return m_customNodes;
 }
 
-FeatherNode Nodes::connection() {
+WowletNode Nodes::connection() {
     return m_connection;
 }
 
@@ -384,7 +384,7 @@ NodeSource Nodes::source() {
     return m_source;
 }
 
-int Nodes::modeHeight(const QList<FeatherNode> &nodes) {
+int Nodes::modeHeight(const QList<WowletNode> &nodes) {
     QVector<int> heights;
     for (const auto &node: nodes) {
         heights.push_back(node.height);

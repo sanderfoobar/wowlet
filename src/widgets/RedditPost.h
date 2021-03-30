@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_REDDITPOST_H
-#define FEATHER_REDDITPOST_H
+#ifndef WOWLET_REDDITPOST_H
+#define WOWLET_REDDITPOST_H
 
 #include <QString>
 
@@ -16,4 +16,4 @@ struct RedditPost {
     int comments;
 };
 
-#endif //FEATHER_REDDITPOST_H
+#endif //WOWLET_REDDITPOST_H

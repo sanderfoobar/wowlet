@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_WIZARDNETWORK_H
-#define FEATHER_WIZARDNETWORK_H
+#ifndef WOWLET_WIZARDNETWORK_H
+#define WOWLET_WIZARDNETWORK_H
 
 #include <QLabel>
 #include <QWizardPage>
@@ -30,4 +30,4 @@ private:
     Ui::NetworkPage *ui;
 };
 
-#endif //FEATHER_WIZARDNETWORK_H
+#endif //WOWLET_WIZARDNETWORK_H

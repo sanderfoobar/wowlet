@@ -1,5 +1,5 @@
-#ifndef FEATHER_FEATHERSEED_H
-#define FEATHER_FEATHERSEED_H
+#ifndef WOWLET_WOWLETSEED_H
+#define WOWLET_WOWLETSEED_H
 
 #include "libwalletqt/WalletManager.h"
 #include "libwalletqt/Wallet.h"
@@ -12,7 +12,7 @@ enum SeedType {
     TEVADOR     // 14 word seeds
 };
 
-struct FeatherSeed {
+struct WowletSeed {
     QString coin;
     QString language;
     SeedType seedType;
@@ -27,7 +27,7 @@ struct FeatherSeed {
 
     QString errorString;
 
-    explicit FeatherSeed(RestoreHeightLookup *lookup,
+    explicit WowletSeed(RestoreHeightLookup *lookup,
                           const QString &coin = "monero",
                           const QString &language = "English",
                           const QStringList &mnemonic = {})
@@ -111,4 +111,4 @@ struct FeatherSeed {
     }
 };
 
-#endif //FEATHER_FEATHERSEED_H
+#endif //WOWLET_WOWLETSEED_H

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_COINSWIDGET_H
-#define FEATHER_COINSWIDGET_H
+#ifndef WOWLET_COINSWIDGET_H
+#define WOWLET_COINSWIDGET_H
 
 #include "appcontext.h"
 #include "model/CoinsModel.h"
@@ -76,4 +76,4 @@ private:
 };
 
 
-#endif //FEATHER_COINSWIDGET_H
+#endif //WOWLET_COINSWIDGET_H

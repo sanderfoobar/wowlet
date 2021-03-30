@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_CCSMODEL_H
-#define FEATHER_CCSMODEL_H
+#ifndef WOWLET_CCSMODEL_H
+#define WOWLET_CCSMODEL_H
 
 #include <QAbstractTableModel>
 #include <QSharedPointer>
@@ -39,4 +39,4 @@ private:
 };
 
 
-#endif //FEATHER_CCSMODEL_H
+#endif //WOWLET_CCSMODEL_H

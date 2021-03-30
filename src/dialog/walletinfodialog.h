@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_WALLETINFODIALOG_H
-#define FEATHER_WALLETINFODIALOG_H
+#ifndef WOWLET_WALLETINFODIALOG_H
+#define WOWLET_WALLETINFODIALOG_H
 
 #include <QDialog>
 
@@ -27,4 +27,4 @@ private:
     AppContext *m_ctx;
 };
 
-#endif //FEATHER_WALLETINFODIALOG_H
+#endif //WOWLET_WALLETINFODIALOG_H

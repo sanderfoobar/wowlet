@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_COINSPROXYMODEL_H
-#define FEATHER_COINSPROXYMODEL_H
+#ifndef WOWLET_COINSPROXYMODEL_H
+#define WOWLET_COINSPROXYMODEL_H
 
 #include <QSortFilterProxyModel>
 #include "libwalletqt/Coins.h"
@@ -25,4 +25,4 @@ private:
     Coins *m_coins;
 };
 
-#endif //FEATHER_COINSPROXYMODEL_H
+#endif //WOWLET_COINSPROXYMODEL_H

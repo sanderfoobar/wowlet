@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_TRANSACTIONINFODIALOG_H
-#define FEATHER_TRANSACTIONINFODIALOG_H
+#ifndef WOWLET_TRANSACTIONINFODIALOG_H
+#define WOWLET_TRANSACTIONINFODIALOG_H
 
 #include <QDialog>
 #include <QTextCharFormat>
@@ -35,4 +35,4 @@ private:
     QString m_txKey;
 };
 
-#endif //FEATHER_TRANSACTIONINFODIALOG_H
+#endif //WOWLET_TRANSACTIONINFODIALOG_H

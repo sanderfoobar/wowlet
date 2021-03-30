@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_PRICES_H
-#define FEATHER_PRICES_H
+#ifndef WOWLET_PRICES_H
+#define WOWLET_PRICES_H
 
 #include <QObject>
 #include <QProcess>
@@ -39,4 +39,4 @@ signals:
     void cryptoPricesUpdated();
 };
 
-#endif //FEATHER_PRICES_H
+#endif //WOWLET_PRICES_H

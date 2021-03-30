@@ -328,7 +328,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
 #ifdef Q_OS_MAC
     m_touchbar = new KDMacTouchBar(this);
     m_touchbarActionWelcome = new QAction(QIcon(":/assets/images/wowlet.png"), "Welcome to WOWlet!");
-    m_touchbarWalletItems = {ui->actionSettings, ui->actionCalculator, ui->actionKeys, ui->actionDonate_to_Feather};
+    m_touchbarWalletItems = {ui->actionSettings, ui->actionCalculator, ui->actionKeys, ui->actionDonate_to_Wowlet};
     m_touchbarWizardItems = {m_touchbarActionWelcome};
 #endif
 
@@ -480,7 +480,7 @@ void MainWindow::initMenu() {
 
     // About screen
     connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::menuAboutClicked);
-    connect(ui->actionDonate_to_Feather, &QAction::triggered, this, &MainWindow::donateButtonClicked);
+    connect(ui->actionDonate_to_Wowlet, &QAction::triggered, this, &MainWindow::donateButtonClicked);
 
     // Close wallet
     connect(ui->actionClose, &QAction::triggered, this, &MainWindow::menuWalletCloseClicked);
@@ -876,7 +876,7 @@ void MainWindow::updatePasswordIcon() {
 
 void MainWindow::showRestoreHeightDialog() {
     // settings custom restore height is only available for 25 word seeds
-    auto seed = m_ctx->currentWallet->getCacheAttribute("feather.seed");
+    auto seed = m_ctx->currentWallet->getCacheAttribute("wowlet.seed");
     if(!seed.isEmpty()) {
         const auto msg = "This wallet has a 14 word mnemonic seed which has the restore height embedded.";
         QMessageBox::warning(this, "Cannot set custom restore height", msg);

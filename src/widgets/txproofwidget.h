@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_TXPROOFWIDGET_H
-#define FEATHER_TXPROOFWIDGET_H
+#ifndef WOWLET_TXPROOFWIDGET_H
+#define WOWLET_TXPROOFWIDGET_H
 
 #include <QWidget>
 
@@ -30,4 +30,4 @@ private:
     Wallet *m_wallet;
 };
 
-#endif //FEATHER_TXPROOFWIDGET_H
+#endif //WOWLET_TXPROOFWIDGET_H

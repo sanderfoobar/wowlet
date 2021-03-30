@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_NETWORKING_H
-#define FEATHER_NETWORKING_H
+#ifndef WOWLET_NETWORKING_H
+#define WOWLET_NETWORKING_H
 
 #include <QRegExp>
 #include <QtNetwork>
@@ -38,4 +38,4 @@ private:
     QNetworkAccessManager *m_networkAccessManager;
 };
 
-#endif //FEATHER_NETWORKING_H
+#endif //WOWLET_NETWORKING_H

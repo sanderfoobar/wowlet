@@ -4,7 +4,7 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 #include "utils/utils.h"
-#include "config-feather.h"
+#include "config-wowlet.h"
 
 AboutDialog::AboutDialog(QWidget *parent)
         : QDialog(parent)
@@ -17,8 +17,8 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->aboutImage->setPixmap(p.scaled(128, 128, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     auto about = Utils::fileOpenQRC(":assets/about.txt");
     auto about_text = Utils::barrayToString(about);
-    about_text = about_text.replace("<feather_version>", FEATHER_VERSION);
-    about_text = about_text.replace("<feather_git_head>", FEATHER_BRANCH);
+    about_text = about_text.replace("<wowlet_version>", WOWLET_VERSION);
+    about_text = about_text.replace("<wowlet_git_head>", WOWLET_BRANCH);
     about_text = about_text.replace("<current_year>", QString::number(QDate::currentDate().year()));
     ui->copyrightText->setPlainText(about_text);
 

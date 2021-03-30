@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_CLI_H
-#define FEATHER_CLI_H
+#ifndef WOWLET_CLI_H
+#define WOWLET_CLI_H
 
 #include <QtCore>
 #include "appcontext.h"
@@ -46,4 +46,4 @@ signals:
     void closeApplication();
 };
 
-#endif //FEATHER_CLI_H
+#endif //WOWLET_CLI_H

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_TXCONFADVDIALOG_H
-#define FEATHER_TXCONFADVDIALOG_H
+#ifndef WOWLET_TXCONFADVDIALOG_H
+#define WOWLET_TXCONFADVDIALOG_H
 
 #include <QDialog>
 #include <QStandardItemModel>
@@ -50,4 +50,4 @@ private:
     QMenu *m_exportSignedMenu;
 };
 
-#endif //FEATHER_TXCONFADVDIALOG_H
+#endif //WOWLET_TXCONFADVDIALOG_H

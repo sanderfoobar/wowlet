@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_CREATEWALLET_H
-#define FEATHER_CREATEWALLET_H
+#ifndef WOWLET_CREATEWALLET_H
+#define WOWLET_CREATEWALLET_H
 
 #include <QLabel>
 #include <QWizardPage>
@@ -35,4 +35,4 @@ private:
     bool validateWidgets();
 };
 
-#endif //FEATHER_CREATEWALLET_H
+#endif //WOWLET_CREATEWALLET_H

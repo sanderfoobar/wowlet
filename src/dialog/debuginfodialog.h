@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_DEBUGINFODIALOG_H
-#define FEATHER_DEBUGINFODIALOG_H
+#ifndef WOWLET_DEBUGINFODIALOG_H
+#define WOWLET_DEBUGINFODIALOG_H
 
 #include <QDialog>
 #include "appcontext.h"
@@ -31,4 +31,4 @@ private:
     Ui::DebugInfoDialog *ui;
 };
 
-#endif //FEATHER_DEBUGINFODIALOG_H
+#endif //WOWLET_DEBUGINFODIALOG_H

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_TORINFODIALOG_H
-#define FEATHER_TORINFODIALOG_H
+#ifndef WOWLET_TORINFODIALOG_H
+#define WOWLET_TORINFODIALOG_H
 
 #include <QDialog>
 
@@ -29,4 +29,4 @@ private:
 };
 
 
-#endif //FEATHER_TORINFODIALOG_H
+#endif //WOWLET_TORINFODIALOG_H

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_NODES_H
-#define FEATHER_NODES_H
+#ifndef WOWLET_NODES_H
+#define WOWLET_NODES_H
 
 #include <QTimer>
 #include <QRegExp>
@@ -20,8 +20,8 @@ enum NodeSource {
     custom
 };
 
-struct FeatherNode {
-    explicit FeatherNode(QString _address = "", int height = 0, int target_height = 0, bool online = false)
+struct WowletNode {
+    explicit WowletNode(QString _address = "", int height = 0, int target_height = 0, bool online = false)
             : height(height), target_height(target_height), online(online){
         // wonky ipv4/host parsing, should be fine(tm)(c).
         if(_address.isEmpty()) return;
@@ -73,7 +73,7 @@ struct FeatherNode {
         return QString("%1://%2/get_info").arg(this->isHttps ? "https": "http",this->full);
     }
 
-    bool operator == (const FeatherNode &other) const {
+    bool operator == (const WowletNode &other) const {
         return this->full == other.full;
     }
 };
@@ -87,18 +87,18 @@ public:
     void writeConfig();
 
     NodeSource source();
-    FeatherNode connection();
-    QList<FeatherNode> customNodes();
+    WowletNode connection();
+    QList<WowletNode> customNodes();
 
     NodeModel *modelWebsocket;
     NodeModel *modelCustom;
 
 public slots:
     void connectToNode();
-    void connectToNode(const FeatherNode &node);
-    void onWSNodesReceived(const QList<QSharedPointer<FeatherNode>>& nodes);
+    void connectToNode(const WowletNode &node);
+    void onWSNodesReceived(const QList<QSharedPointer<WowletNode>>& nodes);
     void onNodeSourceChanged(NodeSource nodeSource);
-    void setCustomNodes(const QList<FeatherNode>& nodes);
+    void setCustomNodes(const QList<WowletNode>& nodes);
     void autoConnect(bool forceReconnect = false);
 
 signals:
@@ -114,24 +114,24 @@ private:
 
     QStringList m_recentFailures;
 
-    QList<FeatherNode> m_customNodes;
-    QList<FeatherNode> m_websocketNodes;
+    QList<WowletNode> m_customNodes;
+    QList<WowletNode> m_websocketNodes;
 
-    FeatherNode m_connection;  // current active connection, if any
+    WowletNode m_connection;  // current active connection, if any
 
     bool m_wsNodesReceived = false;
     bool m_wsExhaustedWarningEmitted = true;
     bool m_customExhaustedWarningEmitted = true;
     bool m_enableAutoconnect = true;
 
-    FeatherNode pickEligibleNode();
+    WowletNode pickEligibleNode();
 
     void updateModels();
     void resetLocalState();
     void exhausted();
     void WSNodeExhaustedWarning();
     void nodeExhaustedWarning();
-    int modeHeight(const QList<FeatherNode> &nodes);
+    int modeHeight(const QList<WowletNode> &nodes);
 };
 
-#endif //FEATHER_NODES_H
+#endif //WOWLET_NODES_H

@@ -51,7 +51,7 @@ void CreateWalletSeedPage::seedRoulette(int count) {
 }
 
 void CreateWalletSeedPage::generateSeed() {
-    FeatherSeed seed = FeatherSeed(m_ctx->restoreHeights[m_ctx->networkType], m_ctx->coinName, m_ctx->seedLanguage);
+    WowletSeed seed = WowletSeed(m_ctx->restoreHeights[m_ctx->networkType], m_ctx->coinName, m_ctx->seedLanguage);
     m_mnemonic = seed.mnemonic.join(" ");
     m_restoreHeight = seed.restoreHeight;
     this->displaySeed(m_mnemonic);

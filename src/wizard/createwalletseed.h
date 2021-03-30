@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_CREATEWALLETSEED_H
-#define FEATHER_CREATEWALLETSEED_H
+#ifndef WOWLET_CREATEWALLETSEED_H
+#define WOWLET_CREATEWALLETSEED_H
 
 #include <QLabel>
 #include <QWizardPage>
@@ -47,4 +47,4 @@ private:
     int m_rouletteSpin = 15;
 };
 
-#endif //FEATHER_CREATEWALLETSEED_H
+#endif //WOWLET_CREATEWALLETSEED_H

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_TXIMPORTDIALOG_H
-#define FEATHER_TXIMPORTDIALOG_H
+#ifndef WOWLET_TXIMPORTDIALOG_H
+#define WOWLET_TXIMPORTDIALOG_H
 
 #include <QDialog>
 #include "appcontext.h"
@@ -36,4 +36,4 @@ private:
 };
 
 
-#endif //FEATHER_TXIMPORTDIALOG_H
+#endif //WOWLET_TXIMPORTDIALOG_H

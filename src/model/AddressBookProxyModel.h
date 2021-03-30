@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_ADDRESSBOOKPROXYMODEL_H
-#define FEATHER_ADDRESSBOOKPROXYMODEL_H
+#ifndef WOWLET_ADDRESSBOOKPROXYMODEL_H
+#define WOWLET_ADDRESSBOOKPROXYMODEL_H
 
 #include <QSortFilterProxyModel>
 
@@ -25,4 +25,4 @@ private:
     QRegExp m_searchRegExp;
 };
 
-#endif //FEATHER_ADDRESSBOOKPROXYMODEL_H
+#endif //WOWLET_ADDRESSBOOKPROXYMODEL_H

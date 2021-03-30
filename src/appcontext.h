@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_APPCONTEXT_H
-#define FEATHER_APPCONTEXT_H
+#ifndef WOWLET_APPCONTEXT_H
+#define WOWLET_APPCONTEXT_H
 
 #include <QObject>
 #include <QProcess>
@@ -17,7 +17,7 @@
 #include "utils/xmrig.h"
 #include "utils/wsclient.h"
 #include "utils/txfiathistory.h"
-#include "utils/FeatherSeed.h"
+#include "utils/WowletSeed.h"
 #include "widgets/RedditPost.h"
 #include "widgets/CCSEntry.h"
 #include "utils/RestoreHeightLookup.h"
@@ -99,7 +99,7 @@ public:
     bool refreshed = false;
     WalletManager *walletManager;
     Wallet *currentWallet = nullptr;
-    void createWallet(FeatherSeed seed, const QString &path, const QString &password);
+    void createWallet(WowletSeed seed, const QString &path, const QString &password);
     void createWalletViewOnly(const QString &path, const QString &password, const QString &address, const QString &viewkey, const QString &spendkey, quint64 restoreHeight);
     void createWalletFinish(const QString &password);
     void syncStatusUpdated(quint64 height, quint64 target);
@@ -166,12 +166,12 @@ signals:
     void createTransactionCancelled(const QVector<QString> &address, double amount);
     void createTransactionSuccess(PendingTransaction *tx, const QVector<QString> &address);
     void redditUpdated(QList<QSharedPointer<RedditPost>> &posts);
-    void nodesUpdated(QList<QSharedPointer<FeatherNode>> &nodes);
+    void nodesUpdated(QList<QSharedPointer<WowletNode>> &nodes);
     void ccsUpdated(QList<QSharedPointer<CCSEntry>> &entries);
     void suchWowUpdated(const QJsonArray &such_data);
     void nodeSourceChanged(NodeSource nodeSource);
     void XMRigDownloads(const QJsonObject &data);
-    void setCustomNodes(QList<FeatherNode> nodes);
+    void setCustomNodes(QList<WowletNode> nodes);
     void openAliasResolveError(const QString &msg);
     void openAliasResolved(const QString &address, const QString &openAlias);
     void setRestoreHeightError(const QString &msg);
@@ -186,7 +186,8 @@ private:
     WalletKeysFilesModel *m_walletKeysFilesModel;
     const int m_donationBoundary = 15;
     QTimer m_storeTimer;
+    // @TODO: Replace url
     QUrl m_wsUrl = QUrl(QStringLiteral("ws://feathercitimllbmdktu6cmjo3fizgmyfrntntqzu6xguqa2rlq5cgid.onion/ws"));
 };
 
-#endif //FEATHER_APPCONTEXT_H
+#endif //WOWLET_APPCONTEXT_H

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_TXFIATHISTORY_H
-#define FEATHER_TXFIATHISTORY_H
+#ifndef WOWLET_TXFIATHISTORY_H
+#define WOWLET_TXFIATHISTORY_H
 
 class TxFiatHistory : public QObject {
     Q_OBJECT
@@ -30,4 +30,4 @@ private:
     int m_genesis_timestamp;
 };
 
-#endif //FEATHER_TXFIATHISTORY_H
+#endif //WOWLET_TXFIATHISTORY_H

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_SUBADDRESSPROXYMODEL_H
-#define FEATHER_SUBADDRESSPROXYMODEL_H
+#ifndef WOWLET_SUBADDRESSPROXYMODEL_H
+#define WOWLET_SUBADDRESSPROXYMODEL_H
 
 #include "libwalletqt/Subaddress.h"
 
@@ -35,4 +35,4 @@ private:
     bool m_hidePrimary;
 };
 
-#endif //FEATHER_SUBADDRESSPROXYMODEL_H
+#endif //WOWLET_SUBADDRESSPROXYMODEL_H
