@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=WOWlet
+GenericName=Wownero Wallet
+Comment=Lightweight Wownero Wallet
+Icon=wowlet
+Exec=wowlet
+Terminal=false
+MimeType=x-scheme-handler/wownero;
+Categories=Network;
+Keywords=wow;wownero;cryptocurrency;dank;meme;
+StartupNotify=false
+StartupWMClass=wowlet
+PrefersNonDefaultGPU=false

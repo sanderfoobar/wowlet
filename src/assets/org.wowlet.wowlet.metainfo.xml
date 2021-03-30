@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2021 The Monero Project -->
+<component type="desktop-application">
+  <id>org.wowlet.wowlet</id>
+  <metadata_license>BSD-3-Clause</metadata_license>
+  <project_license>BSD-3-Clause</project_license>
+  <name>WOWlet</name>
+  <summary>Lightweight Wownero Wallet</summary>
+
+  <description>
+    <p>
+      WOWlet is a free, open-source Wownero client for Linux with ports for Mac OS and Windows.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">org.wowlet.wowlet.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Wow Dark Theme</caption>
+      <image>https://i.imgur.com/KMFrtpZ.png</image>
+    </screenshot>
+
+  <url type="homepage">https://git.wownero.com/wowlet/wowlet</url>
+  <project_group>WOWlet</project_group>
+
+  <provides>
+    <binary>wowlet</binary>
+  </provides>
+
+  <releases>
+    <release version="1.0.0" date="2021-03-29">
+      <description>
+        <p>Initial release.</p>
+      </description>
+    </release>
+  </releases>
+</component>
