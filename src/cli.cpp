@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#include "cli.h"
-
 // libwalletqt
 #include "libwalletqt/TransactionHistory.h"
 #include "model/AddressBookModel.h"
 #include "model/TransactionHistoryModel.h"
+
+#include "cli.h"
 
 CLI::CLI(AppContext *ctx, QObject *parent) :
         QObject(parent),
@@ -22,6 +22,8 @@ void CLI::run() {
         if(!ctx->cmdargs->isSet("wallet-file")) return this->finishedError("--wallet-file argument missing");
         if(!ctx->cmdargs->isSet("password")) return this->finishedError("--password argument missing");
         ctx->onOpenWallet(ctx->cmdargs->value("wallet-file"), ctx->cmdargs->value("password"));
+    } else if(mode == CLIMode::CLIDaemonize) {
+        m_wsServer = new WSServer(ctx, QHostAddress(this->backgroundWebsocketAddress), this->backgroundWebsocketPort, this->backgroundWebsocketPassword, true, this);
     }
 }
 

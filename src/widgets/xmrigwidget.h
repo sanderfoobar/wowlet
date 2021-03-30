@@ -27,7 +27,7 @@ public:
 
 public slots:
     void onWalletClosed();
-    void onWalletOpened();
+    void onWalletOpened(Wallet *wallet);
     void onStartClicked();
     void onStopClicked();
     void onClearClicked();

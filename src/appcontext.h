@@ -89,6 +89,12 @@ public:
     static QMap<QString, QString> txCache;
     static TxFiatHistory *txFiatHistory;
 
+    QList<WalletKeysFiles> listWallets() {
+        // return listing of wallet .keys items
+        m_walletKeysFilesModel->refresh();
+        return m_walletKeysFilesModel->listWallets();
+    }
+
     // libwalletqt
     bool refreshed = false;
     WalletManager *walletManager;
@@ -111,7 +117,7 @@ public:
 
 public slots:
     void onOpenWallet(const QString& path, const QString &password);
-    void onCreateTransaction(const QString &address, quint64 amount, const QString &description, bool all);
+    void onCreateTransaction(QString address, quint64 amount, const QString description, bool all);
     void onCreateTransactionMultiDest(const QVector<QString> &addresses, const QVector<quint64> &amounts, const QString &description);
     void onCancelTransaction(PendingTransaction *tx, const QVector<QString> &address);
     void onSweepOutput(const QString &keyImage, QString address, bool churn, int outputs) const;
@@ -150,7 +156,7 @@ signals:
     void synchronized();
     void blockHeightWSUpdated(QMap<QString, int> heights);
     void walletRefreshed();
-    void walletOpened();
+    void walletOpened(Wallet *wallet);
     void walletCreatedError(const QString &msg);
     void walletCreated(Wallet *wallet);
     void walletOpenedError(QString msg);
@@ -177,6 +183,7 @@ signals:
     void setTitle(const QString &title); // set window title
 
 private:
+    WalletKeysFilesModel *m_walletKeysFilesModel;
     const int m_donationBoundary = 15;
     QTimer m_storeTimer;
     QUrl m_wsUrl = QUrl(QStringLiteral("ws://feathercitimllbmdktu6cmjo3fizgmyfrntntqzu6xguqa2rlq5cgid.onion/ws"));

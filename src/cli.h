@@ -6,10 +6,12 @@
 
 #include <QtCore>
 #include "appcontext.h"
+#include <utils/wsserver.h>
 
 enum CLIMode {
     CLIModeExportContacts,
-    CLIModeExportTxHistory
+    CLIModeExportTxHistory,
+    CLIDaemonize
 };
 
 class CLI : public QObject
@@ -19,6 +21,10 @@ public:
     CLIMode mode;
     explicit CLI(AppContext *ctx, QObject *parent = nullptr);
     ~CLI() override;
+
+    QString backgroundWebsocketAddress;
+    quint16 backgroundWebsocketPort;
+    QString backgroundWebsocketPassword;
 
 public slots:
     void run();
@@ -30,6 +36,7 @@ public slots:
 
 private:
     AppContext *ctx;
+    WSServer *m_wsServer;
 
 private slots:
     void finished(const QString &msg);

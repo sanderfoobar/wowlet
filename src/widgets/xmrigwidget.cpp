@@ -102,7 +102,7 @@ void XMRigWidget::onWalletClosed() {
     ui->lineEdit_address->setText("");
 }
 
-void XMRigWidget::onWalletOpened(){
+void XMRigWidget::onWalletOpened(Wallet *wallet){
     // Xmrig username
     auto username = m_ctx->currentWallet->getCacheAttribute("feather.xmrig_username");
     if(!username.isEmpty())

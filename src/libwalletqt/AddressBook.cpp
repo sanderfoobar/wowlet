@@ -109,6 +109,25 @@ bool AddressBook::deleteRow(int rowId)
     return result;
 }
 
+bool AddressBook::deleteByAddress(const QString &address) {
+    bool result;
+    QWriteLocker locker(&m_lock);
+
+    const QMap<QString, size_t>::const_iterator it = m_addresses.find(address);
+    if (it == m_addresses.end())
+        return false;
+
+    {
+        result = m_addressBookImpl->deleteRow(*it);
+    }
+
+    // Fetch new data from wallet2.
+    if (result)
+        getAll();
+
+    return result;
+}
+
 quint64 AddressBook::count() const
 {
     QReadLocker locker(&m_lock);

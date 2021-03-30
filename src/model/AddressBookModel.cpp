@@ -154,6 +154,22 @@ int AddressBookModel::lookupPaymentID(const QString &payment_id) const
     return m_addressBook->lookupPaymentID(payment_id);
 }
 
+QJsonArray AddressBookModel::toJsonArray(){
+    QJsonArray arr;
+    for(int i = 0; i < this->rowCount(); i++) {
+        QJsonObject item;
+        QModelIndex index = this->index(i, 0);
+        const auto description = this->data(index.siblingAtColumn(AddressBookModel::Description), Qt::UserRole).toString().replace("\"", "");
+        const auto address = this->data(index.siblingAtColumn(AddressBookModel::Address), Qt::UserRole).toString();
+        if(address.isEmpty()) continue;
+
+        item["description"] = description;
+        item["address"] = address;
+        arr << item;
+    }
+    return arr;
+}
+
 bool AddressBookModel::writeCSV(const QString &path) {
     QString csv = "";
     for(int i = 0; i < this->rowCount(); i++) {

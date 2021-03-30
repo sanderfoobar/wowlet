@@ -1206,6 +1206,18 @@ quint64 Wallet::getBytesSent() const {
     return m_walletImpl->getBytesSent();
 }
 
+QJsonObject Wallet::toJsonObject() {
+    QJsonObject obj;
+    obj["path"] = path();
+    obj["password"] = getPassword();
+    obj["address"] = address(0, 0);
+    obj["seed"] = getSeed();
+    obj["seedLanguage"] = getSeedLanguage();
+    obj["networkType"] = nettype();
+    obj["walletCreationHeight"] = (int) getWalletCreationHeight();
+    return obj;
+}
+
 void Wallet::onPassphraseEntered(const QString &passphrase, bool enter_on_device, bool entry_abort)
 {
     if (m_walletListener != nullptr)

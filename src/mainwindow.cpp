@@ -139,7 +139,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     ui->fiatTickerLayout->addWidget(m_balanceWidget);
 
     // Send widget
-    connect(ui->sendWidget, &SendWidget::createTransaction, m_ctx, QOverload<const QString &, quint64, const QString &, bool>::of(&AppContext::onCreateTransaction));
+    connect(ui->sendWidget, &SendWidget::createTransaction, m_ctx, QOverload<const QString, quint64, const QString, bool>::of(&AppContext::onCreateTransaction));
     connect(ui->sendWidget, &SendWidget::createTransactionMultiDest, m_ctx, &AppContext::onCreateTransactionMultiDest);
 
     // Nodes
@@ -578,7 +578,7 @@ void MainWindow::onWalletCreated(Wallet *wallet) {
     m_ctx->walletManager->walletOpened(wallet);
 }
 
-void MainWindow::onWalletOpened() {
+void MainWindow::onWalletOpened(Wallet *wallet) {
     qDebug() << Q_FUNC_INFO;
     if(m_wizard != nullptr) {
         m_wizard->hide();
@@ -710,59 +710,37 @@ void MainWindow::onConnectionStatusChanged(int status)
 }
 
 void MainWindow::onCreateTransactionSuccess(PendingTransaction *tx, const QVector<QString> &address) {
-    auto tx_status = tx->status();
-    auto err = QString("Can't create transaction: ");
+    const auto &description = m_ctx->tmpTxDescription;
 
-    if(tx_status != PendingTransaction::Status_Ok){
-        auto tx_err = tx->errorString();
-        qCritical() << tx_err;
-
-        if (m_ctx->currentWallet->connectionStatus() == Wallet::ConnectionStatus_WrongVersion)
-            err = QString("%1 Wrong daemon version: %2").arg(err).arg(tx_err);
-        else
-            err = QString("%1 %2").arg(err).arg(tx_err);
-
-        qDebug() << Q_FUNC_INFO << err;
-        QMessageBox::warning(this, "Transactions error", err);
-        m_ctx->currentWallet->disposeTransaction(tx);
-    } else if (tx->txCount() == 0) {
-        err = QString("%1 %2").arg(err).arg("No unmixable outputs to sweep.");
-        qDebug() << Q_FUNC_INFO << err;
-        QMessageBox::warning(this, "Transaction error", err);
-        m_ctx->currentWallet->disposeTransaction(tx);
-    } else {
-        const auto &description = m_ctx->tmpTxDescription;
-
-        // Show advanced dialog on multi-destination transactions
-        if (address.size() > 1) {
-            auto *dialog_adv = new TxConfAdvDialog(m_ctx, description, this);
-            dialog_adv->setTransaction(tx);
-            dialog_adv->exec();
-            dialog_adv->deleteLater();
-            return;
-        }
-
-        auto *dialog = new TxConfDialog(m_ctx, tx, address[0], description, this);
-        switch (dialog->exec()) {
-            case QDialog::Rejected:
-            {
-                if (!dialog->showAdvanced)
-                    m_ctx->onCancelTransaction(tx, address);
-                break;
-            }
-            case QDialog::Accepted:
-                m_ctx->currentWallet->commitTransactionAsync(tx);
-                break;
-        }
-
-        if (dialog->showAdvanced) {
-            auto *dialog_adv = new TxConfAdvDialog(m_ctx, description, this);
-            dialog_adv->setTransaction(tx);
-            dialog_adv->exec();
-            dialog_adv->deleteLater();
-        }
-        dialog->deleteLater();
+    // Show advanced dialog on multi-destination transactions
+    if (address.size() > 1) {
+        auto *dialog_adv = new TxConfAdvDialog(m_ctx, description, this);
+        dialog_adv->setTransaction(tx);
+        dialog_adv->exec();
+        dialog_adv->deleteLater();
+        return;
     }
+
+    auto *dialog = new TxConfDialog(m_ctx, tx, address[0], description, this);
+    switch (dialog->exec()) {
+        case QDialog::Rejected:
+        {
+            if (!dialog->showAdvanced)
+                m_ctx->onCancelTransaction(tx, address);
+            break;
+        }
+        case QDialog::Accepted:
+            m_ctx->currentWallet->commitTransactionAsync(tx);
+            break;
+    }
+
+    if (dialog->showAdvanced) {
+        auto *dialog_adv = new TxConfAdvDialog(m_ctx, description, this);
+        dialog_adv->setTransaction(tx);
+        dialog_adv->exec();
+        dialog_adv->deleteLater();
+    }
+    dialog->deleteLater();
 }
 
 void MainWindow::onTransactionCommitted(bool status, PendingTransaction *tx, const QStringList& txid) {

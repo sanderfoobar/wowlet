@@ -78,6 +78,12 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     QCommandLineOption exportTxHistoryOption(QStringList() << "export-txhistory", "Output wallet transaction history as CSV to specified path.", "file");
     parser.addOption(exportTxHistoryOption);
 
+    QCommandLineOption backgroundOption(QStringList() << "daemon", "Start Feather in the background and start a websocket server (IPv4:port)", "backgroundAddress");
+    parser.addOption(backgroundOption);
+
+    QCommandLineOption backgroundPasswordOption(QStringList() << "daemon-password", "Password for connecting to the wowlet websocket service", "backgroundPassword");
+    parser.addOption(backgroundPasswordOption);
+
     auto parsed = parser.parse(argv_);
     if(!parsed) {
         qCritical() << parser.errorText();
@@ -92,7 +98,10 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     bool quiet = parser.isSet(quietModeOption);
     bool exportContacts = parser.isSet(exportContactsOption);
     bool exportTxHistory = parser.isSet(exportTxHistoryOption);
-    bool cliMode = exportContacts || exportTxHistory;
+    bool backgroundAddressEnabled = parser.isSet(backgroundOption);
+    bool cliMode = exportContacts || exportTxHistory || backgroundAddressEnabled;
+
+    qRegisterMetaType<QVector<QString>>();
 
     if(cliMode) {
         QCoreApplication cli_app(argc, argv);
@@ -116,6 +125,27 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
             if(!quiet)
                 qInfo() << "CLI mode: Transaction history export";
             cli->mode = CLIMode::CLIModeExportTxHistory;
+            QTimer::singleShot(0, cli, &CLI::run);
+        } else if(backgroundAddressEnabled) {
+            if(!quiet)
+                qInfo() << "CLI mode: daemonize";
+            cli->mode = CLIMode::CLIDaemonize;
+
+            auto backgroundHostPort = parser.value(backgroundOption);
+            if(!backgroundHostPort.contains(":")) {
+                qCritical() << "the format is: --background ipv4:port";
+                return 1;
+            }
+
+            auto spl = backgroundHostPort.split(":");
+            cli->backgroundWebsocketAddress = spl.at(0);
+            cli->backgroundWebsocketPort = (quint16) spl.at(1).toInt();
+            cli->backgroundWebsocketPassword = parser.value(backgroundPasswordOption);
+            if(cli->backgroundWebsocketPassword.isEmpty()) {
+                qCritical() << "--daemon-password needs to be set when using --daemon";
+                return 1;
+            }
+
             QTimer::singleShot(0, cli, &CLI::run);
         }
 
@@ -161,7 +191,6 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 #endif
 
     qInstallMessageHandler(Utils::applicationLogHandler);
-    qRegisterMetaType<QVector<QString>>();
 
     auto *mainWindow = new MainWindow(ctx);
     return QApplication::exec();

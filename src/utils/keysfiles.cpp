@@ -47,6 +47,16 @@ int WalletKeysFiles::networkType() const {
     return m_networkType;
 }
 
+QJsonObject WalletKeysFiles::toJsonObject() const {
+    auto item = QJsonObject();
+    item["fileName"] = m_fileName;
+    item["modified"] = m_modified;
+    item["path"] = m_path;
+    item["networkType"] = m_networkType;
+    item["address"] = m_address;
+    return item;
+}
+
 WalletKeysFilesModel::WalletKeysFilesModel(AppContext *ctx, QObject *parent)
         : QAbstractTableModel(parent)
         , m_ctx(ctx)

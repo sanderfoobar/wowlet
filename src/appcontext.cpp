@@ -23,6 +23,7 @@ QMap<QString, QString> AppContext::txDescriptionCache;
 QMap<QString, QString> AppContext::txCache;
 
 AppContext::AppContext(QCommandLineParser *cmdargs) {
+    this->m_walletKeysFilesModel = new WalletKeysFilesModel(this, this);
     this->network = new QNetworkAccessManager();
     this->networkClearnet = new QNetworkAccessManager();
     this->cmdargs = cmdargs;
@@ -193,7 +194,7 @@ void AppContext::onSweepOutput(const QString &keyImage, QString address, bool ch
     this->currentWallet->createTransactionSingleAsync(keyImage, address, outputs, this->tx_priority);
 }
 
-void AppContext::onCreateTransaction(const QString &address, quint64 amount, const QString &description, bool all) {
+void AppContext::onCreateTransaction(QString address, quint64 amount, QString description, bool all) {
     // tx creation
     this->tmpTxDescription = description;
 
@@ -342,7 +343,7 @@ void AppContext::onWalletOpened(Wallet *wallet) {
     connect(this->currentWallet, &Wallet::heightRefreshed, this, &AppContext::onHeightRefreshed);
     connect(this->currentWallet, &Wallet::transactionCreated, this, &AppContext::onTransactionCreated);
 
-    emit walletOpened();
+    emit walletOpened(wallet);
 
     connect(this->currentWallet, &Wallet::connectionStatusChanged, [this]{
         this->nodes->autoConnect();
@@ -769,6 +770,31 @@ void AppContext::onTransactionCreated(PendingTransaction *tx, const QVector<QStr
 
     // Let UI know that the transaction was constructed
     emit endTransaction();
+
+    // Some validation
+    auto tx_status = tx->status();
+    auto err = QString("Can't create transaction: ");
+
+    if(tx_status != PendingTransaction::Status_Ok){
+        auto tx_err = tx->errorString();
+        qCritical() << tx_err;
+
+        if (this->currentWallet->connectionStatus() == Wallet::ConnectionStatus_WrongVersion)
+            err = QString("%1 Wrong daemon version: %2").arg(err).arg(tx_err);
+        else
+            err = QString("%1 %2").arg(err).arg(tx_err);
+
+        qDebug() << Q_FUNC_INFO << err;
+        emit createTransactionError(err);
+        this->currentWallet->disposeTransaction(tx);
+        return;
+    } else if (tx->txCount() == 0) {
+        err = QString("%1 %2").arg(err).arg("No unmixable outputs to sweep.");
+        qDebug() << Q_FUNC_INFO << err;
+        emit createTransactionError(err);
+        this->currentWallet->disposeTransaction(tx);
+        return;
+    }
 
     // tx created, but not sent yet. ask user to verify first.
     emit createTransactionSuccess(tx, address);

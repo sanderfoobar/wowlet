@@ -202,3 +202,74 @@ bool TransactionHistory::writeCSV(const QString &path) {
     data = QString("blockHeight,epoch,date,direction,amount,fiat,atomicAmount,fee,txid,label,subaddrAccount,paymentId\n%1").arg(data);
     return Utils::fileWrite(path, data);
 }
+
+QJsonArray TransactionHistory::toJsonArray(){
+    QJsonArray return_array;
+
+    for (const auto &tx : m_pimpl->getAll()) {
+        if (tx->subaddrAccount() != 0) { // only account 0
+            continue;
+        }
+
+        TransactionInfo info(tx, this);
+
+        // collect column data
+        QDateTime timeStamp = info.timestamp();
+        double amount = info.amount();
+
+        // calc historical fiat price
+        QString fiatAmount;
+        QString preferredCur = config()->get(Config::preferredFiatCurrency).toString();
+        const double usd_price = AppContext::txFiatHistory->get(timeStamp.toString("yyyyMMdd"));
+        double fiat_price = usd_price * amount;
+
+        if(preferredCur != "USD")
+            fiat_price = AppContext::prices->convert("USD", preferredCur, fiat_price);
+        double fiat_rounded = ceil(Utils::roundSignificant(fiat_price, 3) * 100.0) / 100.0;
+        if(fiat_price != 0)
+            fiatAmount = QString("%1 %2").arg(QString::number(fiat_rounded)).arg(preferredCur);
+
+        // collect some more column data
+        quint64 atomicAmount = info.atomicAmount();
+        quint32 subaddrAccount = info.subaddrAccount();
+        QString fee = info.fee();
+        QString direction = QString("");
+        TransactionInfo::Direction _direction = info.direction();
+        if(_direction == TransactionInfo::Direction_In)
+            direction = QString("in");
+        else if(_direction == TransactionInfo::Direction_Out)
+            direction = QString("out");
+        else
+            continue;  // skip TransactionInfo::Direction_Both
+
+        QString label = info.label();
+        quint64 blockHeight = info.blockHeight();
+        QString date = info.date() + " " + info.time();
+        uint epoch = timeStamp.toTime_t();
+        QString displayAmount = info.displayAmount();
+        QString paymentId = info.paymentId();
+        if(paymentId == "0000000000000000")
+            paymentId = "";
+
+        QJsonObject tx_item;
+        tx_item["timestamp"] = (int) epoch;
+        tx_item["date"] = date;
+        tx_item["preferred_currency"] = preferredCur;
+        tx_item["direction"] = direction;
+        tx_item["blockheight"] = (int) blockHeight;
+        tx_item["description"] = label;
+        tx_item["subaddress_account"] = (int) subaddrAccount;
+        tx_item["payment_id"] = paymentId;
+
+        tx_item["amount"] = amount;
+        tx_item["amount_display"] = displayAmount;
+        tx_item["amount_fiat"] = fiatAmount;
+        tx_item["fiat_rounded"] = fiat_rounded;
+        tx_item["fiat_price"] = fiat_price;
+        tx_item["fee"] = fee;
+
+        return_array.append(tx_item);
+    }
+
+    return return_array;
+}
