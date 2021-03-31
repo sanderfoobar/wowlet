@@ -15,7 +15,7 @@ ViewOnlyPage::ViewOnlyPage(AppContext *ctx, QWidget *parent) :
     this->setTitle("Import view only wallet");
     ui->label_errorString->hide();
 
-    QFont f("feather");
+    QFont f("wowlet");
     f.setStyleHint(QFont::Monospace);
 
     auto *viewOnlyViewKeyDummy = new QLineEdit(this);

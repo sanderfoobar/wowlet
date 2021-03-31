@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2014-2021, The Monero Project.
 
-#ifndef FEATHER_INPUT_H
-#define FEATHER_INPUT_H
+#ifndef WOWLET_INPUT_H
+#define WOWLET_INPUT_H
 
 #include <wallet/api/wallet2_api.h>
 #include <QObject>
@@ -26,4 +26,4 @@ public:
 
 };
 
-#endif //FEATHER_INPUT_H
+#endif //WOWLET_INPUT_H

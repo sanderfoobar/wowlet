@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
-project(feather)
+project(wowlet)
 
 message(STATUS "Initiating compile using CMake ${CMAKE_VERSION}")
 
@@ -11,7 +11,7 @@ set(VERSION "beta-1")
 
 option(FETCH_DEPS "Download dependencies if they are not found" ON)
 option(XMRIG "Include XMRig module" ON)
-option(TOR_BIN "Path to Tor binary to embed inside Feather" OFF)
+option(TOR_BIN "Path to Tor binary to embed inside WOWlet" OFF)
 option(STATIC "Link libraries statically, requires static Qt")
 option(USE_DEVICE_TREZOR "Trezor support compilation" OFF)
 option(DONATE_BEG "Prompt donation window every once in a while" ON)
@@ -98,7 +98,7 @@ get_directory_property(UNBOUND_LIBRARY DIRECTORY "monero" DEFINITION UNBOUND_LIB
 
 include(CMakePackageConfigHelpers)
 include(VersionMonero)
-include(VersionFeather)
+include(VersionWowlet)
 
 include_directories(${EASYLOGGING_INCLUDE})
 link_directories(${EASYLOGGING_LIBRARY_DIRS})
@@ -127,7 +127,7 @@ find_package(monero-seed CONFIG)
 if(NOT monero-seed_FOUND)
   if(FETCH_DEPS)
     FetchContent_Declare(monero-seed
-      GIT_REPOSITORY https://git.wownero.com/feather/monero-seed.git)
+      GIT_REPOSITORY https://git.wownero.com/wowlet/monero-seed.git)
     FetchContent_GetProperties(monero-seed)
     if(NOT monero-seed_POPULATED)
       message(STATUS "Fetching monero-seed")
@@ -183,7 +183,7 @@ if("$ENV{DRONE}" STREQUAL "true")
     message(STATUS "We are inside a static compile with Drone CI")
 endif()
 
-# To build Feather with embedded (and static) Tor, pass CMake -DTOR_BIN=/path/to/tor
+# To build WOWlet with embedded (and static) Tor, pass CMake -DTOR_BIN=/path/to/tor
 if(TOR_BIN)
     if(APPLE)
         execute_process(COMMAND bash -c "touch ${CMAKE_CURRENT_SOURCE_DIR}/src/tor/libevent-2.1.7.dylib")
@@ -194,7 +194,7 @@ if(TOR_BIN)
         set(TOR_VERSION "${out}")
     endif()
     message(STATUS "${TOR_VERSION}")
-    configure_file("cmake/config-feather.h.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/src/config-feather.h")
+    configure_file("cmake/config-wowlet.h.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/src/config-wowlet.h")
 
     # on the buildbot Tor is baked into the image
     # - linux: See `Dockerfile`

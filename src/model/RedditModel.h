@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_REDDITMODEL_H
-#define FEATHER_REDDITMODEL_H
+#ifndef WOWLET_REDDITMODEL_H
+#define WOWLET_REDDITMODEL_H
 
 #include <QAbstractTableModel>
 #include <QSharedPointer>
@@ -38,4 +38,4 @@ private:
     QList<QSharedPointer<RedditPost>> m_posts;
 };
 
-#endif //FEATHER_REDDITMODEL_H
+#endif //WOWLET_REDDITMODEL_H

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_QRCODEDIALOG_H
-#define FEATHER_QRCODEDIALOG_H
+#ifndef WOWLET_QRCODEDIALOG_H
+#define WOWLET_QRCODEDIALOG_H
 #include <QDialog>
 
 #include "qrcode/QrCode.h"
@@ -29,4 +29,4 @@ private:
 };
 
 
-#endif //FEATHER_QRCODEDIALOG_H
+#endif //WOWLET_QRCODEDIALOG_H

@@ -8,8 +8,8 @@ build/*
 CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
-feather_autogen/
-feather.cbp
+wowlet_autogen/
+wowlet.cbp
 src/tor/*
 !src/tor/.gitkeep
-src/config-feather.h
+src/config-wowlet.h

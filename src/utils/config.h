@@ -3,8 +3,8 @@
 // Copyright (C) 2011 Felix Geyer <debfx@fobos.de>
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_SETTINGS_H
-#define FEATHER_SETTINGS_H
+#ifndef WOWLET_SETTINGS_H
+#define WOWLET_SETTINGS_H
 
 #include <QObject>
 #include <QSettings>
@@ -78,4 +78,4 @@ inline Config* config()
     return Config::instance();
 }
 
-#endif //FEATHER_SETTINGS_H
+#endif //WOWLET_SETTINGS_H

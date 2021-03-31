@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_TOR_H
-#define FEATHER_TOR_H
+#ifndef WOWLET_TOR_H
+#define WOWLET_TOR_H
 
 #include <cstdio>
 #include <cstdlib>
@@ -112,4 +112,4 @@ private:
 
 class AppContext;  // forward declaration
 
-#endif //FEATHER_TOR_H
+#endif //WOWLET_TOR_H

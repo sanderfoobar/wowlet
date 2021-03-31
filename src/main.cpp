@@ -6,7 +6,7 @@
 #include <QtCore>
 #include <QtGui>
 
-#include "config-feather.h"
+#include "config-wowlet.h"
 #include "mainwindow.h"
 #include "cli.h"
 
@@ -155,7 +155,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
     QApplication::setDesktopSettingsAware(true); // use system font
-    QApplication::setApplicationVersion(FEATHER_VERSION);
+    QApplication::setApplicationVersion(WOWLET_VERSION);
 
     QApplication app(argc, argv);
 
@@ -168,7 +168,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     if(!quiet) {
         QMap<QString, QString> info;
         info["Qt"] = QT_VERSION_STR;
-        info["WOWlet"] = FEATHER_VERSION;
+        info["WOWlet"] = WOWLET_VERSION;
         if (stagenet) info["Mode"] = "Stagenet";
         else if (testnet) info["Mode"] = "Testnet";
         else info["Mode"] = "Mainnet";

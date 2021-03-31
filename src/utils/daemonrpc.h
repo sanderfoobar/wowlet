@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_DAEMON_RPC_H
-#define FEATHER_DAEMON_RPC_H
+#ifndef WOWLET_DAEMON_RPC_H
+#define WOWLET_DAEMON_RPC_H
 
 #include <QObject>
 
@@ -48,4 +48,4 @@ private:
 };
 
 
-#endif //FEATHER_DAEMON_RPC_H
+#endif //WOWLET_DAEMON_RPC_H

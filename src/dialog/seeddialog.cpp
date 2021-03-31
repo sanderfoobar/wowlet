@@ -13,7 +13,7 @@ SeedDialog::SeedDialog(Wallet *wallet, QWidget *parent)
 
     ui->label_restoreHeight->setText(QString::number(wallet->getWalletCreationHeight()));
 
-    QString seed_14_words = wallet->getCacheAttribute("feather.seed");
+    QString seed_14_words = wallet->getCacheAttribute("wowlet.seed");
     QString seed_25_words = wallet->getSeed();
 
     if (seed_14_words.isEmpty()) {

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_XMRIG_H
-#define FEATHER_XMRIG_H
+#ifndef WOWLET_XMRIG_H
+#define WOWLET_XMRIG_H
 
 #include <cstdio>
 #include <cstdlib>
@@ -42,4 +42,4 @@ private:
     ChildProcess m_process;
 };
 
-#endif //FEATHER_XMRIG_H
+#endif //WOWLET_XMRIG_H

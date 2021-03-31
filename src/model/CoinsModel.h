@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_COINSMODEL_H
-#define FEATHER_COINSMODEL_H
+#ifndef WOWLET_COINSMODEL_H
+#define WOWLET_COINSMODEL_H
 
 #include <wallet/api/wallet2_api.h>
 
@@ -55,4 +55,4 @@ private:
     QIcon m_eyeBlind;
 };
 
-#endif //FEATHER_COINSMODEL_H
+#endif //WOWLET_COINSMODEL_H

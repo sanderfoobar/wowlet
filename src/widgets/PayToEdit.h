@@ -2,8 +2,8 @@
 // Copyright (c) 2020-2021, The Monero Project.
 // Copyright (c) 2012 thomasv@gitorious
 
-#ifndef FEATHER_PAYTOEDIT_H
-#define FEATHER_PAYTOEDIT_H
+#ifndef WOWLET_PAYTOEDIT_H
+#define WOWLET_PAYTOEDIT_H
 
 #include <QObject>
 #include <QPlainTextEdit>
@@ -67,4 +67,4 @@ private:
     QVector<PartialTxOutput> m_outputs;
 };
 
-#endif //FEATHER_PAYTOEDIT_H
+#endif //WOWLET_PAYTOEDIT_H

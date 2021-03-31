@@ -29,7 +29,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="featherImage">
+        <widget class="QLabel" name="wowletImage">
          <property name="minimumSize">
           <size>
            <width>128</width>
@@ -204,7 +204,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Automatically connect to a remote node, hosted by the feather team and various trusted Wownero community members. These nodes are provided as &quot;best effort&quot;.</string>
+         <string>Automatically connect to a remote node, hosted by the wowlet team and various trusted Wownero community members. These nodes are provided as &quot;best effort&quot;.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

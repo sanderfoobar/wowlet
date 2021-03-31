@@ -19,7 +19,7 @@ void NodeModel::clear() {
     endResetModel();
 }
 
-void NodeModel::updateNodes(const QList<FeatherNode> nodes) {
+void NodeModel::updateNodes(const QList<WowletNode> nodes) {
     beginResetModel();
     m_nodes.clear();
     m_nodes = nodes;
@@ -42,7 +42,7 @@ QVariant NodeModel::data(const QModelIndex &index, int role) const {
     if (!index.isValid() || index.row() < 0 || index.row() >= m_nodes.count())
         return QVariant();
 
-    FeatherNode node = m_nodes.at(index.row());
+    WowletNode node = m_nodes.at(index.row());
 
     if(role == Qt::DisplayRole) {
         switch(index.column()) {
@@ -94,10 +94,10 @@ QVariant NodeModel::headerData(int section, Qt::Orientation orientation, int rol
     return QVariant();
 }
 
-FeatherNode NodeModel::node(int row) {
+WowletNode NodeModel::node(int row) {
     if (row < 0 || row >= m_nodes.size()) {
         qCritical("%s: no reddit post for index %d", __FUNCTION__, row);
-        return FeatherNode();
+        return WowletNode();
     }
     return m_nodes.at(row);
 }

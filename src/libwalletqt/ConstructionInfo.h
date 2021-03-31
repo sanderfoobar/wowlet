@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2014-2021, The Monero Project.
 
-#ifndef FEATHER_CONSTRUCTIONINFO_H
-#define FEATHER_CONSTRUCTIONINFO_H
+#ifndef WOWLET_CONSTRUCTIONINFO_H
+#define WOWLET_CONSTRUCTIONINFO_H
 
 #include <wallet/api/wallet2_api.h>
 #include <QObject>
@@ -43,4 +43,4 @@ private:
 };
 
 
-#endif //FEATHER_CONSTRUCTIONINFO_H
+#endif //WOWLET_CONSTRUCTIONINFO_H

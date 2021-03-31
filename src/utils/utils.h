@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_UTILS_H
-#define FEATHER_UTILS_H
+#ifndef WOWLET_UTILS_H
+#define WOWLET_UTILS_H
 
 #include <QRegExp>
 #include <QStandardItemModel>
@@ -86,4 +86,4 @@ public:
 
 class AppContext;  // forward declaration
 
-#endif //FEATHER_UTILS_H
+#endif //WOWLET_UTILS_H

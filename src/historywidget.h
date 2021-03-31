@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_HISTORYWIDGET_H
-#define FEATHER_HISTORYWIDGET_H
+#ifndef WOWLET_HISTORYWIDGET_H
+#define WOWLET_HISTORYWIDGET_H
 
 #include "model/TransactionHistoryModel.h"
 #include "model/TransactionHistoryProxyModel.h"
@@ -60,4 +60,4 @@ private:
     Wallet *m_wallet = nullptr;
 };
 
-#endif //FEATHER_HISTORYWIDGET_H
+#endif //WOWLET_HISTORYWIDGET_H

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_RESTOREHEIGHTLOOKUP_H
-#define FEATHER_RESTOREHEIGHTLOOKUP_H
+#ifndef WOWLET_RESTOREHEIGHTLOOKUP_H
+#define WOWLET_RESTOREHEIGHTLOOKUP_H
 
 #include <cstdio>
 #include <cstdlib>
@@ -73,4 +73,4 @@ struct RestoreHeightLookup {
     }
 };
 
-#endif //FEATHER_RESTOREHEIGHTLOOKUP_H
+#endif //WOWLET_RESTOREHEIGHTLOOKUP_H

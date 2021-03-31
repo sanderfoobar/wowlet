@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_TXCONFDIALOG_H
-#define FEATHER_TXCONFDIALOG_H
+#ifndef WOWLET_TXCONFDIALOG_H
+#define WOWLET_TXCONFDIALOG_H
 
 #include <QDialog>
 #include "libwalletqt/PendingTransaction.h"
@@ -33,4 +33,4 @@ private:
     QString m_description;
 };
 
-#endif //FEATHER_TXCONFDIALOG_H
+#endif //WOWLET_TXCONFDIALOG_H

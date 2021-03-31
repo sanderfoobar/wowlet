@@ -83,11 +83,11 @@ XMRigWidget::XMRigWidget(AppContext *ctx, QWidget *parent) :
 
     // username/password
     connect(ui->lineEdit_password, &QLineEdit::editingFinished, [=]() {
-        m_ctx->currentWallet->setCacheAttribute("feather.xmrig_password", ui->lineEdit_password->text());
+        m_ctx->currentWallet->setCacheAttribute("wowlet.xmrig_password", ui->lineEdit_password->text());
         m_ctx->storeWallet();
     });
     connect(ui->lineEdit_address, &QLineEdit::editingFinished, [=]() {
-        m_ctx->currentWallet->setCacheAttribute("feather.xmrig_username", ui->lineEdit_address->text());
+        m_ctx->currentWallet->setCacheAttribute("wowlet.xmrig_username", ui->lineEdit_address->text());
         m_ctx->storeWallet();
     });
 
@@ -104,17 +104,17 @@ void XMRigWidget::onWalletClosed() {
 
 void XMRigWidget::onWalletOpened(Wallet *wallet){
     // Xmrig username
-    auto username = m_ctx->currentWallet->getCacheAttribute("feather.xmrig_username");
+    auto username = m_ctx->currentWallet->getCacheAttribute("wowlet.xmrig_username");
     if(!username.isEmpty())
         ui->lineEdit_address->setText(username);
 
     // Xmrig passwd
-    auto password = m_ctx->currentWallet->getCacheAttribute("feather.xmrig_password");
+    auto password = m_ctx->currentWallet->getCacheAttribute("wowlet.xmrig_password");
     if(!password.isEmpty()) {
         ui->lineEdit_password->setText(password);
     } else {
-        ui->lineEdit_password->setText("featherwallet");
-        m_ctx->currentWallet->setCacheAttribute("feather.xmrig_password", ui->lineEdit_password->text());
+        ui->lineEdit_password->setText("wowlet");
+        m_ctx->currentWallet->setCacheAttribute("wowlet.xmrig_password", ui->lineEdit_password->text());
     }
 }
 
@@ -145,8 +145,8 @@ void XMRigWidget::onStartClicked() {
     xmrigPath = config()->get(Config::xmrigPath).toString();
 
     // username is receiving address usually
-    auto username = m_ctx->currentWallet->getCacheAttribute("feather.xmrig_username");
-    auto password = m_ctx->currentWallet->getCacheAttribute("feather.xmrig_password");
+    auto username = m_ctx->currentWallet->getCacheAttribute("wowlet.xmrig_username");
+    auto password = m_ctx->currentWallet->getCacheAttribute("wowlet.xmrig_password");
 
     if(username.isEmpty()) {
         QString err = "Please specify a receiving address on the Settings screen";

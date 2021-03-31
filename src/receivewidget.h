@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_RECEIVEWIDGET_H
-#define FEATHER_RECEIVEWIDGET_H
+#ifndef WOWLET_RECEIVEWIDGET_H
+#define WOWLET_RECEIVEWIDGET_H
 
 #include "appcontext.h"
 #include "qrcode/QrCode.h"
@@ -59,4 +59,4 @@ private:
     void showQrCodeDialog();
 };
 
-#endif //FEATHER_RECEIVEWIDGET_H
+#endif //WOWLET_RECEIVEWIDGET_H

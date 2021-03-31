@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_CCSENTRY_H
-#define FEATHER_CCSENTRY_H
+#ifndef WOWLET_CCSENTRY_H
+#define WOWLET_CCSENTRY_H
 
 #include <QString>
 
@@ -21,4 +21,4 @@ struct CCSEntry {
     int contributions = 0;
 };
 
-#endif //FEATHER_CCSENTRY_H
+#endif //WOWLET_CCSENTRY_H

@@ -10,7 +10,7 @@
 #include <QMessageBox>
 
 #include <monero_seed/wordlist.hpp>  // tevador 14 word
-#include "utils/FeatherSeed.h"
+#include "utils/WowletSeed.h"
 
 RestorePage::RestorePage(AppContext *ctx, QWidget *parent) :
         QWizardPage(parent),
@@ -21,7 +21,7 @@ RestorePage::RestorePage(AppContext *ctx, QWidget *parent) :
     ui->restoreFrame->hide();
     ui->label_errorString->hide();
 
-    QFont f("feather");
+    QFont f("wowlet");
     f.setStyleHint(QFont::Monospace);
 
     auto data = Utils::fileOpen(":/assets/mnemonic_25_english.txt");
@@ -150,7 +150,7 @@ bool RestorePage::validatePage() {
         }
     }
 
-    auto _seed = FeatherSeed(m_ctx->restoreHeights[m_ctx->networkType], m_ctx->coinName, m_ctx->seedLanguage, seedSplit);
+    auto _seed = WowletSeed(m_ctx->restoreHeights[m_ctx->networkType], m_ctx->coinName, m_ctx->seedLanguage, seedSplit);
     if (!_seed.errorString.isEmpty()) {
         QMessageBox::warning(this, "Invalid seed", QString("Invalid seed:\n\n%1").arg(_seed.errorString));
         ui->seedEdit->setStyleSheet(errStyle);

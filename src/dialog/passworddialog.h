@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_PASSWORDDIALOG_H
-#define FEATHER_PASSWORDDIALOG_H
+#ifndef WOWLET_PASSWORDDIALOG_H
+#define WOWLET_PASSWORDDIALOG_H
 
 #include <QDialog>
 
@@ -24,4 +24,4 @@ private:
     Ui::PasswordDialog *ui;
 };
 
-#endif //FEATHER_PASSWORDDIALOG_H
+#endif //WOWLET_PASSWORDDIALOG_H

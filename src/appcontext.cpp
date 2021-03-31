@@ -142,7 +142,7 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     this->walletManager = WalletManager::instance();
     QString logPath = QString("%1/daemon.log").arg(configDirectory);
     Monero::Utils::onStartup();
-    Monero::Wallet::init("", "feather", logPath.toStdString(), true);
+    Monero::Wallet::init("", "wowlet", logPath.toStdString(), true);
 
     bool logLevelFromEnv;
     int logLevel = qEnvironmentVariableIntValue("MONERO_LOG_LEVEL", &logLevelFromEnv);
@@ -444,7 +444,7 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
 }
 
 void AppContext::onWSNodes(const QJsonArray &nodes) {
-    QList<QSharedPointer<FeatherNode>> l;
+    QList<QSharedPointer<WowletNode>> l;
     for (auto &&entry: nodes) {
         auto obj = entry.toObject();
         auto nettype = obj.value("nettype");
@@ -463,12 +463,12 @@ void AppContext::onWSNodes(const QJsonArray &nodes) {
         if(type == "tor" && (!(this->isTails || this->isWhonix || this->isTorSocks)))
             continue;
 
-        auto node = new FeatherNode(
+        auto node = new WowletNode(
                 obj.value("address").toString(),
                  obj.value("height").toInt(),
                  obj.value("target_height").toInt(),
                 obj.value("online").toBool());
-        QSharedPointer<FeatherNode> r = QSharedPointer<FeatherNode>(node);
+        QSharedPointer<WowletNode> r = QSharedPointer<WowletNode>(node);
         l.append(r);
     }
     this->nodes->onWSNodesReceived(l);
@@ -536,7 +536,7 @@ void AppContext::createConfigDirectory(const QString &dir) {
     }
 }
 
-void AppContext::createWallet(FeatherSeed seed, const QString &path, const QString &password) {
+void AppContext::createWallet(WowletSeed seed, const QString &path, const QString &password) {
     if(Utils::fileExists(path)) {
         auto err = QString("Failed to write wallet to path: \"%1\"; file already exists.").arg(path);
         qCritical() << err;
@@ -552,7 +552,7 @@ void AppContext::createWallet(FeatherSeed seed, const QString &path, const QStri
     Wallet *wallet = nullptr;
     if (seed.seedType == SeedType::TEVADOR) {
         wallet = this->walletManager->createDeterministicWalletFromSpendKey(path, password, seed.language, this->networkType, seed.spendKey, seed.restoreHeight, this->kdfRounds);
-        wallet->setCacheAttribute("feather.seed", seed.mnemonic.join(" "));
+        wallet->setCacheAttribute("wowlet.seed", seed.mnemonic.join(" "));
     }
     if (seed.seedType == SeedType::MONERO) {
         wallet = this->walletManager->recoveryWallet(path, password, seed.mnemonic.join(" "), "", this->networkType, seed.restoreHeight, this->kdfRounds);
@@ -614,7 +614,7 @@ void AppContext::initRestoreHeights() {
 }
 
 void AppContext::onSetRestoreHeight(quint64 height){
-    auto seed = this->currentWallet->getCacheAttribute("feather.seed");
+    auto seed = this->currentWallet->getCacheAttribute("wowlet.seed");
     if(!seed.isEmpty()) {
         const auto msg = "This wallet has a 14 word mnemonic seed which has the restore height embedded.";
         emit setRestoreHeightError(msg);
@@ -811,7 +811,7 @@ void AppContext::onTransactionCommitted(bool status, PendingTransaction *tx, con
 
     emit transactionCommitted(status, tx, txid);
 
-    // this tx was a donation to Feather, stop our nagging
+    // this tx was a donation to WOWlet, stop our nagging
     if(this->donationSending) {
         this->donationSending = false;
         config()->set(Config::donateBeg, -1);

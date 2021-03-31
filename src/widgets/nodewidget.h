@@ -40,7 +40,7 @@ private slots:
     void onContextNodeCopy();
 
 signals:
-    void connectToNode(FeatherNode node);
+    void connectToNode(WowletNode node);
     void nodeSourceChanged(NodeSource nodeSource);
 
 private:
@@ -56,8 +56,8 @@ private:
     QAction *m_contextActionOpenStatusURL;
     QAction *m_contextActionCopy;
 
-    void showContextMenu(const QPoint &pos, const FeatherNode &node);
-    FeatherNode selectedNode();
+    void showContextMenu(const QPoint &pos, const WowletNode &node);
+    WowletNode selectedNode();
 };
 
 #endif // NODEWIDGET_H

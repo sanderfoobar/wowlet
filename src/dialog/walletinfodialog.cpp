@@ -18,7 +18,7 @@ WalletInfoDialog::WalletInfoDialog(AppContext *ctx, QWidget *parent)
 
     ui->label_walletName->setText(keys.fileName().replace(".keys", ""));
     ui->label_netType->setText(Utils::QtEnumToString(ctx->currentWallet->nettype()));
-    ui->label_seedType->setText(ctx->currentWallet->getCacheAttribute("feather.seed").isEmpty() ? "25 word" : "14 word");
+    ui->label_seedType->setText(ctx->currentWallet->getCacheAttribute("wowlet.seed").isEmpty() ? "25 word" : "14 word");
     ui->label_viewOnly->setText(ctx->currentWallet->viewOnly() ? "True" : "False");
     ui->label_path->setText(ctx->walletPath);
     ui->label_cacheSize->setText(QString("%1 MB").arg(QString::number(cache.size() / 1e6, 'f', 2)));

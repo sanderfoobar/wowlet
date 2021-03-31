@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_WIZARDMENU_H
-#define FEATHER_WIZARDMENU_H
+#ifndef WOWLET_WIZARDMENU_H
+#define WOWLET_WIZARDMENU_H
 
 #include <QLabel>
 #include <QWizardPage>
@@ -30,4 +30,4 @@ private:
     Ui::MenuPage *ui;
 };
 
-#endif //FEATHER_WIZARDMENU_H
+#endif //WOWLET_WIZARDMENU_H

@@ -3,7 +3,7 @@
 
 #include "debuginfodialog.h"
 #include "ui_debuginfodialog.h"
-#include "config-feather.h"
+#include "config-wowlet.h"
 
 DebugInfoDialog::DebugInfoDialog(AppContext *ctx, QWidget *parent)
         : QDialog(parent)
@@ -40,7 +40,7 @@ void DebugInfoDialog::updateInfo() {
     else
         torStatus = "Unknown";
 
-    ui->label_featherVersion->setText(QString("%1-%2").arg(FEATHER_VERSION, FEATHER_BRANCH));
+    ui->label_wowletVersion->setText(QString("%1-%2").arg(WOWLET_VERSION, WOWLET_BRANCH));
     ui->label_moneroVersion->setText(QString("%1-%2").arg(MONERO_VERSION, MONERO_BRANCH));
 
     ui->label_walletHeight->setText(QString::number(m_ctx->currentWallet->blockChainHeight()));
@@ -56,7 +56,7 @@ void DebugInfoDialog::updateInfo() {
     ui->label_websocketStatus->setText(Utils::QtEnumToString(m_ctx->ws->webSocket.state()).remove("State"));
 
     ui->label_netType->setText(Utils::QtEnumToString(m_ctx->currentWallet->nettype()));
-    ui->label_seedType->setText(m_ctx->currentWallet->getCacheAttribute("feather.seed").isEmpty() ? "25 word" : "14 word");
+    ui->label_seedType->setText(m_ctx->currentWallet->getCacheAttribute("wowlet.seed").isEmpty() ? "25 word" : "14 word");
     ui->label_viewOnly->setText(m_ctx->currentWallet->viewOnly() ? "True" : "False");
     ui->label_primaryOnly->setText(m_ctx->currentWallet->balance(0) == m_ctx->currentWallet->balanceAll() ? "True" : "False");
 
@@ -89,7 +89,7 @@ QString DebugInfoDialog::statusToString(Wallet::ConnectionStatus status) {
 void DebugInfoDialog::copyToClipboad() {
     // Two spaces at the end of each line are for newlines in Markdown
     QString text = "";
-    text += QString("WOWlet version: %1  \n").arg(ui->label_featherVersion->text());
+    text += QString("WOWlet version: %1  \n").arg(ui->label_wowletVersion->text());
     text += QString("Wownero version: %1  \n").arg(ui->label_moneroVersion->text());
 
     text += QString("Wallet height: %1  \n").arg(ui->label_walletHeight->text());

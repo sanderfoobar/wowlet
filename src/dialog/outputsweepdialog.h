@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_OUTPUTSWEEPDIALOG_H
-#define FEATHER_OUTPUTSWEEPDIALOG_H
+#ifndef WOWLET_OUTPUTSWEEPDIALOG_H
+#define WOWLET_OUTPUTSWEEPDIALOG_H
 
 #include <QDialog>
 
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif //FEATHER_OUTPUTSWEEPDIALOG_H
+#endif //WOWLET_OUTPUTSWEEPDIALOG_H

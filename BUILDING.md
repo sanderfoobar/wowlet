@@ -13,7 +13,7 @@ Static builds via Docker are done in 3 steps:
 ### Linux (reproducible)
 
 The docker image for reproducible Linux static builds uses Ubuntu 16.04 and compiles the required libraries statically 
-so that the resulting Feather binary is static. For more information, check the Dockerfile: `Dockerfile`.
+so that the resulting `wowlet` binary is static. For more information, check the Dockerfile: `Dockerfile`.
 
 #### 1. Clone
 
@@ -99,7 +99,7 @@ git clone --recursive https://git.wownero.com/wowlet/wowlet.git
 
 Get the latest LTS from here: https://www.qt.io/offline-installers and install.
 
-Build Feather.
+Build WOWlet.
 
 ```bash
 CMAKE_PREFIX_PATH=~/Qt5.15.1/5.15.1/clang_64 make mac-release

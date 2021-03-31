@@ -429,7 +429,7 @@
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionOfficialWebsite"/>
-    <addaction name="actionDonate_to_Feather"/>
+    <addaction name="actionDonate_to_Wowlet"/>
     <addaction name="separator"/>
     <addaction name="actionReport_bug"/>
     <addaction name="actionShow_debug_info"/>
@@ -504,7 +504,7 @@
     <string>Report bug</string>
    </property>
   </action>
-  <action name="actionDonate_to_Feather">
+  <action name="actionDonate_to_Wowlet">
    <property name="text">
     <string>Donate to WOWlet</string>
    </property>

@@ -25,7 +25,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="Feather">
+     <widget class="QWidget" name="WOWlet">
       <attribute name="title">
        <string>WOWlet</string>
       </attribute>

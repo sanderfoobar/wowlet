@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_SEEDDIALOG_H
-#define FEATHER_SEEDDIALOG_H
+#ifndef WOWLET_SEEDDIALOG_H
+#define WOWLET_SEEDDIALOG_H
 
 #include <QDialog>
 #include "libwalletqt/Wallet.h"
@@ -26,4 +26,4 @@ private:
 };
 
 
-#endif //FEATHER_SEEDDIALOG_H
+#endif //WOWLET_SEEDDIALOG_H

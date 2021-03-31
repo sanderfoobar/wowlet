@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_WHONIX_H
-#define FEATHER_WHONIX_H
+#ifndef WOWLET_WHONIX_H
+#define WOWLET_WHONIX_H
 
 #include <QString>
 
@@ -12,4 +12,4 @@ struct WhonixOS {
 };
 
 
-#endif //FEATHER_WHONIX_H
+#endif //WOWLET_WHONIX_H

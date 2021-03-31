@@ -8,7 +8,7 @@
 #include "utils/utils.h"
 #include "utils/tor.h"
 #include "appcontext.h"
-#include "config-feather.h"
+#include "config-wowlet.h"
 
 QString Tor::torHost = "127.0.0.1";
 quint16 Tor::torPort = 9050;
@@ -116,7 +116,7 @@ void Tor::start() {
 }
 
 void Tor::checkConnection() {
-    // We might not be able to connect to localhost if torsocks is used to start feather
+    // We might not be able to connect to localhost if torsocks is used to start wowlet
     if (m_ctx->isTorSocks)
         this->setConnectionState(true);
 

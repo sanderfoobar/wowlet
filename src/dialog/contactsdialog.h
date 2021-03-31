@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_CONTACTSDIALOG_H
-#define FEATHER_CONTACTSDIALOG_H
+#ifndef WOWLET_CONTACTSDIALOG_H
+#define WOWLET_CONTACTSDIALOG_H
 
 #include <QDialog>
 
@@ -28,4 +28,4 @@ private:
     QString m_name;
 };
 
-#endif //FEATHER_CONTACTSDIALOG_H
+#endif //WOWLET_CONTACTSDIALOG_H

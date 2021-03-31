@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_FPROCESS_H
-#define FEATHER_FPROCESS_H
+#ifndef WOWLET_FPROCESS_H
+#define WOWLET_FPROCESS_H
 
 #include <QProcess>
 
@@ -21,4 +21,4 @@ protected:
 };
 
 
-#endif //FEATHER_FPROCESS_H
+#endif //WOWLET_FPROCESS_H

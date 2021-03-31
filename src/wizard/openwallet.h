@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_OPENWALLET_H
-#define FEATHER_OPENWALLET_H
+#ifndef WOWLET_OPENWALLET_H
+#define WOWLET_OPENWALLET_H
 
 #include <QLabel>
 #include <QWizardPage>
@@ -38,4 +38,4 @@ private:
     QStandardItemModel *m_model;
 };
 
-#endif //FEATHER_OPENWALLET_H
+#endif //WOWLET_OPENWALLET_H

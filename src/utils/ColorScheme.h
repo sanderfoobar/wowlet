@@ -2,8 +2,8 @@
 // Copyright (c) 2020-2021, The Monero Project.
 // Copyright (c) 2012 thomasv@gitorious
 
-#ifndef FEATHER_COLORSCHEME_H
-#define FEATHER_COLORSCHEME_H
+#ifndef WOWLET_COLORSCHEME_H
+#define WOWLET_COLORSCHEME_H
 
 #include <QString>
 #include <QVector>
@@ -41,4 +41,4 @@ public:
 };
 
 
-#endif //FEATHER_COLORSCHEME_H
+#endif //WOWLET_COLORSCHEME_H

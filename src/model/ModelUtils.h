@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2020-2021, The Monero Project.
 
-#ifndef FEATHER_MODELUTILS_H
-#define FEATHER_MODELUTILS_H
+#ifndef WOWLET_MODELUTILS_H
+#define WOWLET_MODELUTILS_H
 
 #include <QString>
 #include <QModelIndex>
@@ -15,4 +15,4 @@ public:
 };
 
 
-#endif //FEATHER_MODELUTILS_H
+#endif //WOWLET_MODELUTILS_H

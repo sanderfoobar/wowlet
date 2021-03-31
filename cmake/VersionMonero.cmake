@@ -46,4 +46,4 @@ else ()
     set(MONERO_VERSION "${TAG}")
 endif()
 
-configure_file("cmake/config-feather.h.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/src/config-feather.h")
+configure_file("cmake/config-wowlet.h.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/src/config-wowlet.h")

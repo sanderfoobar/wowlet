@@ -93,7 +93,7 @@ file(GLOB_RECURSE SRC_SOURCES *.cpp)
 file(GLOB_RECURSE SRC_HEADERS *.h)
 
 target_include_directories(wowlet PUBLIC
-        ${CMAKE_BINARY_DIR}/src/feather_autogen/include
+        ${CMAKE_BINARY_DIR}/src/wowlet_autogen/include
         ${CMAKE_SOURCE_DIR}/monero/include
         ${CMAKE_SOURCE_DIR}/monero/src
         ${CMAKE_SOURCE_DIR}/monero/external/easylogging++

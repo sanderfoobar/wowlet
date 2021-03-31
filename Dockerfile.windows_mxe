@@ -48,7 +48,7 @@ RUN apt install -y \
     wget \
     xz-utils
 
-RUN git clone -b feather-patch --depth 1 https://git.wownero.com/feather/mxe.git && \
+RUN git clone -b wowlet-patch --depth 1 https://git.wownero.com/wowlet/mxe.git && \
     cd mxe && \
     make -j$THREADS MXE_TARGETS='x86_64-w64-mingw32.static' gcc libqrencode pkgconf libgpg_error libgcrypt cmake libsodium lzma readline libzmq boost qtbase qtsvg qtwebsockets qtimageformats qtmultimedia
 
@@ -67,7 +67,7 @@ RUN ln -s /mxe/usr/x86_64-w64-mingw32.static/lib/libsicuin.a /mxe/usr/x86_64-w64
 
 ENV PATH="/mxe/usr/bin/:$PATH"
 
-RUN git clone https://git.wownero.com/feather/monero-seed.git && \
+RUN git clone https://git.wownero.com/wowlet/monero-seed.git && \
     cd monero-seed && \
     cmake -DCMAKE_BUILD_TYPE=Release -Bbuild && \
     make -Cbuild -j$THREADS && \

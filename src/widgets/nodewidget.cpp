@@ -49,7 +49,7 @@ NodeWidget::NodeWidget(QWidget *parent)
 
 void NodeWidget::onShowWSContextMenu(const QPoint &pos) {
     m_activeView = ui->wsView;
-    FeatherNode node = this->selectedNode();
+    WowletNode node = this->selectedNode();
     if (node.full.isEmpty()) return;
 
     this->showContextMenu(pos, node);
@@ -57,13 +57,13 @@ void NodeWidget::onShowWSContextMenu(const QPoint &pos) {
 
 void NodeWidget::onShowCustomContextMenu(const QPoint &pos) {
     m_activeView = ui->customView;
-    FeatherNode node = this->selectedNode();
+    WowletNode node = this->selectedNode();
     if (node.full.isEmpty()) return;
 
     this->showContextMenu(pos, node);
 }
 
-void NodeWidget::showContextMenu(const QPoint &pos, const FeatherNode &node) {
+void NodeWidget::showContextMenu(const QPoint &pos, const WowletNode &node) {
     QMenu menu(this);
 
     if (!node.isActive) {
@@ -86,27 +86,27 @@ void NodeWidget::onContextConnect() {
     else
         m_activeView = ui->wsView;
 
-    FeatherNode node = this->selectedNode();
+    WowletNode node = this->selectedNode();
     if (!node.full.isEmpty())
         emit connectToNode(node);
 }
 
 void NodeWidget::onContextStatusURL() {
-    FeatherNode node = this->selectedNode();
+    WowletNode node = this->selectedNode();
     if (!node.full.isEmpty())
         Utils::externalLinkWarning(this, node.as_url());
 }
 
 void NodeWidget::onContextNodeCopy() {
-    FeatherNode node = this->selectedNode();
+    WowletNode node = this->selectedNode();
     Utils::copyToClipboard(node.full);
 }
 
-FeatherNode NodeWidget::selectedNode() {
+WowletNode NodeWidget::selectedNode() {
     QModelIndex index = m_activeView->currentIndex();
-    if (!index.isValid()) return FeatherNode();
+    if (!index.isValid()) return WowletNode();
 
-    FeatherNode node;
+    WowletNode node;
     if (m_activeView == ui->customView) {
         node = m_customModel->node(index.row());
     } else {
@@ -118,10 +118,10 @@ FeatherNode NodeWidget::selectedNode() {
 void NodeWidget::onContextCustomNodeRemove() {
     QModelIndex index = ui->customView->currentIndex();
     if (!index.isValid()) return;
-    FeatherNode node = m_customModel->node(index.row());
+    WowletNode node = m_customModel->node(index.row());
 
     auto nodes = m_ctx->nodes->customNodes();
-    QMutableListIterator<FeatherNode> i(nodes);
+    QMutableListIterator<WowletNode> i(nodes);
     while (i.hasNext())
         if (i.next() == node)
             i.remove();
@@ -141,14 +141,14 @@ void NodeWidget::onCustomAddClicked(){
     if (!ok || text.isEmpty())
         return;
 
-    QList<FeatherNode> nodesList;
+    QList<WowletNode> nodesList;
     auto newNodesList = text.split("\n");
     for(auto &newNodeText: newNodesList) {
         newNodeText = newNodeText.replace("\r", "").trimmed();
         if(newNodeText.isEmpty())
             continue;
 
-        auto node = FeatherNode(newNodeText);
+        auto node = WowletNode(newNodeText);
         node.custom = true;
         nodesList.append(node);
     }
