@@ -10,6 +10,10 @@
 #include "mainwindow.h"
 #include "cli.h"
 
+#ifdef HAS_OPENVR
+#include "vr/main.h"
+#endif
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
@@ -84,6 +88,12 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     QCommandLineOption backgroundPasswordOption(QStringList() << "daemon-password", "Password for connecting to the wowlet websocket service", "backgroundPassword");
     parser.addOption(backgroundPasswordOption);
 
+    QCommandLineOption openVROption(QStringList() << "openvr", "Start Wowlet OpenVR");
+    parser.addOption(openVROption);
+
+    QCommandLineOption openVRDebugOption(QStringList() << "openvr-debug", "Start the Wowlet VR interface without initializing OpenVR - for debugging purposes.");
+    parser.addOption(openVRDebugOption);
+
     auto parsed = parser.parse(argv_);
     if(!parsed) {
         qCritical() << parser.errorText();
@@ -99,17 +109,35 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     bool exportContacts = parser.isSet(exportContactsOption);
     bool exportTxHistory = parser.isSet(exportTxHistoryOption);
     bool backgroundAddressEnabled = parser.isSet(backgroundOption);
+    bool openVREnabled = parser.isSet(openVROption);
     bool cliMode = exportContacts || exportTxHistory || backgroundAddressEnabled;
 
     qRegisterMetaType<QVector<QString>>();
 
+    if(openVREnabled) {
+#ifdef HAS_OPENVR
+        QApplication vr_app(argc, argv);
+        auto *ctx = new AppContext(&parser);
+        auto *vr = new wowletVR::WowletVR(ctx, &parser, &vr_app);
+        qDebug() << "Context: " << qgetenv("QMLSCENE_DEVICE");
+        if(vr->errors.length() > 0)
+            return 1;
+
+        vr->render();
+        return vr_app.exec();
+#else
+        qCritical() << "Wowlet compiled without OpenVR support.";
+        exit(1);
+#endif
+    }
+
     if(cliMode) {
+        auto *ctx = new AppContext(&parser);
         QCoreApplication cli_app(argc, argv);
         QCoreApplication::setApplicationName("wowlet");
         QCoreApplication::setOrganizationDomain("wownero.org");
         QCoreApplication::setOrganizationName("wownero.org");
 
-        auto *ctx = new AppContext(&parser);
         ctx->applicationPath = QString(argv[0]);
         ctx->isDebug = debugMode;
 
