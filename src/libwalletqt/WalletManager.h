@@ -36,8 +36,10 @@ public:
         LogLevel_Min = Monero::WalletManagerFactory::LogLevel_Min,
         LogLevel_Max = Monero::WalletManagerFactory::LogLevel_Max,
     };
-
+    explicit WalletManager(QObject *parent = nullptr);
     static WalletManager * instance();
+    ~WalletManager();
+
     // wizard: createWallet path;
     Q_INVOKABLE Wallet * createWallet(const QString &path, const QString &password,
                                       const QString &language, NetworkType::Type nettype = NetworkType::MAINNET, quint64 kdfRounds = 1);
@@ -186,9 +188,6 @@ signals:
 public slots:
 private:
     friend class WalletPassphraseListenerImpl;
-
-    explicit WalletManager(QObject *parent = 0);
-    ~WalletManager();
 
     bool isMining() const;
 

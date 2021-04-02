@@ -574,8 +574,6 @@ void MainWindow::onWalletOpenedError(const QString &err) {
 
 void MainWindow::onWalletCreated(Wallet *wallet) {
     qDebug() << Q_FUNC_INFO;
-    // emit signal on behalf of walletManager
-    m_ctx->walletManager->walletOpened(wallet);
 }
 
 void MainWindow::onWalletOpened(Wallet *wallet) {

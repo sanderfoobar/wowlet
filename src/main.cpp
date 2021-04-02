@@ -114,12 +114,15 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 
     qRegisterMetaType<QVector<QString>>();
 
+#ifdef QML
+    qputenv("QML_DISABLE_DISK_CACHE", "1");
+#endif
+
     if(openVREnabled) {
 #ifdef HAS_OPENVR
         QApplication vr_app(argc, argv);
         auto *ctx = new AppContext(&parser);
-        auto *vr = new wowletVR::WowletVR(ctx, &parser, &vr_app);
-        qDebug() << "Context: " << qgetenv("QMLSCENE_DEVICE");
+        auto *vr = new wowletvr::WowletVR(ctx, &parser, &vr_app);
         if(vr->errors.length() > 0)
             return 1;
 

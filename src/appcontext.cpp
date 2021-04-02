@@ -107,6 +107,8 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     // Tor & socks proxy
     this->ws = new WSClient(this, m_wsUrl);
     connect(this->ws, &WSClient::WSMessage, this, &AppContext::onWSMessage);
+    connect(this->ws, &WSClient::connectionEstablished, this, &AppContext::wsConnected);
+    connect(this->ws, &WSClient::closed, this, &AppContext::wsDisconnected);
 
     // Store the wallet every 2 minutes
     m_storeTimer.start(2 * 60 * 1000);
@@ -330,6 +332,8 @@ void AppContext::onWalletOpened(Wallet *wallet) {
     this->refreshed = false;
     this->currentWallet = wallet;
     this->walletPath = this->currentWallet->path() + ".keys";
+    QFileInfo fileInfo(this->currentWallet->path());
+    this->walletName = fileInfo.fileName();
     this->walletViewOnly = this->currentWallet->viewOnly();
     config()->set(Config::walletPath, this->walletPath);
 
@@ -536,6 +540,12 @@ void AppContext::createConfigDirectory(const QString &dir) {
     }
 }
 
+void AppContext::createWalletWithoutSpecifyingSeed(const QString &name, const QString &password) {
+    WowletSeed seed = WowletSeed(this->restoreHeights[this->networkType], this->coinName, this->seedLanguage);
+    auto path = QDir(this->defaultWalletDir).filePath(name);
+    this->createWallet(seed, path, password);
+}
+
 void AppContext::createWallet(WowletSeed seed, const QString &path, const QString &password) {
     if(Utils::fileExists(path)) {
         auto err = QString("Failed to write wallet to path: \"%1\"; file already exists.").arg(path);
@@ -605,6 +615,9 @@ void AppContext::createWalletFinish(const QString &password) {
     this->currentWallet->store();
     this->walletPassword = password;
     emit walletCreated(this->currentWallet);
+
+    // emit signal on behalf of walletManager, open wallet
+    this->walletManager->walletOpened(this->currentWallet);
 }
 
 void AppContext::initRestoreHeights() {
@@ -835,7 +848,13 @@ void AppContext::updateBalance() {
     AppContext::balance = balance_u / globals::cdiv;
     double spendable = this->currentWallet->unlockedBalance();
 
+    // formatted
+    QString fmt_str = QString("Balance: %1 WOW").arg(Utils::balanceFormat(spendable));
+    if (balance > spendable)
+        fmt_str += QString(" (+%1 WOW unconfirmed)").arg(Utils::balanceFormat(balance - spendable));
+
     emit balanceUpdated(balance_u, spendable);
+    emit balanceUpdatedFormatted(fmt_str);
 }
 
 void AppContext::syncStatusUpdated(quint64 height, quint64 target) {

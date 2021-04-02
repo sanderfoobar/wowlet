@@ -13,6 +13,7 @@
 using namespace std::chrono;
 
 
+WalletKeysFiles::WalletKeysFiles() = default;  // to please Q_DECLARE_METATYPE
 WalletKeysFiles::WalletKeysFiles(const QFileInfo &info, int networkType, QString address) :
         m_fileName(info.fileName()),
         m_modified(info.lastModified().toSecsSinceEpoch()),
@@ -45,6 +46,10 @@ QString WalletKeysFiles::path() const {
 
 int WalletKeysFiles::networkType() const {
     return m_networkType;
+}
+
+QVariant WalletKeysFiles::toVariant() const {
+    return QVariant::fromValue<WalletKeysFiles>(*this);
 }
 
 QJsonObject WalletKeysFiles::toJsonObject() const {

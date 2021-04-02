@@ -80,8 +80,8 @@ void WSServer::onNewConnection() {
 
     // blast wallet listing on connect
     QJsonArray arr;
-    for(const WalletKeysFiles &wallet: m_ctx->listWallets())
-        arr << wallet.toJsonObject();
+    for(const QVariant &wallet: m_ctx->listWallets())
+        arr << wallet.value<WalletKeysFiles>().toJsonObject();
     auto welcomeWalletMessage = WSServer::createWSMessage("walletList", arr);
     pSocket->sendBinaryMessage(welcomeWalletMessage);
 
@@ -336,9 +336,6 @@ void WSServer::onWalletCreatedError(const QString &err) {
 void WSServer::onWalletCreated(Wallet *wallet) {
     auto obj = wallet->toJsonObject();
     sendAll("walletCreated", obj);
-
-    // emit signal on behalf of walletManager
-    m_ctx->walletManager->walletOpened(wallet);
 }
 
 void WSServer::onSynchronized() {
@@ -350,7 +347,7 @@ void WSServer::onWalletOpenPasswordRequired(bool invalidPassword, const QString 
     QJsonObject obj;
     obj["invalidPassword"] = invalidPassword;
     obj["path"] = path;
-    sendAll("synchronized", obj);
+    sendAll("walletOpenPasswordRequired", obj);
 }
 
 void WSServer::onConnectionStatusChanged(int status) {

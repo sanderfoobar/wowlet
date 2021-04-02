@@ -49,11 +49,9 @@ if(OPENVR)
             "vr/utils/*.cpp"
             )
     list(APPEND SOURCE_FILES ${SOURCE_FILES_QML})
-
-    if(MINGW)
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-deprecated-declarations")  # @TODO: removeme
-    endif()
 endif()
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-deprecated-declarations")  # @TODO: removeme
 
 add_subdirectory(libwalletqt)
 add_subdirectory(model)

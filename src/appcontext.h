@@ -60,8 +60,11 @@ public:
 
     QString walletPath;
     QString walletPassword = "";
+    QString walletName;
     bool walletViewOnly = false;
     NetworkType::Type networkType;
+
+    Q_PROPERTY(QString walletName MEMBER walletName);
 
     QString applicationPath;
 
@@ -89,24 +92,20 @@ public:
     static QMap<QString, QString> txCache;
     static TxFiatHistory *txFiatHistory;
 
-    QList<WalletKeysFiles> listWallets() {
-        // return listing of wallet .keys items
-        m_walletKeysFilesModel->refresh();
-        return m_walletKeysFilesModel->listWallets();
-    }
-
     // libwalletqt
     bool refreshed = false;
+
     WalletManager *walletManager;
     Wallet *currentWallet = nullptr;
     void createWallet(WowletSeed seed, const QString &path, const QString &password);
+    Q_INVOKABLE void createWalletWithoutSpecifyingSeed(const QString &name, const QString &password);
     void createWalletViewOnly(const QString &path, const QString &password, const QString &address, const QString &viewkey, const QString &spendkey, quint64 restoreHeight);
     void createWalletFinish(const QString &password);
     void syncStatusUpdated(quint64 height, quint64 target);
     void updateBalance();
-    void initTor();
+    Q_INVOKABLE void initTor();
+    Q_INVOKABLE void initWS();
     void initRestoreHeights();
-    void initWS();
     void donateBeg();
     void refreshModels();
     void setWindowTitle(bool mining = false);
@@ -115,8 +114,21 @@ public:
     void closeWallet(bool emitClosedSignal = true, bool storeWallet = false);
     void storeWallet();
 
+    Q_INVOKABLE QVariantList listWallets() {
+        m_walletKeysFilesModel->refresh();
+
+        QVariantList list;
+        for(const WalletKeysFiles &wallet: m_walletKeysFilesModel->listWallets())
+            list << wallet.toVariant();
+        return list;
+    }
+
+    Q_INVOKABLE QString displayAmount(quint64 amount) {
+        return Utils::balanceFormat(amount);
+    }
+
 public slots:
-    void onOpenWallet(const QString& path, const QString &password);
+    Q_INVOKABLE void onOpenWallet(const QString& path, const QString &password);
     void onCreateTransaction(QString address, quint64 amount, const QString description, bool all);
     void onCreateTransactionMultiDest(const QVector<QString> &addresses, const QVector<quint64> &amounts, const QString &description);
     void onCancelTransaction(PendingTransaction *tx, const QVector<QString> &address);
@@ -151,6 +163,7 @@ signals:
     void walletClosed();
 
     void balanceUpdated(quint64 balance, quint64 spendable);
+    void balanceUpdatedFormatted(QString fmt);
     void blockchainSync(int height, int target);
     void refreshSync(int height, int target);
     void synchronized();
@@ -165,6 +178,8 @@ signals:
     void createTransactionError(QString message);
     void createTransactionCancelled(const QVector<QString> &address, double amount);
     void createTransactionSuccess(PendingTransaction *tx, const QVector<QString> &address);
+    void wsConnected();
+    void wsDisconnected();
     void redditUpdated(QList<QSharedPointer<RedditPost>> &posts);
     void nodesUpdated(QList<QSharedPointer<WowletNode>> &nodes);
     void ccsUpdated(QList<QSharedPointer<CCSEntry>> &entries);
