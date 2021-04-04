@@ -33,7 +33,7 @@ WSServer::WSServer(AppContext *ctx, const QHostAddress &host, const quint16 port
         m_ctx(ctx),
         m_password(password),
         m_pWebSocketServer(
-                new QWebSocketServer(QStringLiteral("Feather Daemon WS"),
+                new QWebSocketServer(QStringLiteral("WOWlet Daemon WS"),
                                      QWebSocketServer::NonSecureMode, this)) {
     if (!m_pWebSocketServer->listen(QHostAddress::Any, port))
         return;
@@ -201,7 +201,7 @@ void WSServer::processBinaryMessage(QByteArray buffer) {
             }
         }
 
-        FeatherSeed seed = FeatherSeed(m_ctx->restoreHeights[m_ctx->networkType], m_ctx->coinName, m_ctx->seedLanguage);
+        WowletSeed seed = WowletSeed(m_ctx->restoreHeights[m_ctx->networkType], m_ctx->coinName, m_ctx->seedLanguage);
         m_ctx->createWallet(seed, walletPath, password);
     } else if(cmd == "transactionHistory") {
         m_ctx->currentWallet->history()->refresh(m_ctx->currentWallet->currentSubaddressAccount());

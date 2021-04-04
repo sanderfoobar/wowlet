@@ -78,7 +78,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     QCommandLineOption exportTxHistoryOption(QStringList() << "export-txhistory", "Output wallet transaction history as CSV to specified path.", "file");
     parser.addOption(exportTxHistoryOption);
 
-    QCommandLineOption backgroundOption(QStringList() << "daemon", "Start Feather in the background and start a websocket server (IPv4:port)", "backgroundAddress");
+    QCommandLineOption backgroundOption(QStringList() << "daemon", "Start WOWlet in the background and start a websocket server (IPv4:port)", "backgroundAddress");
     parser.addOption(backgroundOption);
 
     QCommandLineOption backgroundPasswordOption(QStringList() << "daemon-password", "Password for connecting to the wowlet websocket service", "backgroundPassword");
