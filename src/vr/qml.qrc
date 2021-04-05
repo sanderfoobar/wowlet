@@ -1,0 +1,87 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+    <file alias="backarrow">assets/img/common/backarrow.svg</file>
+    <file alias="box_checkmark">assets/img/common/check.svg</file>
+    <file alias="on">assets/img/audio/speaker/speaker_on.svg</file>
+    <file alias="off">assets/img/audio/speaker/speaker_off.svg</file>
+    <file alias="play_pause">assets/img/audio/media_keys/outline_play_pause_white_24dp.svg</file>
+    <file alias="next">assets/img/audio/media_keys/outline_skip_next_white_24dp.svg</file>
+    <file alias="previous">assets/img/audio/media_keys/outline_skip_previous_white_24dp.svg</file>
+    <file alias="stop">assets/img/audio/media_keys/outline_stop_white_24dp.svg</file>
+    <file alias="audio_tab_icon">assets/img/main_menu_icons/audio_tab_icon.svg</file>
+    <file alias="bindings_tab_icon">assets/img/main_menu_icons/bindings_tab_icon.svg</file>
+    <file alias="chaperone_tab_icon">assets/img/main_menu_icons/chaperone_tab_icon.svg</file>
+    <file alias="motion_tab_icon">assets/img/main_menu_icons/motion_tab_icon.svg</file>
+    <file alias="offsets_tab_icon">assets/img/main_menu_icons/offsets_tab_icon.svg</file>
+    <file alias="settings_tab_icon">assets/img/main_menu_icons/settings_tab_icon.svg</file>
+    <file alias="space_fix_tab_icon">assets/img/main_menu_icons/space_fix_tab_icon.svg</file>
+    <file alias="statistics_tab_icon">assets/img/main_menu_icons/statistics_tab_icon.svg</file>
+    <file alias="steamvr_tab_icon">assets/img/main_menu_icons/steamvr_tab_icon.svg</file>
+    <file alias="utilities_tab_icon">assets/img/main_menu_icons/utilities_tab_icon.svg</file>
+    <file alias="video_tab_icon">assets/img/main_menu_icons/video_tab_icon.svg</file>
+    <file alias="rotation_tab_icon">assets/img/main_menu_icons/rotation_tab_icon.svg</file>
+    <file alias="send_icon">assets/img/send.png</file>
+    <file alias="receive_icon">assets/img/receive.svg</file>
+    <file alias="info_icon">assets/img/info.png</file>
+    <file alias="checkmark_icon">assets/img/confirmed.png</file>
+    <file alias="expired_icon">assets/img/expired.png</file>
+    <file alias="illuminati">assets/img/illuminati.png</file>
+    <file alias="chest">assets/img/chest.png</file>
+    <file alias="tutorial">assets/img/tutorial.png</file>
+    <file alias="wizard">assets/img/wizard.png</file>
+    <file alias="hypnotoad">assets/img/hypnotoad.png</file>
+    <file alias="grass">assets/img/grass.png</file>
+    <file alias="dog">assets/img/dog.gif</file>
+    <file alias="dog2">assets/img/dog2.gif</file>
+    <file alias="cpus">assets/img/cpus.png</file>
+
+    <file alias="status_disconnected">assets/img/status_disconnected.svg</file>
+    <file alias="status_connected">assets/img/status_connected.svg</file>
+    <file alias="status_waiting">assets/img/status_waiting.svg</file>
+    <file alias="status_lagging">assets/img/status_lagging.svg</file>
+
+    <file>mock/NetworkType.js</file>
+    <file>mock/OverlayController.js</file>
+    <file>mock/Settings.js</file>
+    <file>mock/Translation.js</file>
+    <file>mock/Version.js</file>
+    <file>mock/Windows.js</file>
+
+    <file alias="main">main.qml</file>
+    <file>qml/common/HourComboBox.qml</file>
+    <file>qml/common/MinuteSecondComboBox.qml</file>
+    <file>qml/common/MyDialogOkCancelPopup.qml</file>
+    <file>qml/common/MyResources.qml</file>
+    <file>qml/common/MyTextField.qml</file>
+    <file>qml/common/MyRadioButton.qml</file>
+    <file>qml/common/MyDialogOkPopup.qml</file>
+    <file>qml/common/MyPushButton2.qml</file>
+    <file>qml/common/MyComboBox.qml</file>
+    <file>qml/common/TimeAssembly.qml</file>
+    <file>qml/common/LineSeparator.qml</file>
+    <file>qml/common/FullWidthSliderBox.qml</file>
+    <file>qml/common/MyText.qml</file>
+    <file>qml/common/MyToggleButton.qml</file>
+    <file>qml/common/MyPushButton.qml</file>
+    <file>qml/common/MySlider.qml</file>
+    <file>qml/common/mainwidget.qml</file>
+    <file>qml/common/MyNumPad.qml</file>
+    <file>qml/common/MyNumPadButton.qml</file>
+    <file>qml/common/MyNumPadSendAmount.qml</file>
+    <file>qml/common/MyStackViewPage.qml</file>
+    <file>qml/wallet/ReceivePage.qml</file>
+    <file>qml/wallet/HistoryTable.qml</file>
+    <file>qml/wallet/WalletDashBoardPage.qml</file>
+
+    <file>qml/DashboardPage.qml</file>
+    <file>qml/WalletPage.qml</file>
+    <file>qml/AboutPage.qml</file>
+
+    <file>qml/wallet/send/SendPage.qml</file>
+    <file>qml/wallet/send/SendPageDashboard.qml</file>
+    <file>qml/wallet/send/SendPageNavBack.qml</file>
+    <file>qml/wallet/send/SendPagePIN.qml</file>
+    <file>qml/wallet/send/SendPageQR.qml</file>
+    <file>qml/wallet/send/SendPageTransfer.qml</file>
+</qresource>
+</RCC>
