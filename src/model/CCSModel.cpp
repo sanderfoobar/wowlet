@@ -58,7 +58,7 @@ QVariant CCSModel::data(const QModelIndex &index, int role) const
                 return entry->author;
 #ifdef Q_OS_MACOS
             case Progress:
-                return QString("%1/%2 XMR").arg(entry->raised_amount).arg(entry->target_amount);
+                return QString("%1/%2 WOW").arg(entry->raised_amount).arg(entry->target_amount);
 #endif
             default:
                 return QVariant();

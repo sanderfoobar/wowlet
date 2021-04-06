@@ -32,7 +32,7 @@ SendWidget::SendWidget(QWidget *parent) :
     ui->btn_openAlias->hide();
 
     ui->label_PayTo->setHelpText("Recipient of the funds.\n\n"
-                                 "You may enter a Monero address, or an alias (email-like address that forwards to a Monero address)");
+                                 "You may enter a Wownero address, or an alias (email-like address that forwards to a Wownero address)");
     ui->label_Description->setHelpText("Description of the transaction (optional).\n\n"
                                        "The description is not sent to the recipient of the funds. It is stored in your wallet cache, "
                                        "and displayed in the 'History' tab.");

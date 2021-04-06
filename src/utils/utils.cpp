@@ -269,7 +269,7 @@ QString Utils::xdgDesktopEntry(){
         "Exec=\"%1\" %u\n"
         "Terminal=false\n"
         "Type=Application\n"
-        "Icon=monero\n"
+        "Icon=wowlet\n"
         "Categories=Network;GNOME;Qt;\n"
         "StartupNotify=true\n"
         "X-GNOME-Bugzilla-Bugzilla=GNOME\n"
