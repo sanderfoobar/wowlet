@@ -26,7 +26,7 @@ ViewOnlyDialog::ViewOnlyDialog(AppContext *ctx, QWidget *parent)
 }
 
 void ViewOnlyDialog::onWriteViewOnlyWallet(){
-    QString fn = QFileDialog::getSaveFileName(this, "Save .keys wallet file", QDir::homePath(), "Monero wallet (*.keys)");
+    QString fn = QFileDialog::getSaveFileName(this, "Save .keys wallet file", QDir::homePath(), "Wownero wallet (*.keys)");
     if(fn.isEmpty()) return;
     if(!fn.endsWith(".keys")) fn += ".keys";
 
