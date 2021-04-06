@@ -10,24 +10,6 @@ ColumnLayout {
 
     Layout.fillWidth: true
     property string _PINLookup: ""
-    property int lookupTimeoutSecs: 5;
-    property int lookupTimeoutCounter: 2;
-
-    Timer {
-        id: lookupTimer
-        interval: 1000;
-        running: false;
-        repeat: true;
-
-        onTriggered: {
-            lookupTimeoutCounter -= 1;
-
-            if(lookupTimeoutCounter === 0) {
-                stop();
-                root.onLookupTimeout();
-            }
-        }
-    }
 
     MyText {
         Layout.fillWidth: true
@@ -153,20 +135,6 @@ ColumnLayout {
                         text: _PINLookup
                     }
                 }
-
-                RowLayout {
-                    spacing: 30
-                    Layout.fillWidth: true
-
-                    MyText {
-                        fontBold: true
-                        text: "Timeout:"
-                    }
-
-                    MyText {
-                        text: lookupTimeoutCounter + " seconds"
-                    }
-                }
             }
 
                 // Image {
@@ -227,35 +195,18 @@ ColumnLayout {
 
         numPad.enabled = false;
 
-        lookupTimer.start();
-    }
-
-    function onLookupTimeout() {
-        reset();
-        messagePopup.showMessage("Lookup failed", "Error getting address.")
-        sendStateView.state = "transferPage";
+        ctx.onLookupReceivingPIN(code);
     }
 
     function onPageCompleted(previousView) {
         reset();
     }
 
-    function onWSPINAdressReceived(pin_code, address) {
-        // address received from websockets
-        if(pin_code === _PINLookup) {
-            sendStateController.destinationAddress = address;
-            sendStateView.state = "transferPage";
-        } else {
-            console.log("PIN lookup received but we timed out already, disregard.")
-        }
-    }
 
     function reset() {
         // reset state
         _PINLookup = "";
 
-        lookupTimer.stop();
-        lookupTimeoutCounter = lookupTimeoutSecs;
         idleContainer.visible = true;
         foundContainer.visible = false;
         loadingContainer.visible = false;
@@ -265,5 +216,26 @@ ColumnLayout {
         numPad.reset();
 
         codeDisplay.text = "0 0 0 0";
+    }
+
+    Connections {
+        target: ctx
+
+        function onPinLookupReceived(address, pin) {
+            console.log("onPinLookupReceived", address);
+
+            if(pin === _PINLookup) {
+                sendStateController.destinationAddress = address;
+                sendStateView.state = "transferPage";
+            } else {
+                console.log("PIN lookup received but we timed out already, disregard.")  // undefined behavior
+            }
+        }
+
+        function onPinLookupErrorReceived() {
+            console.log("onPinLookupErrorReceived");
+            messagePopup.showMessage("Lookup failed", "Error getting address.")
+            reset();
+        }
     }
 }

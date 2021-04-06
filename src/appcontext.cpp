@@ -21,12 +21,14 @@ TxFiatHistory *AppContext::txFiatHistory = nullptr;
 double AppContext::balance = 0;
 QMap<QString, QString> AppContext::txDescriptionCache;
 QMap<QString, QString> AppContext::txCache;
+bool AppContext::isQML = false;
 
 AppContext::AppContext(QCommandLineParser *cmdargs) {
     this->m_walletKeysFilesModel = new WalletKeysFilesModel(this, this);
     this->network = new QNetworkAccessManager();
     this->networkClearnet = new QNetworkAccessManager();
     this->cmdargs = cmdargs;
+    AppContext::isQML = false;
 
 #if defined(Q_OS_MAC)
     this->isTorSocks = qgetenv("DYLD_INSERT_LIBRARIES").indexOf("libtorsocks") >= 0;
@@ -105,7 +107,7 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     connect(this, &AppContext::setCustomNodes, this->nodes, &Nodes::setCustomNodes);
 
     // Tor & socks proxy
-    this->ws = new WSClient(this, m_wsUrl);
+    this->ws = new WSClient(this, wsUrl);
     connect(this->ws, &WSClient::WSMessage, this, &AppContext::onWSMessage);
     connect(this->ws, &WSClient::connectionEstablished, this, &AppContext::wsConnected);
     connect(this->ws, &WSClient::closed, this, &AppContext::wsDisconnected);
@@ -163,11 +165,10 @@ void AppContext::initTor() {
     this->tor = new Tor(this, this);
     this->tor->start();
 
-    if (!(isWhonix)) {
+    if (!isWhonix && wsUrl.contains(".onion")) {
         this->networkProxy = new QNetworkProxy(QNetworkProxy::Socks5Proxy, Tor::torHost, Tor::torPort);
         this->network->setProxy(*networkProxy);
-        if (m_wsUrl.host().endsWith(".onion"))
-            this->ws->webSocket.setProxy(*networkProxy);
+        this->ws->webSocket.setProxy(*networkProxy);
     }
 }
 
@@ -409,7 +410,7 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
             emit blockHeightWSUpdated(this->heights);
     }
 
-    else if(cmd == "nodes") {
+    else if(cmd == "rpc_nodes") {
         this->onWSNodes(msg.value("data").toArray());
     }
 #if defined(HAS_XMRIG)
@@ -431,7 +432,7 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
         this->onWSReddit(reddit_data);
     }
 
-    else if(cmd == "wfs") {
+    else if(cmd == "funding_proposals") {
         auto ccs_data = msg.value("data").toArray();
         this->onWSCCS(ccs_data);
     }
@@ -445,6 +446,23 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
         auto txFiatHistory_data = msg.value("data").toObject();
         AppContext::txFiatHistory->onWSData(txFiatHistory_data);
     }
+#if defined(HAS_OPENVR)
+    else if(cmd == "requestPIN") {
+        auto pin = msg.value("data").toString();
+        emit pinReceived(pin);
+    }
+
+    else if(cmd == "lookupPIN") {
+        auto lookup_data = msg.value("data").toObject();
+        auto address = lookup_data.value("address").toString();
+        auto pin = lookup_data.value("PIN").toString();
+
+        if(address.isEmpty())
+            emit pinLookupErrorReceived();
+        else
+            emit pinLookupReceived(address, pin);
+    }
+#endif
 }
 
 void AppContext::onWSNodes(const QJsonArray &nodes) {
@@ -812,6 +830,47 @@ void AppContext::onTransactionCreated(PendingTransaction *tx, const QVector<QStr
     // tx created, but not sent yet. ask user to verify first.
     emit createTransactionSuccess(tx, address);
 }
+
+#if defined(HAS_OPENVR)
+void AppContext::onAskReceivingPIN() {
+    // request new receiving PIN from wowlet-backend
+    if(this->currentWallet == nullptr)
+        return;
+
+    auto address = this->currentWallet->address(0, 1);
+    QString signature = this->currentWallet->signMessage(address, false, address);
+
+    QJsonObject data;
+    data["signature"] = signature;
+    data["address"] = address;
+
+    QJsonObject obj;
+    obj["cmd"] = "requestPIN";
+    obj["data"] = data;
+
+    QJsonDocument doc = QJsonDocument(obj);
+    this->ws->sendMsg(doc.toJson(QJsonDocument::Compact));
+}
+
+void AppContext::onLookupReceivingPIN(QString pin) {
+    // lookup PIN -> address
+    if(this->currentWallet == nullptr)
+        return;
+
+    auto address = this->currentWallet->address(0, 1);
+    QString signature = this->currentWallet->signMessage(address, false, address);
+
+    QJsonObject data;
+    data["PIN"] = pin;
+
+    QJsonObject obj;
+    obj["cmd"] = "lookupPIN";
+    obj["data"] = data;
+
+    QJsonDocument doc = QJsonDocument(obj);
+    this->ws->sendMsg(doc.toJson(QJsonDocument::Compact));
+}
+#endif
 
 void AppContext::onTransactionCommitted(bool status, PendingTransaction *tx, const QStringList& txid){
     this->currentWallet->history()->refresh(this->currentWallet->currentSubaddressAccount());

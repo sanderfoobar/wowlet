@@ -6,249 +6,134 @@ import "."
 import "../common"
 
 MyStackViewPage {
+    id: root
     headerText: "Receive"
 
-    MyDialogOkPopup {
-        id: chaperoneMessageDialog
-        function showMessage(title, text) {
-            dialogTitle = title
-            dialogText = text
-            open()
-        }
-    }
-
-    MyDialogOkCancelPopup {
-        id: chaperoneDeleteProfileDialog
-        property int profileIndex: -1
-        dialogTitle: "Delete Profile"
-        dialogText: "Do you really want to delete this profile?"
-        onClosed: {
-            if (okClicked) {
-                ChaperoneTabController.deleteChaperoneProfile(profileIndex)
-            }
-        }
-    }
-
-    MyDialogOkCancelPopup {
-        id: chaperoneNewProfileDialog
-        dialogTitle: "Create New Profile"
-        dialogWidth: 800
-        dialogHeight: 780
-        dialogContentItem: ColumnLayout {
-            RowLayout {
-                Layout.topMargin: 16
-                Layout.leftMargin: 16
-                Layout.rightMargin: 16
-                MyText {
-                    text: "Name: "
-                }
-                MyTextField {
-                    id: chaperoneNewProfileName
-                    keyBoardUID: 390
-                    color: "#cccccc"
-                    text: ""
-                    Layout.fillWidth: true
-                    font.pointSize: 20
-                    function onInputEvent(input) {
-                        chaperoneNewProfileName.text = input
-                    }
-                }
-            }
-            MyText {
-                Layout.topMargin: 24
-                text: "What to include:"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludeGeometry
-                Layout.leftMargin: 32
-                text: "Chaperone Geometry"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludeStyle
-                Layout.leftMargin: 32
-                text: "Chaperone Style"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludeBoundsColor
-                Layout.leftMargin: 32
-                text: "Chaperone Color"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludeVisibility
-                Layout.leftMargin: 32
-                text: "Visibility Setting"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludeFadeDistance
-                Layout.leftMargin: 32
-                text: "Fade Distance Setting"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludeCenterMarker
-                Layout.leftMargin: 32
-                text: "Center Marker Setting"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludePlaySpaceMarker
-                Layout.leftMargin: 32
-                text: "Play Space Marker Setting"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludeFloorBoundsMarker
-                Layout.leftMargin: 32
-                text: "Floor Bounds Always On Setting"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludeForceBounds
-                Layout.leftMargin: 32
-                text: "Force Bounds Setting"
-            }
-            MyToggleButton {
-                id: chaperoneNewProfileIncludeProximityWarnings
-                Layout.leftMargin: 32
-                text: "Proximity Warning Settings"
-            }
-        }
-        onClosed: {
-            if (okClicked) {
-                if (chaperoneNewProfileName.text == "") {
-                    chaperoneMessageDialog.showMessage("Create New Profile", "ERROR: Empty profile name.")
-                } else if (!chaperoneNewProfileIncludeGeometry.checked
-                            && !chaperoneNewProfileIncludeVisibility.checked
-                            && !chaperoneNewProfileIncludeFadeDistance.checked
-                            && !chaperoneNewProfileIncludeCenterMarker.checked
-                            && !chaperoneNewProfileIncludePlaySpaceMarker.checked
-                            && !chaperoneNewProfileIncludeFloorBoundsMarker.checked
-                            && !chaperoneNewProfileIncludeBoundsColor.checked
-                            && !chaperoneNewProfileIncludeStyle.checked
-                            && !chaperoneNewProfileIncludeForceBounds.checked
-                            && !chaperoneNewProfileIncludeProximityWarnings.checked) {
-                    chaperoneMessageDialog.showMessage("Create New Profile", "ERROR: Nothing included.")
-                } else if ( Math.abs(MoveCenterTabController.offsetX) > 0.00000000001
-                           || Math.abs(MoveCenterTabController.offsetY) > 0.00000000001
-                           || Math.abs(MoveCenterTabController.offsetZ) > 0.00000000001
-                           || MoveCenterTabController.rotation !== 0) {
-                    chaperoneMessageDialog.showMessage("Create New Profile", "ERROR: Offsets not reset.")
-                } else {
-                    ChaperoneTabController.addChaperoneProfile(chaperoneNewProfileName.text,
-                                                               chaperoneNewProfileIncludeGeometry.checked,
-                                                               chaperoneNewProfileIncludeVisibility.checked,
-                                                               chaperoneNewProfileIncludeFadeDistance.checked,
-                                                               chaperoneNewProfileIncludeCenterMarker.checked,
-                                                               chaperoneNewProfileIncludePlaySpaceMarker.checked,
-                                                               chaperoneNewProfileIncludeFloorBoundsMarker.checked,
-                                                               chaperoneNewProfileIncludeBoundsColor.checked,
-                                                               chaperoneNewProfileIncludeStyle.checked,
-                                                               chaperoneNewProfileIncludeForceBounds.checked,
-                                                               chaperoneNewProfileIncludeProximityWarnings.checked)
-                }
-
-            }
-        }
-        function openPopup() {
-            chaperoneNewProfileName.text = ""
-            chaperoneNewProfileIncludeGeometry.checked = false
-            chaperoneNewProfileIncludeVisibility.checked = false
-            chaperoneNewProfileIncludeFadeDistance.checked = false
-            chaperoneNewProfileIncludeCenterMarker.checked = false
-            chaperoneNewProfileIncludePlaySpaceMarker.checked = false
-            chaperoneNewProfileIncludeFloorBoundsMarker.checked = false
-            chaperoneNewProfileIncludeBoundsColor.checked = false
-            chaperoneNewProfileIncludeStyle.checked = false
-            chaperoneNewProfileIncludeForceBounds.checked = false
-            chaperoneNewProfileIncludeProximityWarnings.checked = false
-            open()
-        }
-    }
-
-
     content: ColumnLayout {
+        Layout.fillWidth: true
         spacing: 30
 
-        MyText {
+        RowLayout {
+            spacing: 30
             Layout.fillWidth: true
-            wrap: true
-            text: "Give the following 4 digit PIN to the person that is sending you Wownero. PIN's are valid for 5 minutes and automatically renew."
-        }
 
-        ColumnLayout {
-            MyText {
-                visible: false
-                fontSize: 14
-                text: "Currently generating PIN."
-            }
-
-            Text {
-                visible: true
-                text: "0 0 0 0"
-                color: "#ffffff"
-                font.bold: true
-                font.pointSize: 40
-                leftPadding: 20
-                rightPadding: 20
+            ColumnLayout {
+                spacing: 20
+                Layout.fillWidth: true
 
                 Rectangle {
-                    z: parent.z - 1
-                    anchors.fill: parent
-                    color: "black"
+                    color: "transparent"
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 120
+
+                    MyText {
+                        width: parent.width
+                        wrap: true
+                        fontSize: 14
+                        text: "Give the following 4 digit PIN to the person that is sending you Wownero. PIN's are valid for 10 minutes and automatically renew."
+                    }
+                }
+
+                Rectangle {
+                    color: "transparent"
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 220
+
+                    ColumnLayout {
+                        spacing: 20
+                        MyText {
+                            id: statusText
+                            width: parent.width
+                            visible: true
+                            fontSize: 14
+                            text: "Generating PIN..."
+                        }
+
+                        Text {
+                            id: pinText
+                            visible: false
+                            text: "- - - -"
+                            color: "#ffffff"
+                            font.bold: true
+                            font.pointSize: 40
+                            leftPadding: 20
+                            rightPadding: 20
+
+                            Rectangle {
+                                z: parent.z - 1
+                                anchors.fill: parent
+                                color: "black"
+                            }
+                        }
+                    }
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                 }
             }
 
-            MyText {
-                id: expireText
-                visible: true
-                fontSize: 14
-                text: "Expires in 40 seconds."
+            Rectangle {
+                color: "#cccccc"
+                width: 1
+                Layout.fillHeight: true
             }
 
+            ColumnLayout {
+                Layout.fillWidth: true
 
-        }
+                Rectangle {
+                    color: "transparent"
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 80
+                    Layout.bottomMargin: 20
 
-        Rectangle {
-            color: "#cccccc"
-            height: 1
-            Layout.topMargin: 10
-            Layout.fillWidth: true
-        }
-
-        MyText {
-            Layout.fillWidth: true
-            wrap: true
-            text: "Alternatively, you may use one of the following methods."
-        }
-
-        RowLayout {
-            Layout.topMargin: 10
-
-            MyPushButton {
-                id: viewAddress
-                text: "View address"
-                Layout.preferredWidth: 360
-
-                onClicked: {
-                    MyResources.playFocusChangedSound()
-                    walletView.push(chaperoneAdditionalPage)
+                    MyText {
+                        width: parent.width
+                        fontSize: 14
+                        wrap: true
+                        text: "Alternatively, you may use one of the following methods to retreive your address."
+                    }
                 }
-            }
 
-            MyPushButton {
-                id: copyToClipboard
-                text: "Copy address to clipboard"
-                Layout.preferredWidth: 540
+                MyPushButton {
+                    id: viewAddress
+                    text: "View address"
+                    Layout.preferredHeight: 70
+                    Layout.fillWidth: true
 
-                onClicked: {
-                    MyResources.playFocusChangedSound()
-                    walletView.push(chaperoneAdditionalPage)
+                    onClicked: {
+                        //walletView.push(chaperoneAdditionalPage)
+                    }
                 }
-            }
 
-            MyPushButton {
-                id: writeQRcode
-                text: "QR image"
-                Layout.preferredWidth: 340
+                MyPushButton {
+                    id: copyToClipboard
+                    text: "Copy address to clipboard"
+                    Layout.preferredHeight: 70
+                    Layout.fillWidth: true
 
-                onClicked: {
-                    chaperoneNewProfileDialog.open();
+                    onClicked: {
+                        MyResources.playFocusChangedSound()
+                        walletView.push(chaperoneAdditionalPage)
+                    }
+                }
+
+                MyPushButton {
+                    id: writeQRcode
+                    text: "Save QR image"
+                    Layout.preferredHeight: 70
+                    Layout.fillWidth: true
+
+                    onClicked: {
+                        chaperoneNewProfileDialog.open();
+                    }
+                }
+
+                Item {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                 }
             }
         }
@@ -262,5 +147,58 @@ MyStackViewPage {
 
     function onPageCompleted() {
         console.log("onPageCompleted() ReceivePage")
+        pinAskTimer.start();
+        askReceivingPIN();
+    }
+
+    function resetPage() {
+        pinAskTimer.stop();
+        statusText.visible = true;
+        statusText.text = "Generating PIN...";
+        pinText.visible = false;
+        pinText.text = "- - - -";
+    }
+
+    onBackClicked: {
+        resetPage();
+    }
+
+    Timer {
+        id: pinAskTimer
+        interval: 1000 * 5;
+        running: false;
+        repeat: true
+        onTriggered: askReceivingPIN()
+        triggeredOnStart: false
+    }
+
+    function askReceivingPIN() {
+        ctx.onAskReceivingPIN();
+    }
+
+    Connections {
+        target: ctx
+
+        function onPinReceived(pin) {
+            console.log("onPINReceived", pin);
+            statusText.visible = false;
+            pinText.visible = true;
+            pinText.text = pin[0] + " " + pin[1] + " " + pin[2] + " " + pin[3];
+        }
+    }
+
+    Connections {
+        target: OverlayController
+
+        function onDashboardDeactivated() {
+            console.log("onDashboardDeactivated()")
+            pinAskTimer.stop();
+        }
+
+        function onDashboardActivated() {
+            console.log("onDashboardActivated()")
+            if(walletView.currentItem == root)
+                pinAskTimer.start();
+        }
     }
 }

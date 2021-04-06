@@ -40,13 +40,6 @@
     <file alias="status_waiting">assets/img/status_waiting.svg</file>
     <file alias="status_lagging">assets/img/status_lagging.svg</file>
 
-    <file>mock/NetworkType.js</file>
-    <file>mock/OverlayController.js</file>
-    <file>mock/Settings.js</file>
-    <file>mock/Translation.js</file>
-    <file>mock/Version.js</file>
-    <file>mock/Windows.js</file>
-
     <file alias="main">main.qml</file>
     <file>qml/common/HourComboBox.qml</file>
     <file>qml/common/MinuteSecondComboBox.qml</file>

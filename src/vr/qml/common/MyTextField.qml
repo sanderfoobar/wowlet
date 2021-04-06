@@ -23,6 +23,7 @@ TextField {
         }
     }
     onActiveFocusChanged: {
+        console.log("QML activeFocus()");
         if (activeFocus) {
             if (!OverlayController.desktopMode) {
                 OverlayController.showKeyboard(text, keyBoardUID)
@@ -32,11 +33,24 @@ TextField {
         }
     }
     onEditingFinished: {
+        console.log("QML onEditingFinished()");
         if (OverlayController.desktopMode && savedText !== text) {
             myTextField.onInputEvent(text)
         }
     }
     function onInputEvent(input) {
         text = input
-	}
+    }
+
+    Connections {
+        target: OverlayController
+        function onKeyBoardInputSignal(input, userValue) {
+            console.log("QML onKeyBoardInputSignal(input, userValue)", keyBoardUID);
+            if (userValue == keyBoardUID) {
+                if (myTextField.text !== input) {
+                    myTextField.onInputEvent(input)
+                }
+            }
+        }
+    }
 }

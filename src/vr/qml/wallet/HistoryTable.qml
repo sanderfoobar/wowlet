@@ -13,7 +13,8 @@ import "../common"
 
 Item {
      id: root
-     property var modelx
+     property var txModel
+     property int txCount: 0
 
      property var txModelData: []
      property int sideMargin: 20
@@ -24,6 +25,12 @@ Item {
 		anchors.fill: parent
           spacing: 0
 
+          MyText {
+               visible: txCount == 0
+               opacity: 0.75
+               text: "No transactions to display."
+          }
+
 		ListView {
                id: listView
                visible: true
@@ -31,11 +38,11 @@ Item {
                Layout.fillWidth: true
                Layout.fillHeight: true
                spacing: 10
-               model: modelx
+               model: txModel
                interactive: false
 
                delegate: Rectangle {
-               id: delegate
+                    id: delegate
                     anchors.left: parent ? parent.left : undefined
                     anchors.right: parent ? parent.right : undefined
                     height: 54
@@ -64,6 +71,7 @@ Item {
                          confirmationsRequired = getTxData(index, TransactionHistoryModel.TransactionConfirmationsRequiredRole);
 
                          confirmed = confirmations >= confirmationsRequired;
+                         root.txCount = index;
                     }
 
                     RowLayout {
@@ -74,16 +82,16 @@ Item {
                          anchors.right: parent.right
 
                          Rectangle {
-                         	Layout.preferredWidth: 56
-                         	Layout.fillHeight: true
-                         	color: "#406288"
+                              Layout.preferredWidth: 56
+                              Layout.fillHeight: true
+                              color: "#406288"
 
-                         	Image {
-                         		width: 32
-                         		height: 32
-                         		anchors.horizontalCenter: parent.horizontalCenter
-                         		anchors.verticalCenter: parent.verticalCenter
-                     			source: {
+                              Image {
+                                   width: 32
+                                   height: 32
+                                   anchors.horizontalCenter: parent.horizontalCenter
+                                   anchors.verticalCenter: parent.verticalCenter
+                                   source: {
                                         if(failed) return "qrc:/assets/images/warning.png"
                                         else if(pending) return "qrc:/assets/images/unconfirmed.png"
                                         else if(!confirmed) return "qrc:/assets/images/clock1.png"
@@ -91,98 +99,89 @@ Item {
                                         else return "qrc:/assets/images/confirmed.png"
                                         //confirmed ? "qrc:/checkmark_icon" : "qrc:/expired_icon"
                                    }
-                         	}
+                              }
                          }
 
                          Rectangle {
-                         	Layout.preferredWidth: 300
-                         	Layout.leftMargin: 10
-                         	Layout.rightMargin: 10
-                         	Layout.fillHeight: true
-                         	color: "transparent"
+                              Layout.preferredWidth: 300
+                              Layout.leftMargin: 10
+                              Layout.rightMargin: 10
+                              Layout.fillHeight: true
+                              color: "transparent"
 
-                         	MyText {
+                              MyText {
                                    // date
-                         		anchors.verticalCenter: parent.verticalCenter
-                         		fontSize: 12
+                                   anchors.verticalCenter: parent.verticalCenter
+                                   fontSize: 12
                                    fontColor: "white"
-                         		text: date
+                                   text: date
 
-                         		Component.onCompleted: {
-                         			parent.Layout.preferredWidth = width;
-                         		}
-                         	}
+                                   Component.onCompleted: {
+                                        parent.Layout.preferredWidth = width;
+                                   }
+                              }
                          }
 
                          Rectangle {
-                         	Layout.fillHeight: true
-                         	Layout.leftMargin: 10
-                         	color: "transparent"
+                              Layout.fillHeight: true
+                              Layout.leftMargin: 10
+                              color: "transparent"
 
-                         	MyText {
-                         		anchors.verticalCenter: parent.verticalCenter
-                         		fontSize: 14
-                         		text: description !== "" ? description : "..."
+                              MyText {
+                                   anchors.verticalCenter: parent.verticalCenter
+                                   fontSize: 14
+                                   text: description !== "" ? description : "..."
                                    fontColor: description !== "" ? "white" : "#cccccc"
-                         		Component.onCompleted: {
-                         			parent.Layout.preferredWidth = width;
-                         		}
-                         	}
+                                   Component.onCompleted: {
+                                        parent.Layout.preferredWidth = width;
+                                   }
+                              }
                          }
 
                          Item {
-                         	Layout.fillWidth: true
+                              Layout.fillWidth: true
                          }
 
                          Rectangle {
-                         	Layout.preferredWidth: 420
-                         	Layout.fillHeight: true
-                         	color: "#406288"
+                              Layout.preferredWidth: 420
+                              Layout.fillHeight: true
+                              color: "#406288"
 
-                         	MyText {
-                         		anchors.right: parent.right
-                         		anchors.rightMargin: 10
+                              MyText {
+                                   anchors.right: parent.right
+                                   anchors.rightMargin: 10
 
-                         		anchors.verticalCenter: parent.verticalCenter
-                         		fontSize: 14
-                         		fontBold: true
-                         		text: amount
-                         		fontColor: !isout ? "#00d304" : "red"
-                         	}
+                                   anchors.verticalCenter: parent.verticalCenter
+                                   fontSize: 14
+                                   fontBold: true
+                                   text: amount
+                                   fontColor: !isout ? "#00d304" : "red"
+                              }
                          }
-                     }
-	        }
-	    }
+                    }
+               }
+          }
 
-	    Item {
-	    	Layout.fillHeight: true
-	    }
-	}
-
-	Rectangle {
-		z: parent.z - 1
-		color: "transparent"
-		anchors.fill: parent
-	}
-
-     function getTxData(x, y) {
-          var idx = modelx.index(x, y);
-          return modelx.data(idx, 0);
+          Item {
+               Layout.fillHeight: true
+          }
      }
 
-     function updateTransactionsFromModel() {
-          // This function copies the items of `appWindow.currentWallet.historyModel` to `root.txModelData`, as a list of javascript objects
-          if(appWindow.currentWallet == null || typeof appWindow.currentWallet.history === "undefined" ) return;
+     Rectangle {
+          z: parent.z - 1
+          color: "transparent"
+          anchors.fill: parent
+     }
 
-          var _model = root.model;
-          var total = 0
-          var count = _model.rowCount()
-          root.txModelData = [];
+     function getTxData(x, y) {
+          var idx = txModel.index(x, y);
+          return txModel.data(idx, 0);
      }
 
      function onPageCompleted() {
           if(currentWallet == null || typeof currentWallet.history === "undefined" ) return;
-          root.modelx = appWindow.currentWallet.historyModel;
+          root.txCount = 0;
+          root.txModel = appWindow.currentWallet.historyModel;
           //root.model.sortRole = TransactionHistoryModel.TransactionBlockHeightRole;
           //root.model.sort(0, Qt.DescendingOrder);
      }

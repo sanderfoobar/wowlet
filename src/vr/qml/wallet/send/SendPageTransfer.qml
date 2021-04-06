@@ -133,7 +133,7 @@ ColumnLayout {
                     Layout.preferredHeight: 48
 
                     MyText {
-                        text: "Wo3ige...YegEia2"
+                        text: destinationAddress
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                     }
@@ -171,7 +171,7 @@ ColumnLayout {
             text: "Enter amount via virtual keyboard"
             
             onClicked: {
-                OverlayController.showKeyboard(text, "1337")
+                OverlayController.showKeyboard(text, 1337)
             }
         }
         
@@ -193,8 +193,9 @@ ColumnLayout {
 
     Connections {
         target: OverlayController
+
         function onKeyBoardInputSignal(input, userValue) {
-            if (userValue == "1337") {
+            if (userValue == 1337) {
                 let val = parseFloat(input);
                 myNumPadSendAmount.onAmountUpdated(val);
             }

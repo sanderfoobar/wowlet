@@ -9,6 +9,7 @@ import wowlet.Wallet 1.0
 
 
 Rectangle {
+    id: root
     color: "#1b2939"
     width: 1600
     height: 800
@@ -17,52 +18,71 @@ Rectangle {
     property string headerText: "Header Title"
     property bool headerShowBackButton: true
 
+    property string enteredColor: "#365473"
+    property string exitedColor: "transparent"
+    property string pressedColor: "#406288"
+
     signal backClicked();
 
     property Item header: ColumnLayout {
         RowLayout {
-            Button {
-                id: headerBackButton
-                Layout.preferredHeight: 50
-                Layout.preferredWidth: 50
-                hoverEnabled: true
-                enabled: headerShowBackButton
-                visible: headerShowBackButton
-                contentItem: Image {
-                    source: "qrc:/backarrow"
-                    sourceSize.width: 50
-                    sourceSize.height: 50
+            Rectangle {
+                color: "transparent"
+                Layout.preferredWidth: headerBackButton.width + headerTitleContainer.width + 20
+                Layout.preferredHeight: 70
+
+                RowLayout {
                     anchors.fill: parent
-                }
-                background: Rectangle {
-                    opacity: parent.down ? 1.0 : (parent.activeFocus ? 0.5 : 0.0)
-                    color: "#406288"
-                    radius: 4
-                    anchors.fill: parent
-                }
-                onHoveredChanged: {
-                    if (hovered) {
-                        forceActiveFocus()
-                    } else {
-                        focus = false
+
+                    Rectangle {
+                        id: headerBackButton
+                        visible: headerShowBackButton
+                        color: "transparent"
+                        Layout.preferredHeight: 50
+                        Layout.preferredWidth: 50
+
+                        Image {
+                            source: "qrc:/backarrow"
+                            sourceSize.width: 50
+                            sourceSize.height: 50
+                            anchors.fill: parent
+                        }
+                    }
+
+                    Rectangle {
+                        id: headerTitleContainer
+                        color: "transparent"
+                        Layout.preferredHeight: 50
+                        Layout.preferredWidth: headerTitle.width
+
+                        MyText {
+                            id: headerTitle
+                            text: headerText
+                            font.pointSize: 26
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
                     }
                 }
-                onClicked: {
-					backClicked();
-                    stackView.pop();
+
+                MouseArea {
+                    enabled: headerShowBackButton
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: parent.color = root.enteredColor
+                    onExited: parent.color = root.exitedColor
+                    onPressed: parent.color = root.pressedColor
+                    onClicked: {
+                        stackView.pop();
+                        backClicked();
+                    }
                 }
-            }
-            MyText {
-                id: headerTitle
-                text: headerText
-                font.pointSize: 30
-                Layout.leftMargin: headerShowBackButton ? 32 : 0
             }
 
             Item {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 50
             }
+
 
             Rectangle {
                 Layout.preferredWidth: 720

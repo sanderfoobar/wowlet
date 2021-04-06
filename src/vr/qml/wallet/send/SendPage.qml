@@ -11,7 +11,7 @@ MyStackViewPage {
     width: 1600
     headerText: "Send"
 
-    property string destinationAddress: "cool_addy_here"
+    property string destinationAddress: ""
 
     property string enteredColor: "#365473"
     property string exitedColor: "#2c435d"
@@ -101,14 +101,6 @@ MyStackViewPage {
             }
         }
     }
-
-    // Connections {
-    //     target: sendStateView.dashPage
-    //     function onTest() {
-    //         sendStack.push(pinPage)
-    //         pinPage.onPageCompleted();
-    //     }
-    // }
 
     function onPageCompleted(previousView){
         sendStateView.state = "dashPage"

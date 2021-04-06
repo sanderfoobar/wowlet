@@ -7,7 +7,7 @@
 #include <vrcommon/strtools_public.h>
 #include <vrcommon/dirtools_public.h>
 
-#if defined( WIN32 )
+#ifdef _WIN32
 #include <windows.h>
 #include <shlobj.h>
 
@@ -36,7 +36,7 @@
 /** Returns the root of the directory the system wants us to store user config data in */
 static std::string GetAppSettingsPath()
 {
-#if defined( WIN32 )
+#ifdef _WIN32
 	WCHAR rwchPath[MAX_PATH];
 
 	if( !SUCCEEDED( SHGetFolderPathW( NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, rwchPath ) ) )

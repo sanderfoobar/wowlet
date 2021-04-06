@@ -50,6 +50,7 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
+    int customColumnCount = 5;
 signals:
     void transactionHistoryChanged();
 

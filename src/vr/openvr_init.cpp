@@ -6,7 +6,12 @@
 #include <openvr.h>
 #include <QDebug>
 #include <QMessageBox>
+
 #include "openvr_init.h"
+#include "utils/utils.h"
+#include <openvr/src/vrcommon/vrpathregistry_public.h>
+#include <openvr/src/vrcommon/pathtools_public.h>
+
 
 namespace openvr_init
 {
@@ -34,6 +39,14 @@ bool initializeProperly(const OpenVrInitializationType initType) {
 
 bool initializeOpenVR(const OpenVrInitializationType initType)
 {
+    QString vr_pathreg_override = qgetenv("VR_PATHREG_OVERRIDE");
+    if(!vr_pathreg_override.isEmpty()) {
+        if(Utils::fileExists(vr_pathreg_override)) {
+            qCritical() << "Filepath supplied in VR_PATHREG_OVERRIDE not found. Does this path exist?";
+            return false;
+        }
+    }
+
     bool res = initializeProperly(initType);
     if(!res)
         return false;

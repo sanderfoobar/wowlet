@@ -187,7 +187,7 @@ bool Path_IsAbsolute( const std::string & sPath )
 	if( sPath.empty() )
 		return false;
 
-#if defined( WIN32 )
+#ifdef _WIN32
 	if ( sPath.size() < 3 ) // must be c:\x or \\x at least
 		return false;
 
@@ -515,7 +515,7 @@ bool Path_Exists( const std::string & sPath )
 	if( sFixedPath.empty() )
 		return false;
 
-#if defined( WIN32 )
+#ifdef _WIN32
 	struct	_stat	buf;
 	std::wstring wsFixedPath = UTF8to16( sFixedPath.c_str() );
 	if ( _wstat( wsFixedPath.c_str(), &buf ) == -1 )
@@ -886,7 +886,7 @@ std::string Path_UrlToFilePath( const std::string & sFileUrl )
 // -----------------------------------------------------------------------------------------------------
 std::string GetUserDocumentsPath()
 {
-#if defined( WIN32 )
+#ifdef _WIN32
 	WCHAR rwchPath[MAX_PATH];
 
 	if ( !SUCCEEDED( SHGetFolderPathW( NULL, CSIDL_MYDOCUMENTS | CSIDL_FLAG_CREATE, NULL, 0, rwchPath ) ) )
@@ -925,7 +925,7 @@ std::string GetUserDocumentsPath()
 // -----------------------------------------------------------------------------------------------------
 bool Path_UnlinkFile( const std::string &strFilename )
 {
-#if defined( WIN32 )
+#ifdef _WIN32
 	std::wstring wsFilename = UTF8to16( strFilename.c_str() );
 	return ( 0 != DeleteFileW( wsFilename.c_str() ) );
 #else

@@ -81,27 +81,6 @@ OverlayController::OverlayController(bool desktopMode, QQmlEngine& qmlEngine) :
     // Set qml context
     qmlEngine.rootContext()->setContextProperty("applicationVersion", "1337");
     qmlEngine.rootContext()->setContextProperty("vrRuntimePath", getVRRuntimePathUrl());
-
-    // Pretty disgusting trick to allow qmlRegisterSingletonType to continue
-    // working with the lambdas that were already there. The callback function
-    // in qmlRegisterSingletonType won't work with any lambdas that capture the
-    // environment. The alternative to making a static pointer to this was
-    // rewriting all QML to not be singletons, which should probably be done
-    // whenever possible.
-    static OverlayController* const objectAddress = this;
-    constexpr auto qmlSingletonImportName = "ovrwow.wowletvr";
-    qmlRegisterSingletonType<OverlayController>(
-        qmlSingletonImportName,
-        1,
-        0,
-        "OverlayController",
-        []( QQmlEngine*, QJSEngine* ) {
-            QObject* obj = objectAddress;
-            QQmlEngine::setObjectOwnership( obj, QQmlEngine::CppOwnership );
-            return obj;
-        });
-
-    qInfo() << "OPENSSL VERSION: " << QSslSocket::sslLibraryBuildVersionString();
 }
 
 OverlayController::~OverlayController() {
@@ -138,9 +117,7 @@ void OverlayController::Shutdown() {
     m_pFbo.reset();
 }
 
-void OverlayController::SetWidget( QQuickItem* quickItem,
-                                   const std::string& name,
-                                   const std::string& key )
+void OverlayController::SetWidget(QQuickItem* quickItem, const std::string& name, const std::string& key, const std::string& iconPath)
 {
     if ( !m_desktopMode )
     {
@@ -171,14 +148,9 @@ void OverlayController::SetWidget( QQuickItem* quickItem,
             vr::VROverlayFlags_SendVRSmoothScrollEvents,
             true );
 
-        constexpr auto thumbiconFilename = "img/icons/thumbicon.png";
-        const auto thumbIconPath = paths::binaryDirectoryFindFile( thumbiconFilename );
-        if ( !thumbIconPath.empty() ) {
-            vr::VROverlay()->SetOverlayFromFile( m_ulOverlayThumbnailHandle, thumbIconPath.c_str() );
-        }
-        else {
-            qCritical() << "Could not find thumbnail icon \"" << thumbiconFilename << "\"";
-        }
+        // Overlay icon
+        if (!iconPath.empty())
+            vr::VROverlay()->SetOverlayFromFile( m_ulOverlayThumbnailHandle, iconPath.c_str() );
 
         // Too many render calls in too short time overwhelm Qt and an
         // assertion gets thrown. Therefore we use an timer to delay render
@@ -401,6 +373,7 @@ void OverlayController::mainEventLoop() {
         case vr::VREvent_DashboardActivated:
         {
             qDebug() << "Dashboard activated";
+            emit dashboardActivated();
             m_dashboardVisible = true;
         }
         break;
@@ -408,14 +381,17 @@ void OverlayController::mainEventLoop() {
         case vr::VREvent_DashboardDeactivated:
         {
             qDebug() << "Dashboard deactivated";
+            emit dashboardDeactivated();
             m_dashboardVisible = false;
         }
         break;
 
         case vr::VREvent_KeyboardDone:
         {
+            qDebug() << "VREvent_KeyboardDone";
             char keyboardBuffer[1024];
             vr::VROverlay()->GetKeyboardText( keyboardBuffer, 1024 );
+            qDebug() << "emit keyBoardInputSignal()";
             emit keyBoardInputSignal( QString( keyboardBuffer ),
                                       static_cast<unsigned long>(
                                           vrEvent.data.keyboard.uUserValue ) );
@@ -447,7 +423,7 @@ void OverlayController::showKeyboard(QString existingText, unsigned long userVal
             vr::k_EGamepadTextInputModeNormal,
             vr::k_EGamepadTextInputLineModeSingleLine,
             0,
-            "Advanced Settings Overlay",
+            "Wowlet VR",
             1024,
             existingText.toStdString().c_str(),
             userValue);

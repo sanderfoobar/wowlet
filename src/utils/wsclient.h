@@ -14,11 +14,11 @@ class WSClient : public QObject
     Q_OBJECT
 
 public:
-    explicit WSClient(AppContext *ctx, const QUrl &url, QObject *parent = nullptr);
+    explicit WSClient(AppContext *ctx, const QString &url, QObject *parent = nullptr);
     void start();
     void sendMsg(const QByteArray &data);
     QWebSocket webSocket;
-    QUrl url;
+    QString url;
 
 signals:
     void closed();

@@ -50,6 +50,7 @@ namespace wowletvr
 class OverlayController : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY( bool m_desktopMode READ isDesktopMode )
 
 public:
     OverlayController(bool desktopMode, QQmlEngine& qmlEngine);
@@ -64,9 +65,7 @@ public:
         return m_dashboardVisible;
     }
 
-    void SetWidget( QQuickItem* quickItem,
-                    const std::string& name,
-                    const std::string& key = "" );
+    void SetWidget(QQuickItem* quickItem, const std::string& name, const std::string& key = "", const std::string& iconPath = "");
 
     bool isDesktopMode()
     {
@@ -129,6 +128,8 @@ public slots:
 
 signals:
     void keyBoardInputSignal( QString input, unsigned long userValue = 0 );
+    void dashboardDeactivated();
+    void dashboardActivated();
 };
 
 } // namespace wowletvr

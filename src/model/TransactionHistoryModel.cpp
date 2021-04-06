@@ -51,7 +51,12 @@ int TransactionHistoryModel::columnCount(const QModelIndex &parent) const {
         return 0;
     }
 
-    return TransactionInfoRole::COUNT;
+    // When wowlet is in QtWidgets mode, it will only use the first 5 columns,
+    // the rest should be hidden, because it shows in the GUI. So by default we'll
+    // use 5 as column count. When in QtQuick (QML) mode, we want to expose more columns
+    // so we can change the column count here.
+
+    return AppContext::isQML ? this->COUNT : 5;
 }
 
 QVariant TransactionHistoryModel::data(const QModelIndex &index, int role) const {

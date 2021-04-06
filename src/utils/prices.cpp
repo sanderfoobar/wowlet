@@ -85,9 +85,8 @@ double Prices::convert(const QString &symbolFrom, const QString &symbolTo, doubl
 }
 
 void Prices::fiatPricesReceived(const QJsonObject &data) {
-    QJsonObject rates = data.value("rates").toObject();
     for(const auto &currency: fiat.keys())
-        if(rates.contains(currency))
-            this->rates.insert(currency, rates.value(currency).toDouble());
+        if(data.contains(currency))
+            this->rates.insert(currency, data.value(currency).toDouble());
     emit fiatPricesUpdated();
 }

@@ -7,11 +7,6 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.2
 
 import "."
-import "mock/Windows.js" as Windows
-import "mock/Version.js" as Version
-import "mock/NetworkType.js" as NetworkType
-import "mock/Settings.js" as Settings
-import "mock"
 
 import "qml/common"
 import "qml/."
@@ -27,10 +22,10 @@ Rectangle {
 
     property var currentWallet;
     property bool disconnected: currentWallet ? currentWallet.disconnected : false
-    property string walletTitle: "lol123"
+    property string walletTitle: "long wallet name"
     property string walletPath: ""
     property string statusText: "Idle"
-    property string balanceFormatted: "Balance: 25928.9543 WOW (+3902.32 WOW unconfirmed)"
+    property string balanceFormatted: "Balance: 25928.9543 WOW"
     property bool wsConnected: false
     property int connectionStatus: Wallet.ConnectionStatus_Disconnected;
 
@@ -60,9 +55,9 @@ Rectangle {
 
     MyDialogOkCancelPopup {
         id: enterPasswordDialog
-        dialogTitle: "Enter Password"
+        dialogTitle: "Enter Wallet Password"
         dialogWidth: 700
-        dialogHeight: 400
+        dialogHeight: 380
         
         dialogContentItem: ColumnLayout {
             RowLayout {
@@ -76,7 +71,7 @@ Rectangle {
 
                 MyTextField {
                     id: walletOpenPassword
-                    keyBoardUID: 590
+                    keyBoardUID: 591
                     color: "#cccccc"
                     text: ""
                     Layout.fillWidth: true
@@ -105,9 +100,10 @@ Rectangle {
         id: createWalletDialog
         dialogTitle: "Create New Wallet"
         dialogWidth: 700
-        dialogHeight: 400
+        dialogHeight: 440
         
         dialogContentItem: ColumnLayout {
+            spacing: 10
             RowLayout {
                 Layout.topMargin: 16
                 Layout.leftMargin: 16
@@ -141,7 +137,7 @@ Rectangle {
 
                 MyTextField {
                     id: newWalletPassword
-                    keyBoardUID: 591
+                    keyBoardUID: 592
                     color: "#cccccc"
                     text: ""
                     Layout.fillWidth: true
@@ -153,7 +149,10 @@ Rectangle {
             }
 
             MyText {
+                Layout.topMargin: 20
+                Layout.leftMargin: 16
                 fontSize: 16
+                fontColor: "#cccccc"
                 text: "The password field is optional."
             }
 
@@ -253,19 +252,11 @@ Rectangle {
         }
 
         // function onWalletOpened(Wallet *wallet) {
-
-            // currentWallet.heightRefreshed.connect(onHeightRefreshed);
-            // currentWallet.refreshed.connect(onWalletRefresh)
-            // currentWallet.updated.connect(onWalletUpdate)
-            // currentWallet.newBlock.connect(onWalletNewBlock)
             // currentWallet.moneySpent.connect(onWalletMoneySent)
             // currentWallet.moneyReceived.connect(onWalletMoneyReceived)
             // currentWallet.unconfirmedMoneyReceived.connect(onWalletUnconfirmedMoneyReceived)
             // currentWallet.transactionCreated.connect(onTransactionCreated)
             // currentWallet.connectionStatusChanged.connect(onWalletConnectionStatusChanged)
-            // currentWallet.deviceButtonRequest.connect(onDeviceButtonRequest);
-            // currentWallet.deviceButtonPressed.connect(onDeviceButtonPressed);
-            // currentWallet.walletPassphraseNeeded.connect(onWalletPassphraseNeededWallet);
             // currentWallet.transactionCommitted.connect(onTransactionCommitted);
 
             // middlePanel.paymentClicked.connect(handlePayment);

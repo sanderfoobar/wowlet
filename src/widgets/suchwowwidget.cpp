@@ -19,6 +19,7 @@ SuchWowPost::SuchWowPost(AppContext *ctx, QObject *parent) :
         m_ctx(ctx) {
     m_networkImg = new UtilsNetworking(m_ctx->network, this);
     m_networkThumb = new UtilsNetworking(m_ctx->network, this);
+    m_weburl = QString("http://%1/suchwow").arg(this->m_ctx->wsUrl);
 }
 
 void SuchWowPost::onThumbReceived(QByteArray data) {

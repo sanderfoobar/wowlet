@@ -6,8 +6,6 @@ import QtQuick.Window 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.2
 
-// import ovrwow.wowletvr 1.0
-
 import "../common"
 import "."
 
@@ -63,6 +61,7 @@ MyStackViewPage {
                             }
 
                             walletView.push(receivePage)
+                            receivePage.onPageCompleted();
                         }
                     }
 
@@ -74,7 +73,7 @@ MyStackViewPage {
                         Layout.fillWidth: true
                         onClicked: {
                             //MyResources.playFocusChangedSound()
-                            ctx.closeWallet(true, true);
+                            ctx.onCloseWallet(true, true);
                             mainView.pop();
                         }
                     }

@@ -10,6 +10,7 @@
 #include <QtGui>
 #include <QQmlApplicationEngine>
 #include <QtQml>
+#include <QFileInfo>
 #include <QQuickView>
 #include <QQuickItem>
 
@@ -32,13 +33,24 @@ namespace wowletvr {
     WowletVR::WowletVR(AppContext *ctx, QCommandLineParser *parser, QObject *parent) :
             QObject(parent), ctx(ctx), m_parser(parser) {
         desktopMode = m_parser->isSet("openvr-debug");
+        AppContext::isQML = true;
+
+        // write icon to disk so openvr overlay can refer to it
+        auto icon = ":/assets/images/wowlet.png";
+        if (Utils::fileExists(icon)) {
+            QFile f(icon);
+            QFileInfo fileInfo(f);
+            auto icon_path = QDir(ctx->configDirectory).filePath(fileInfo.fileName());
+            f.copy(icon_path);
+            f.close();
+        }
 
 #ifdef Q_OS_WIN
         if(desktopMode)
             qputenv("QMLSCENE_DEVICE", "softwarecontext");
 #endif
-
         qDebug() << "QMLSCENE_DEVICE: " << qgetenv("QMLSCENE_DEVICE");
+        qInfo() << "OPENSSL VERSION: " << QSslSocket::sslLibraryBuildVersionString();
 
         m_engine.rootContext()->setContextProperty("homePath", QDir::homePath());
         m_engine.rootContext()->setContextProperty("applicationDirectory", QApplication::applicationDirPath());
@@ -67,17 +79,20 @@ namespace wowletvr {
 //        QCoreApplication::setAttribute( Qt::AA_UseDesktopOpenGL );
 //        QCoreApplication::setAttribute( Qt::AA_Use96Dpi );
 
+        if(!desktopMode) {
+            if(!openvr_init::initializeOpenVR(openvr_init::OpenVrInitializationType::Overlay))
+                throw std::runtime_error("Error: initializeOpenVR()");
+
+            m_controller = new wowletvr::OverlayController(desktopMode, m_engine);
+            m_engine.rootContext()->setContextProperty("OverlayController", m_controller);
+        }
+
         auto widgetUrl = QUrl(QStringLiteral("qrc:///main"));
         m_component = new QQmlComponent(&m_engine, widgetUrl);
 
         this->errors = m_component->errors();
         for (auto &e : this->errors)
             qCritical() << "QML Error: " << e.toString().toStdString().c_str();
-
-        if(!desktopMode) {
-            openvr_init::initializeOpenVR(openvr_init::OpenVrInitializationType::Overlay);
-            m_controller = new wowletvr::OverlayController(desktopMode, m_engine);
-        }
     }
 
     void WowletVR::render() {
@@ -97,7 +112,8 @@ namespace wowletvr {
             return;
         }
 
-        m_controller->SetWidget(quickObjItem, displayName, appKey);
+        auto iconPath = ctx->configDirectory + "/wowlet.png";
+        m_controller->SetWidget(quickObjItem, displayName, appKey, iconPath.toStdString());
     }
 
     WowletVR::~WowletVR() {

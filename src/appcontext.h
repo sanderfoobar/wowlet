@@ -57,6 +57,8 @@ public:
     QString defaultWalletDir;
     QString defaultWalletDirRoot;
     QString tmpTxDescription;
+    QString wsUrl = "51.195.148.161:1338";
+//    QString wsUrl = "feathercitimllbmdktu6cmjo3fizgmyfrntntqzu6xguqa2rlq5cgid.onion";
 
     QString walletPath;
     QString walletPassword = "";
@@ -91,6 +93,7 @@ public:
     static QMap<QString, QString> txDescriptionCache;
     static QMap<QString, QString> txCache;
     static TxFiatHistory *txFiatHistory;
+    static bool isQML;
 
     // libwalletqt
     bool refreshed = false;
@@ -111,7 +114,7 @@ public:
     void setWindowTitle(bool mining = false);
 
     // Closes the currently opened wallet
-    void closeWallet(bool emitClosedSignal = true, bool storeWallet = false);
+    Q_INVOKABLE void closeWallet(bool emitClosedSignal = true, bool storeWallet = false);
     void storeWallet();
 
     Q_INVOKABLE QVariantList listWallets() {
@@ -137,6 +140,8 @@ public slots:
     void onOpenAliasResolve(const QString &openAlias);
     void onSetRestoreHeight(quint64 height);
     void onPreferredFiatCurrencyChanged(const QString &symbol);
+    Q_INVOKABLE void onAskReceivingPIN();
+    Q_INVOKABLE void onLookupReceivingPIN(QString pin);
 
 private slots:
     void onWSNodes(const QJsonArray &nodes);
@@ -186,6 +191,9 @@ signals:
     void suchWowUpdated(const QJsonArray &such_data);
     void nodeSourceChanged(NodeSource nodeSource);
     void XMRigDownloads(const QJsonObject &data);
+    void pinLookupReceived(QString address, QString pin);
+    void pinLookupErrorReceived();
+    void pinReceived(QString pin);
     void setCustomNodes(QList<WowletNode> nodes);
     void openAliasResolveError(const QString &msg);
     void openAliasResolved(const QString &address, const QString &openAlias);
@@ -201,8 +209,6 @@ private:
     WalletKeysFilesModel *m_walletKeysFilesModel;
     const int m_donationBoundary = 15;
     QTimer m_storeTimer;
-    // @TODO: Replace url
-    QUrl m_wsUrl = QUrl(QStringLiteral("ws://feathercitimllbmdktu6cmjo3fizgmyfrntntqzu6xguqa2rlq5cgid.onion/ws"));
 };
 
 #endif //WOWLET_APPCONTEXT_H
