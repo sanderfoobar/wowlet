@@ -42,7 +42,59 @@ WalletWizard::WalletWizard(AppContext *ctx, WalletWizard::Page startPage, QWidge
         setStartId(Page_Menu);
 
     setButtonText(QWizard::CancelButton, "Close");
-    setPixmap(QWizard::WatermarkPixmap, QPixmap(":/assets/images/photos/wow40.png"));
+    QStringList headers = {
+            ":/assets/images/photos/wow1.png",
+            ":/assets/images/photos/wow2.png",
+            ":/assets/images/photos/wow3.png",
+            ":/assets/images/photos/wow4.png",
+            ":/assets/images/photos/wow5.png",
+            ":/assets/images/photos/wow6.png",
+            ":/assets/images/photos/wow7.png",
+            ":/assets/images/photos/wow8.png",
+            ":/assets/images/photos/wow9.png",
+            ":/assets/images/photos/wow10.png",
+            ":/assets/images/photos/wow11.png",
+            ":/assets/images/photos/wow12.png",
+            ":/assets/images/photos/wow13.png",
+            ":/assets/images/photos/wow14.png",
+            ":/assets/images/photos/wow15.png",
+            ":/assets/images/photos/wow16.png",
+            ":/assets/images/photos/wow17.png",
+            ":/assets/images/photos/wow18.png",
+            ":/assets/images/photos/wow19.png",
+            ":/assets/images/photos/wow20.png",
+            ":/assets/images/photos/wow21.png",
+            ":/assets/images/photos/wow22.png",
+            ":/assets/images/photos/wow23.png",
+            ":/assets/images/photos/wow24.png",
+            ":/assets/images/photos/wow25.png",
+            ":/assets/images/photos/wow26.png",
+            ":/assets/images/photos/wow27.png",
+            ":/assets/images/photos/wow28.png",
+            ":/assets/images/photos/wow29.png",
+            ":/assets/images/photos/wow30.png",
+            ":/assets/images/photos/wow31.png",
+            ":/assets/images/photos/wow32.png",
+            ":/assets/images/photos/wow33.png",
+            ":/assets/images/photos/wow34.png",
+            ":/assets/images/photos/wow35.png",
+            ":/assets/images/photos/wow36.png",
+            ":/assets/images/photos/wow37.png",
+            ":/assets/images/photos/wow38.png",
+            ":/assets/images/photos/wow39.png",
+            ":/assets/images/photos/wow40.png",
+            ":/assets/images/photos/wow41.png",
+            ":/assets/images/photos/wow42.png",
+            ":/assets/images/photos/wow43.png",
+            ":/assets/images/photos/wow44.png",
+            ":/assets/images/photos/wow45.png",
+            ":/assets/images/photos/wow46.png",
+            ":/assets/images/photos/wow47.png"
+    };
+    int random = QRandomGenerator::global()->bounded(headers.count());
+    auto header = headers.at(random);
+    setPixmap(QWizard::WatermarkPixmap, QPixmap(header));
+
     setWizardStyle(WizardStyle::ModernStyle);
     setOption(QWizard::NoBackButtonOnStartPage);
 
