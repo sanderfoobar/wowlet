@@ -14,6 +14,7 @@ ColumnLayout {
     MyText {
         Layout.fillWidth: true
         wrap: true
+        fontColor: Style.fontColorBright
         text: "Enter a 4 digit PIN and wait for it to resolve."
     }
 
@@ -66,7 +67,7 @@ ColumnLayout {
                 Layout.preferredWidth: 390
                 visible: true
                 text: "0 0 0 0"
-                color: "#ffffff"
+                color: Style.fontColor
                 font.bold: true
                 font.pointSize: 40
                 leftPadding: 20
@@ -87,7 +88,7 @@ ColumnLayout {
         }
 
         Rectangle {
-            color: "#cccccc"
+            color: Style.fontColorDimmed
             width: 1
             Layout.fillHeight: true
         }
@@ -105,6 +106,7 @@ ColumnLayout {
 
                 MyText {
                     fontSize: 18
+                    fontColor: Style.fontColorBright
                     text: "Waiting on input..."
                 }
             }
@@ -118,6 +120,7 @@ ColumnLayout {
 
                 MyText {
                     fontSize: 18
+                    fontColor: Style.fontColorBright
                     text: "Looking up address..."
                 }
 
@@ -128,50 +131,12 @@ ColumnLayout {
 
                     MyText {
                         fontBold: true
+                        fontColor: Style.fontColorBright
                         text: "Code:"
                     }
 
                     MyText {
                         text: _PINLookup
-                    }
-                }
-            }
-
-                // Image {
-                //     visible: false
-                //     id: loadingImage
-                //     source: "qrc:/illuminati"
-                //     sourceSize.width: 400
-                //     sourceSize.height: 400
-                // }
-
-            ColumnLayout {
-                id: foundContainer
-                visible: false
-                spacing: 30
-                Layout.fillWidth: true
-
-                RowLayout {
-                    spacing: 20
-                    Layout.fillWidth: true
-
-                    MyText {
-                        fontBold: true
-                        text: "Address found:"
-                    }
-
-                    MyText {
-                        text: "WW2xG...gKgrcC7"
-                    }
-                }
-
-                MyPushButton {
-                    id: continueButton
-                    text: "Continue"
-                    Layout.preferredWidth: 220
-
-                    onClicked: {
-                        //
                     }
                 }
             }
@@ -190,7 +155,6 @@ ColumnLayout {
         _PINLookup = code;
 
         idleContainer.visible = false;
-        foundContainer.visible = false;
         loadingContainer.visible = true;
 
         numPad.enabled = false;
@@ -202,13 +166,11 @@ ColumnLayout {
         reset();
     }
 
-
     function reset() {
         // reset state
         _PINLookup = "";
 
         idleContainer.visible = true;
-        foundContainer.visible = false;
         loadingContainer.visible = false;
         sendStateController.destinationAddress = "";
 

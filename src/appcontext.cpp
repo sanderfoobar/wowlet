@@ -829,9 +829,16 @@ void AppContext::onTransactionCreated(PendingTransaction *tx, const QVector<QStr
 
     // tx created, but not sent yet. ask user to verify first.
     emit createTransactionSuccess(tx, address);
+
+    if(this->autoCommitTx) {
+        this->currentWallet->commitTransactionAsync(tx);
+    }
 }
 
-#if defined(HAS_OPENVR)
+QString AppContext::getAddress(quint32 accountIndex, quint32 addressIndex) {
+    return this->currentWallet->address(accountIndex, addressIndex);
+}
+
 void AppContext::onAskReceivingPIN() {
     // request new receiving PIN from wowlet-backend
     if(this->currentWallet == nullptr)
@@ -870,7 +877,6 @@ void AppContext::onLookupReceivingPIN(QString pin) {
     QJsonDocument doc = QJsonDocument(obj);
     this->ws->sendMsg(doc.toJson(QJsonDocument::Compact));
 }
-#endif
 
 void AppContext::onTransactionCommitted(bool status, PendingTransaction *tx, const QStringList& txid){
     this->currentWallet->history()->refresh(this->currentWallet->currentSubaddressAccount());

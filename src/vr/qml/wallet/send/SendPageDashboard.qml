@@ -11,6 +11,7 @@ ColumnLayout {
     MyText {
         Layout.fillWidth: true
         wrap: true
+        fontColor: Style.fontColorBright
         text: "How to transfer Wownero?"
     }
 
@@ -19,39 +20,19 @@ ColumnLayout {
         Layout.fillWidth: true
         spacing: 30
 
-    	Rectangle {
-    		color: sendStateController.exitedColor
-    		Layout.fillWidth: true
-    		Layout.fillHeight: true
-
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onEntered: parent.color = sendStateController.enteredColor
-                onExited: parent.color = sendStateController.exitedColor
-                onPressed: parent.color = sendStateController.pressedColor
-                onClicked: {
-                    sendStateView.state = "pinPage";
-                }
+        SendPageDashboardButton {
+            displayText: "Send via PIN"
+            onClicked: {
+                sendStateView.state = "pinPage";
             }
-    	}
+        }
 
-    	Rectangle {
-    		color: sendStateController.exitedColor
-    		Layout.fillWidth: true
-    		Layout.fillHeight: true
-
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onEntered: parent.color = sendStateController.enteredColor
-                onExited: parent.color = sendStateController.exitedColor
-                onPressed: parent.color = sendStateController.pressedColor
-                onClicked: {
-                    sendStateView.state = "qrPage";
-                }
+        SendPageDashboardButton {
+            displayText: "Send via QR code"
+            onClicked: {
+                sendStateView.state = "qrPage";
             }
-    	}
+        }
     }
 
     Item {

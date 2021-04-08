@@ -1,0 +1,39 @@
+{
+  "default": {
+    "fontColor": "white",
+    "fontColorDimmed": "#cccccc",
+    "fontColorBright": "white",
+    "backgroundGradientStartColor": "#194f64",
+    "backgroundGradientStopColor": "#192e43",
+    "backgroundColor": "#1b2939",
+    "divideColor": "50ffffff",
+    "btnEnteredColor": "#aa3b689b",
+    "btnExitedColor": "#aa375c87",
+    "btnPressedColor": "#aa467dbb",
+    "btnTextHoverColor": "white",
+    "btnTextColor": "white",
+    "btnMainMenuBackground": "#aa3b689b",
+    "historyBackgroundColor": "#2c435d",
+    "historyBackgroundColorBright": "#406288",
+    "historyFontColorPlusAmount": "#00d304",
+    "historyFontColorMinAmount": "red"
+  },
+  "wownero": {
+    "fontColor": "#bd93f9",
+    "fontColorBright": "#e5d3ff",
+    "backgroundGradientStartColor": "#383a59",
+    "backgroundGradientStopColor": "#282a36",
+    "backgroundColor": "#282a36",
+    "divideColor": "50ffffff",
+    "btnEnteredColor": "#bd93f9",
+    "btnExitedColor": "#50000000",
+    "btnPressedColor": "#bd93f9",
+    "btnTextHoverColor": "black",
+    "btnTextColor": "#bcc2cd",
+    "btnMainMenuBackground": "#50000000",
+    "historyBackgroundColor": "#30314d",
+    "historyBackgroundColorBright": "#383a59",
+    "historyFontColorPlusAmount": "#00d304",
+    "historyFontColorMinAmount": "red"
+  }
+}

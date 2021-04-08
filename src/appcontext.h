@@ -78,6 +78,11 @@ public:
     PendingTransaction::Priority tx_priority = PendingTransaction::Priority::Priority_Low;
     quint32 tx_mixin = static_cast<const quint32 &>(10);
     QString seedLanguage = "English";  // 14 word `monero-seed` only has English
+    // turn this on if you want to auto commit tx's after they have
+    // been created. Caution while using this setting is advised. This
+    // probably also breaks the default QtWidgets GUI. It is meant for
+    // alternative users of AppContext.
+    bool autoCommitTx = false;
 
     QNetworkAccessManager *network;
     QNetworkAccessManager *networkClearnet;
@@ -142,6 +147,7 @@ public slots:
     void onPreferredFiatCurrencyChanged(const QString &symbol);
     Q_INVOKABLE void onAskReceivingPIN();
     Q_INVOKABLE void onLookupReceivingPIN(QString pin);
+    Q_INVOKABLE QString getAddress(quint32 accountIndex, quint32 addressIndex);
 
 private slots:
     void onWSNodes(const QJsonArray &nodes);

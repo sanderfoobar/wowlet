@@ -73,6 +73,7 @@ public:
     static QLocale getCurrencyLocale(const QString &currencyCode);
     static QString amountToCurrencyString(double amount, const QString &currencyCode);
     static int maxLength(const QVector<QString> &array);
+    static double roundUp(double value, int decimal_places);
     static QMap<QString, QLocale> localeCache;
     static QString balanceFormat(quint64 balance);
     static QTextCharFormat addressTextFormat(const SubaddressIndex &index);

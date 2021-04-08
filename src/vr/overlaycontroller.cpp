@@ -73,7 +73,7 @@ OverlayController::OverlayController(bool desktopMode, QQmlEngine& qmlEngine) :
     m_offscreenSurface.create();
     m_openGLContext.makeCurrent( &m_offscreenSurface );
 
-    if (!vr::VROverlay()){
+    if (!vr::VROverlay() && !desktopMode){
         QMessageBox::critical(nullptr, "Wowlet VR Overlay", "Is OpenVR running?");
         throw std::runtime_error( std::string( "No Overlay interface" ) );
     }
@@ -418,6 +418,8 @@ void OverlayController::mainEventLoop() {
 
 void OverlayController::showKeyboard(QString existingText, unsigned long userValue)
 {
+    if(m_desktopMode) return;
+
     vr::VROverlay()->ShowKeyboardForOverlay(
             m_ulOverlayHandle,
             vr::k_EGamepadTextInputModeNormal,

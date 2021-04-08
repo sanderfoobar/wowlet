@@ -10,7 +10,7 @@ import wowlet.Wallet 1.0
 
 Rectangle {
     id: root
-    color: "#1b2939"
+    color: "transparent"
     width: 1600
     height: 800
 
@@ -18,9 +18,7 @@ Rectangle {
     property string headerText: "Header Title"
     property bool headerShowBackButton: true
 
-    property string enteredColor: "#365473"
     property string exitedColor: "transparent"
-    property string pressedColor: "#406288"
 
     signal backClicked();
 
@@ -41,11 +39,13 @@ Rectangle {
                         Layout.preferredHeight: 50
                         Layout.preferredWidth: 50
 
-                        Image {
-                            source: "qrc:/backarrow"
-                            sourceSize.width: 50
-                            sourceSize.height: 50
+                        ImageMask {
+                            id: backIcon
                             anchors.fill: parent
+                            image: "qrc:/backarrow"
+                            color: Style.fontColorBright
+                            width: 50
+                            height: 50
                         }
                     }
 
@@ -60,6 +60,7 @@ Rectangle {
                             text: headerText
                             font.pointSize: 26
                             anchors.verticalCenter: parent.verticalCenter
+                            fontColor: Style.fontColorBright
                         }
                     }
                 }
@@ -68,9 +69,21 @@ Rectangle {
                     enabled: headerShowBackButton
                     anchors.fill: parent
                     hoverEnabled: true
-                    onEntered: parent.color = root.enteredColor
-                    onExited: parent.color = root.exitedColor
-                    onPressed: parent.color = root.pressedColor
+                    onEntered: {
+                        parent.color = Style.btnEnteredColor
+                        headerTitle.fontColor = Style.btnTextHoverColor
+                        backIcon.color = Style.btnTextHoverColor
+                    }
+                    onExited: {
+                        parent.color = root.exitedColor
+                        headerTitle.fontColor = Style.fontColorBright
+                        backIcon.color = Style.fontColorBright
+                    }
+                    onPressed: {
+                        parent.color = Style.btnPressedColor
+                        headerTitle.fontColor = Style.btnTextHoverColor
+                        backIcon.color = Style.btnTextHoverColor
+                    }
                     onClicked: {
                         stackView.pop();
                         backClicked();
@@ -100,7 +113,7 @@ Rectangle {
         }
 
         Rectangle {
-            color: "#cccccc"
+            color: Style.dividerColor
             height: 1
             Layout.topMargin: 10
             Layout.fillWidth: true
@@ -120,7 +133,7 @@ Rectangle {
     }
 
     Rectangle {
-        id: testy66
+        id: bigRect
         color: "transparent"
 
         Layout.fillWidth: true
@@ -134,7 +147,7 @@ Rectangle {
             anchors.leftMargin: 40
             anchors.rightMargin: 40
 
-            color: "#cccccc"
+            color: Style.fontColorDimmed
             height: 1
         }
 
@@ -150,13 +163,13 @@ Rectangle {
 
                 fontSize: 14
                 text: appWindow.statusText
-                color: "#cccccc"
+                color: Style.fontColorDimmed
             }
 
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 1
-                color: "#cccccc"
+                color: Style.fontColorDimmed
             }
 
             RowLayout {
@@ -166,7 +179,7 @@ Rectangle {
                 MyText {
                     fontSize: 14
                     text: "Daemon: "
-                    color: "#cccccc"
+                    color: Style.fontColorDimmed
                 }
 
                 Image {
@@ -191,7 +204,7 @@ Rectangle {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 1
-                color: "#cccccc"
+                color: Style.fontColorDimmed
             }
 
             RowLayout {
@@ -201,7 +214,7 @@ Rectangle {
                 MyText {
                     fontSize: 14
                     text: "WS: "
-                    color: "#cccccc"
+                    color: Style.fontColorDimmed
                 }
 
                 Image {
@@ -215,66 +228,16 @@ Rectangle {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 1
-                color: "#cccccc"
+                color: Style.fontColorDimmed
             }
 
             MyText {
                 fontSize: 14
-                text: "Fiat: $0.05 USD"
-                color: "#cccccc"
+                text: "Balance: " + WowletVR.amountToFiat(appWindow.spendable);
+                color: Style.fontColorDimmed
             }
         }
     }
-
-    // Rectangle {
-    //     z: 100
-    //     color: "black"
-    //     height: 64
-
-    //     // anchors.bottom: parent.bottom
-    //     // anchors.left: parent.left
-    //     // anchors.right: parent.right
-
-    //     Rectangle {
-    //         anchors.top: parent.top
-    //         anchors.left: parent.left
-    //         anchors.right: parent.right
-
-    //         anchors.leftMargin: 40
-    //         anchors.rightMargin: 40
-
-    //         color: "#cccccc"
-    //         height: 1
-    //     }
-
-    //     RowLayout {
-    //         spacing: 30
-    //         anchors.left: parent.left
-    //         anchors.leftMargin: 40
-    //         anchors.rightMargin: 40
-    //         anchors.verticalCenter: parent.verticalCenter
-
-    //         MyText {
-    //             fontSize: 14
-    //             text: "Status: idle"
-    //         }
-
-    //         MyText {
-    //             fontSize: 14
-    //             text: "WS: OK"
-    //         }
-
-    //         MyText {
-    //             fontSize: 14
-    //             text: "Tor: OK"
-    //         }
-
-    //         MyText {
-    //             fontSize: 14
-    //             text: "Height: OK"
-    //         }
-    //     }
-    // }
 
     Component.onCompleted: {
         header.parent = mainLayout
@@ -290,6 +253,6 @@ Rectangle {
         content.Layout.rightMargin = 40
         content.Layout.bottomMargin = 40
 
-        testy66.parent = mainLayout
+        bigRect.parent = mainLayout
     }
 }

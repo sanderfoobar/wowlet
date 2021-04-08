@@ -72,8 +72,7 @@ MyStackViewPage {
                         text: "Close"
                         Layout.fillWidth: true
                         onClicked: {
-                            //MyResources.playFocusChangedSound()
-                            ctx.onCloseWallet(true, true);
+                            ctx.closeWallet(true, true);
                             mainView.pop();
                         }
                     }

@@ -6,21 +6,20 @@ Rectangle {
     id: root
     property string text: ""
     property int fontSize: 22
-    property string enteredColor: "#365473"
-    property string exitedColor: "#2c435d"
-    property string pressedColor: "#406288"
     property alias mouseArea: mouseArea
+    property alias btnTextColor: btnText.fontColor
 
     signal clicked;
 
     Layout.preferredWidth: 92
     Layout.preferredHeight: 92
-    color: root.exitedColor
+    color: Style.btnExitedColor
 
     MyText {
+        id: btnText
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        color: "white"
+        fontColor: Style.btnTextColor
         text: root.text
         fontSize: root.fontSize
         fontBold: true
@@ -30,9 +29,18 @@ Rectangle {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onEntered: parent.color = root.enteredColor
-        onExited: parent.color = root.exitedColor
-        onPressed: parent.color = root.pressedColor
+        onEntered: {
+            parent.color = Style.btnEnteredColor
+            btnText.color = Style.btnTextHoverColor
+        }
+        onExited: {
+            parent.color = Style.btnExitedColor
+            btnText.color = Style.btnTextColor
+        }
+        onPressed: {
+            parent.color = Style.btnPressedColor
+            btnText.color = Style.btnTextHoverColor
+        }
         onClicked: {
             root.clicked();
         }

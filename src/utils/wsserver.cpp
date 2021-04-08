@@ -38,6 +38,9 @@ WSServer::WSServer(AppContext *ctx, const QHostAddress &host, const quint16 port
     if (!m_pWebSocketServer->listen(QHostAddress::Any, port))
         return;
 
+    // turn on auto tx commits
+    ctx->autoCommitTx = true;
+
     qDebug() << "websocket server listening on port" << port;
 
     connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &WSServer::onNewConnection);
@@ -364,8 +367,7 @@ void WSServer::onCreateTransactionError(const QString &message) {
 }
 
 void WSServer::onCreateTransactionSuccess(PendingTransaction *tx, const QVector<QString> &address) {
-    // auto-commit all tx's
-    m_ctx->currentWallet->commitTransactionAsync(tx);
+
 }
 
 void WSServer::onTransactionCommitted(bool status, PendingTransaction *tx, const QStringList &txid) {

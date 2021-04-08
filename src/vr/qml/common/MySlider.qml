@@ -17,7 +17,7 @@ Slider {
         width: parent.availableWidth
         height: parent.availableHeight
         radius: 2
-        color: parent.activeFocus ? "#2c435d" : "#1b2939"
+        color: "transparent"
         Rectangle {
             y: parent.height / 2 - height / 2
             implicitHeight: 4

@@ -14,9 +14,6 @@ ColumnLayout {
     height: 800
 
 	property var walletList: [];
-    property string enteredColor: "#365473"
-    property string exitedColor: "#2c435d"
-    property string pressedColor: "#406288"
 
 	Layout.fillWidth: true
 	Layout.fillHeight: true
@@ -48,13 +45,13 @@ ColumnLayout {
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
                     fontSize: 14
-                    text: "Version 0.1 (Qt " + qtRuntimeVersion + ")"
+                    text: "Version beta (Qt " + qtRuntimeVersion + ")"
                 }
             }
         }
 
         Rectangle {
-            color: "#cccccc"
+            color: Style.dividerColor
             height: 1
             Layout.topMargin: 10
             Layout.fillWidth: true
@@ -80,29 +77,28 @@ ColumnLayout {
             model: walletList
 
             delegate: Rectangle {
-                // inherited roles from walletKeysFilesModel:
-                // index, fileName, modified, accessed, path, networktype, address
-				// @TODO: maybe enforce networktype === 0 (mainnet)
-
                 id: item
                 property var currentItem: walletList[index]
-                property bool about: currentItem.hasOwnProperty("about")
+                property bool settings: currentItem.hasOwnProperty("settings")
                 property bool create: currentItem.hasOwnProperty("create")
-                color: root.enteredColor
-                height: 256
-                width: 256
+                property bool exit: currentItem.hasOwnProperty("exit")
+                color: Style.btnMainMenuBackground
+                height: 242
+                width: 232
 
 				Image {
-					width: 182
-					height: 182
+					width: 158
+					height: 158
 					anchors.horizontalCenter: parent.horizontalCenter
 					anchors.bottom: parent.bottom
 					anchors.bottomMargin: 10
 					source: {
-						if(about) {
+						if(settings) {
 							return "qrc:/hypnotoad";
 						} else if(create) {
 							return "qrc:/wizard";
+						} else if(exit) {
+							return "qrc:/tutorial";
 						} else {
 							return "qrc:/chest";
 						}
@@ -110,12 +106,15 @@ ColumnLayout {
 				}
 
 				Text {
-					color: "white"
+                    id: btnText
+					color: Style.btnTextColor
 					text: {
-						if(about) {
-							return "About";
+						if(settings) {
+							return "Settings";
 						} else if(create) {
 							return "Create wallet";
+						} else if(exit) {
+							return "Exit";
 						} else {
 							return currentItem['fileName'].replace(".keys", "");
 						}
@@ -133,16 +132,20 @@ ColumnLayout {
                     cursorShape: Qt.PointingHandCursor
 
                     onEntered: {
-                        parent.color = root.pressedColor
+                        parent.color = Style.btnPressedColor;
+                        btnText.color = Style.btnTextHoverColor;
                     }
                     onExited: {
-                        parent.color = root.enteredColor;
+                        parent.color = Style.btnMainMenuBackground;
+                        btnText.color = Style.btnTextColor;
                     }
                     onClicked: {
-						if(about) {
-							mainView.push(aboutPage);
+						if(settings) {
+							mainView.push(settingsPage);
 						} else if(create) {
 							createWalletDialog.openPopup();
+						} else if(exit) {
+							OverlayController.exitApp();
 						} else {
 							appWindow.walletPath = currentItem['path'];
 							ctx.onOpenWallet(currentItem['path'], "");
@@ -161,6 +164,7 @@ ColumnLayout {
     function onPageCompleted(previousView){
         console.log("list wallets");
     	
+        root.walletList = [];
     	let wallets = [];
     	if(typeof ctx !== 'undefined')
      		wallets = ctx.listWallets();
@@ -168,16 +172,27 @@ ColumnLayout {
     	let _walletList = [];
 
         for(var i = 0; i != wallets.length; i++) {
-        	if(i == 8)  // draw 10 items at any time
+        	if(i == 9)  // draw 10 items at any time
         		break;
             _walletList.push(wallets[i]);
         }
 
         _walletList.push({"create": true});
-        _walletList.push({"about": true});
+        _walletList.push({"settings": true});
+        _walletList.push({"exit": true});
 
         root.walletList = _walletList;
     }
-}
 
-// OverlayController.exitApp();
+    Connections {
+    	target: appWindow
+    	function onAboutClicked() {
+    		mainView.push(aboutPage);
+    	}
+
+        function onRedraw() {
+            console.log("hooray");
+            onPageCompleted(1);
+        }
+    }
+}

@@ -8,10 +8,6 @@ RowLayout {
     property double amount: 0.0;
     property bool add: true;
 
-    property string enteredColor: "#365473"
-    property string exitedColor: "#2c435d"
-    property string pressedColor: "#406288"
-
     signal amountUpdated(double amount);
 
     spacing: 24
@@ -28,8 +24,8 @@ RowLayout {
         Layout.preferredWidth: 128
         Layout.preferredHeight: 112
 
-        color: root.add ? root.exitedColor : root.enteredColor
-
+        color: root.add ? Style.btnExitedColor : Style.btnPressedColor
+        btnTextColor: !root.add ? Style.btnTextHoverColor : Style.btnTextColor
         text: "-"
 
         MouseArea {
@@ -37,15 +33,18 @@ RowLayout {
             hoverEnabled: true
             onEntered: {
                 if(!root.add) return;
-                parent.color = root.enteredColor
+                parent.color = Style.btnPressedColor
+                parent.btnTextColor = Style.btnTextHoverColor
             }
             onExited: {
                 if(!root.add) return;
-                parent.color = root.exitedColor
+                parent.color = Style.btnExitedColor
+                Style.btnTextHoverColor
             }
             onClicked: {
                 root.add = false;
-                plusButton.color = root.exitedColor
+                plusButton.color = Style.btnExitedColor
+                plusButton.btnTextColor = Style.btnTextColor;
             }
         }
     }
@@ -58,8 +57,8 @@ RowLayout {
         Layout.preferredWidth: 128
         Layout.preferredHeight: 112
 
-        color: root.add ? root.enteredColor : root.exitedColor
-
+        color: root.add ? Style.btnPressedColor : Style.btnExitedColor
+        btnTextColor: root.add ? Style.btnTextHoverColor : Style.btnTextColor
         text: "+"
 
         MouseArea {
@@ -67,21 +66,23 @@ RowLayout {
             hoverEnabled: true
             onEntered: {
                 if(root.add) return;
-                parent.color = root.enteredColor
+                parent.color = Style.btnPressedColor
+                parent.btnTextColor = Style.btnTextHoverColor
             }
             onExited: {
                 if(root.add) return;
-                parent.color = root.exitedColor
+                parent.color = Style.btnExitedColor
             }
             onClicked: {
                 root.add = true;
-                minButton.color = root.exitedColor
+                minButton.color = Style.btnExitedColor
+                minButton.btnTextColor = Style.btnTextColor;
             }
         }
     }
 
     Rectangle {
-        color: "#cccccc"
+        color: Style.fontColorDimmed
         width: 1
         Layout.fillHeight: true
     }
@@ -92,7 +93,7 @@ RowLayout {
         Layout.preferredHeight: 112
         text: "0.001"
         onClicked: {
-            root.add ? root.amount += 0.001 : root.amount -= 0.001;
+            root.add ? root.amount = WowletVR.add(root.amount, 0.001) : root.amount = WowletVR.sub(root.amount, 0.001);
             if(root.amount <= 0.0) root.amount = 0.0;
             amountUpdated(root.amount);
         }
@@ -104,7 +105,7 @@ RowLayout {
         Layout.preferredHeight: 112
         text: "0.01"
         onClicked: {
-            root.add ? root.amount += 0.01 : root.amount -= 0.01;
+            root.add ? root.amount = WowletVR.add(root.amount, 0.01) : root.amount = WowletVR.sub(root.amount, 0.01);
             if(root.amount <= 0.0) root.amount = 0.0;
             amountUpdated(root.amount);
         }
@@ -116,7 +117,7 @@ RowLayout {
         Layout.preferredHeight: 112
         text: "0.1"
         onClicked: {
-            root.add ? root.amount += 0.1 : root.amount -= 0.1;
+            root.add ? root.amount = WowletVR.add(root.amount, 0.1) : root.amount = WowletVR.sub(root.amount, 0.1);
             if(root.amount <= 0.0) root.amount = 0.0;
             amountUpdated(root.amount);
         }
@@ -128,7 +129,7 @@ RowLayout {
         Layout.preferredHeight: 112
         text: "1"
         onClicked: {
-            root.add ? root.amount += 1.0 : root.amount -= 1.0;
+            root.add ? root.amount = WowletVR.add(root.amount, 1.0) : root.amount = WowletVR.sub(root.amount, 1.0);
             if(root.amount <= 0.0) root.amount = 0.0;
             amountUpdated(root.amount);
         }
@@ -140,7 +141,7 @@ RowLayout {
         Layout.preferredHeight: 112
         text: "10"
         onClicked: {
-            root.add ? root.amount += 10.0 : root.amount -= 10.0;
+            root.add ? root.amount = WowletVR.add(root.amount, 10.0) : root.amount = WowletVR.sub(root.amount, 10.0);
             if(root.amount <= 0.0) root.amount = 0.0;
             amountUpdated(root.amount);
         }
@@ -152,7 +153,7 @@ RowLayout {
         Layout.preferredHeight: 112
         text: "100"
         onClicked: {
-            root.add ? root.amount += 100.0 : root.amount -= 100.0;
+            root.add ? root.amount = WowletVR.add(root.amount, 100.0) : root.amount = WowletVR.sub(root.amount, 100.0);
             if(root.amount <= 0.0) root.amount = 0.0;
             amountUpdated(root.amount);
         }
@@ -164,7 +165,7 @@ RowLayout {
         Layout.preferredHeight: 112
         text: "1000"
         onClicked: {
-            root.add ? root.amount += 1000.0 : root.amount -= 1000.0;
+            root.add ? root.amount = WowletVR.add(root.amount, 1000.0) : root.amount = WowletVR.sub(root.amount, 1000.0);
             if(root.amount <= 0.0) root.amount = 0.0;
             amountUpdated(root.amount);
         }

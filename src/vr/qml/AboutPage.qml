@@ -28,8 +28,6 @@ ColumnLayout {
 
                 source: "qrc:/illuminati"
             }
-
-
         }
 
         ColumnLayout {
@@ -39,11 +37,9 @@ ColumnLayout {
                 Layout.leftMargin: 40
                 Layout.rightMargin: 40
                 Layout.fillWidth: true
-                text: "Wowlet VR is an alternative QML interface for wowlet and was made over a 4 week period whilst eating lots of pizzas. It is the world's first cryptocurrency wallet with support for VR. Wowlet is Free and open-source (BSD-3) software and the source code can be studied on git.wownero.com/wowlet/wowlet"
+                text: "Wowlet VR is an alternative QML interface for wowlet and was made over a 4 week period eating lots of pizzas. It is the world's first cryptocurrency wallet with support for VR. Wowlet is Free and open-source (BSD-3) software and the source code can be studied on git.wownero.com/wowlet/wowlet"
                 wrap: true
             }
-
-
         }
     }
 
@@ -52,6 +48,7 @@ ColumnLayout {
         Layout.rightMargin: 40
         Layout.fillWidth: true
         text: "Greetings: matzman666, qvqc, ez, Gatto, cisme, wowario, lza_menace, jwinterm, nioc, asymptotically, azy, selsta, kico, laura, thrmo, rottensox, solar, bl4sty, scoobybejesus"
+        fontSize: 14
         wrap: true
     }
 

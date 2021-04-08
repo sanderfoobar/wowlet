@@ -14,6 +14,7 @@ ColumnLayout {
     MyText {
         Layout.fillWidth: true
         wrap: true
+        fontColor: Style.fontColorBright
         text: "Look at a QR code in VR and take a screenshot."
     }
 
@@ -32,6 +33,7 @@ ColumnLayout {
         visible: false
         Layout.fillWidth: true
         wrap: true
+        fontColor: Style.fontColorBright
         text: "Status message."
     }
 

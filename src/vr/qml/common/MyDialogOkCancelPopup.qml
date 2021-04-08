@@ -2,6 +2,8 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
+import "."
+
 Popup {
     id: myDialogPopup
 
@@ -18,6 +20,7 @@ Popup {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         Layout.fillWidth: true
+        fontColor: Style.fontColor
     }
 
     property bool okClicked: false
@@ -37,8 +40,8 @@ Popup {
             implicitHeight: dialogHeight
             anchors.centerIn: parent
             radius: 24
-            color: "#1b2939"
-            border.color: "#cccccc"
+            color: Style.backgroundColor
+            border.color: Style.fontColorDimmed
             border.width: 2
             ColumnLayout {
                 anchors.fill: parent
@@ -49,7 +52,7 @@ Popup {
                     text: dialogTitle
                 }
                 Rectangle {
-                    color: "#cccccc"
+                    color: Style.fontColorDimmed
                     height: 1
                     Layout.fillWidth: true
                 }

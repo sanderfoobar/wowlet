@@ -30,6 +30,7 @@ MyStackViewPage {
                         width: parent.width
                         wrap: true
                         fontSize: 14
+                        fontColor: Style.fontColorBright
                         text: "Give the following 4 digit PIN to the person that is sending you Wownero. PIN's are valid for 10 minutes and automatically renew."
                     }
                 }
@@ -46,14 +47,14 @@ MyStackViewPage {
                             width: parent.width
                             visible: true
                             fontSize: 14
+                            fontColor: Style.fontColorBright
                             text: "Generating PIN..."
                         }
 
                         Text {
                             id: pinText
-                            visible: false
                             text: "- - - -"
-                            color: "#ffffff"
+                            color: Style.fontColor
                             font.bold: true
                             font.pointSize: 40
                             leftPadding: 20
@@ -75,7 +76,7 @@ MyStackViewPage {
             }
 
             Rectangle {
-                color: "#cccccc"
+                color: Style.fontColorDimmed
                 width: 1
                 Layout.fillHeight: true
             }
@@ -93,6 +94,7 @@ MyStackViewPage {
                         width: parent.width
                         fontSize: 14
                         wrap: true
+                        fontColor: Style.fontColorBright
                         text: "Alternatively, you may use one of the following methods to retreive your address."
                     }
                 }
@@ -104,7 +106,8 @@ MyStackViewPage {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        //walletView.push(chaperoneAdditionalPage)
+                        let address = ctx.getAddress(0, 1);
+                        messagePopup.showMessage("Your Wownero receiving address", address);
                     }
                 }
 
@@ -115,8 +118,9 @@ MyStackViewPage {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        MyResources.playFocusChangedSound()
-                        walletView.push(chaperoneAdditionalPage)
+                        let address = ctx.getAddress(0, 1);
+                        WowletVR.setClipboard(address);
+                        messagePopup.showMessage("Clipboard", "Address copied to clipboard.");
                     }
                 }
 
@@ -127,7 +131,7 @@ MyStackViewPage {
                     Layout.fillWidth: true
 
                     onClicked: {
-                        chaperoneNewProfileDialog.open();
+
                     }
                 }
 
@@ -155,7 +159,6 @@ MyStackViewPage {
         pinAskTimer.stop();
         statusText.visible = true;
         statusText.text = "Generating PIN...";
-        pinText.visible = false;
         pinText.text = "- - - -";
     }
 
@@ -182,7 +185,6 @@ MyStackViewPage {
         function onPinReceived(pin) {
             console.log("onPINReceived", pin);
             statusText.visible = false;
-            pinText.visible = true;
             pinText.text = pin[0] + " " + pin[1] + " " + pin[2] + " " + pin[3];
         }
     }

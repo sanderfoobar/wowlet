@@ -114,7 +114,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 
     qRegisterMetaType<QVector<QString>>();
 
-#ifdef QML
+#ifdef HAS_QML
     qputenv("QML_DISABLE_DISK_CACHE", "1");
 #endif
 

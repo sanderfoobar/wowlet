@@ -28,6 +28,7 @@ public:
         donateBeg,
         autoOpenWalletPath,
         skin,
+        openVRSkin,
         preferredFiatCurrency,
         blockExplorer,
         walletDirectory,

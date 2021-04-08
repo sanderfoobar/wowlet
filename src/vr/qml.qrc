@@ -39,6 +39,7 @@
     <file alias="status_connected">assets/img/status_connected.svg</file>
     <file alias="status_waiting">assets/img/status_waiting.svg</file>
     <file alias="status_lagging">assets/img/status_lagging.svg</file>
+    <file alias="qml_themes.json">assets/themes.json</file>
 
     <file alias="main">main.qml</file>
     <file>qml/common/HourComboBox.qml</file>
@@ -56,12 +57,15 @@
     <file>qml/common/MyText.qml</file>
     <file>qml/common/MyToggleButton.qml</file>
     <file>qml/common/MyPushButton.qml</file>
+    <file>qml/common/Style.qml</file>
+    <file>qml/common/qmldir</file>
     <file>qml/common/MySlider.qml</file>
     <file>qml/common/mainwidget.qml</file>
     <file>qml/common/MyNumPad.qml</file>
     <file>qml/common/MyNumPadButton.qml</file>
     <file>qml/common/MyNumPadSendAmount.qml</file>
     <file>qml/common/MyStackViewPage.qml</file>
+    <file>qml/common/ImageMask.qml</file>
     <file>qml/wallet/ReceivePage.qml</file>
     <file>qml/wallet/HistoryTable.qml</file>
     <file>qml/wallet/WalletDashBoardPage.qml</file>
@@ -69,9 +73,11 @@
     <file>qml/DashboardPage.qml</file>
     <file>qml/WalletPage.qml</file>
     <file>qml/AboutPage.qml</file>
+    <file>qml/SettingsPage.qml</file>
 
     <file>qml/wallet/send/SendPage.qml</file>
     <file>qml/wallet/send/SendPageDashboard.qml</file>
+    <file>qml/wallet/send/SendPageDashboardButton.qml</file>
     <file>qml/wallet/send/SendPageNavBack.qml</file>
     <file>qml/wallet/send/SendPagePIN.qml</file>
     <file>qml/wallet/send/SendPageQR.qml</file>

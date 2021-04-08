@@ -399,6 +399,11 @@ QLocale Utils::getCurrencyLocale(const QString &currencyCode) {
     return locale;
 }
 
+double Utils::roundUp(double value, int decimal_places) {
+    const double multiplier = std::pow(10.0, decimal_places);
+    return std::ceil(value * multiplier) / multiplier;
+}
+
 QString Utils::amountToCurrencyString(double amount, const QString &currencyCode) {
     QLocale locale = getCurrencyLocale(currencyCode);
 

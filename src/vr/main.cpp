@@ -32,8 +32,15 @@ namespace wowletvr {
 
     WowletVR::WowletVR(AppContext *ctx, QCommandLineParser *parser, QObject *parent) :
             QObject(parent), ctx(ctx), m_parser(parser) {
-        desktopMode = m_parser->isSet("openvr-debug");
         AppContext::isQML = true;
+        m_pClipboard = QGuiApplication::clipboard();
+        desktopMode = m_parser->isSet("openvr-debug");
+
+        // Init QML themes
+        this->readThemes();
+
+        // turn on auto tx commits
+        ctx->autoCommitTx = true;
 
         // write icon to disk so openvr overlay can refer to it
         auto icon = ":/assets/images/wowlet.png";
@@ -47,7 +54,7 @@ namespace wowletvr {
 
 #ifdef Q_OS_WIN
         if(desktopMode)
-            qputenv("QMLSCENE_DEVICE", "softwarecontext");
+            qputenv("QMLSCENE_DEVICE", "softwarecontext");  // virtualbox
 #endif
         qDebug() << "QMLSCENE_DEVICE: " << qgetenv("QMLSCENE_DEVICE");
         qInfo() << "OPENSSL VERSION: " << QSslSocket::sslLibraryBuildVersionString();
@@ -59,10 +66,11 @@ namespace wowletvr {
         m_engine.rootContext()->setContextProperty("ctx", ctx);
 
 //        qmlRegisterType<clipboardAdapter>("moneroComponents.Clipboard", 1, 0, "Clipboard");
+        m_engine.rootContext()->setContextProperty("WowletVR", this);
         qRegisterMetaType<NetworkType::Type>();
         qmlRegisterType<NetworkType>("wowlet.NetworkType", 1, 0, "NetworkType");
 
-        qmlRegisterUncreatableType<WalletKeysFiles>("wowlet.WalletKeysFiles", 1, 0, "WalletKeysFiles", "lol");
+        qmlRegisterUncreatableType<WalletKeysFiles>("wowlet.WalletKeysFiles", 1, 0, "WalletKeysFiles", "WalletKeysFiles can't be instantiated directly");
         qmlRegisterUncreatableType<Wallet>("wowlet.Wallet", 1, 0, "Wallet", "Wallet can't be instantiated directly");
         qmlRegisterType<WalletManager>("wowlet.WalletManager", 1, 0, "WalletManager");
 
@@ -82,10 +90,10 @@ namespace wowletvr {
         if(!desktopMode) {
             if(!openvr_init::initializeOpenVR(openvr_init::OpenVrInitializationType::Overlay))
                 throw std::runtime_error("Error: initializeOpenVR()");
-
-            m_controller = new wowletvr::OverlayController(desktopMode, m_engine);
-            m_engine.rootContext()->setContextProperty("OverlayController", m_controller);
         }
+
+        m_controller = new wowletvr::OverlayController(desktopMode, m_engine);
+        m_engine.rootContext()->setContextProperty("OverlayController", m_controller);
 
         auto widgetUrl = QUrl(QStringLiteral("qrc:///main"));
         m_component = new QQmlComponent(&m_engine, widgetUrl);
@@ -116,8 +124,30 @@ namespace wowletvr {
         m_controller->SetWidget(quickObjItem, displayName, appKey, iconPath.toStdString());
     }
 
-    WowletVR::~WowletVR() {
-        int weoignwieog = 1;
+    void WowletVR::readThemes() {
+        theme_names = QVariantList();
+        themes = QVariantMap();
+
+        auto lol = Utils::fileOpen(":/qml_themes.json");
+        auto doc = QJsonDocument::fromJson(lol);
+        QJsonObject obj = doc.object();
+
+        foreach(const QString &themeName, obj.keys()) {
+            theme_names << themeName;
+
+            QJsonValue value = obj.value(themeName);
+            QJsonObject theme = value.toObject();
+            QVariantMap map;
+            foreach(const QString &key, theme.keys()) {
+                map[key] = theme.value(key).toString();
+            }
+
+            themes[themeName] = map;
+        }
     };
 
+
+    WowletVR::~WowletVR() {
+        // bla
+    }
 }

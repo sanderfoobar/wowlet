@@ -27,8 +27,8 @@ Item {
 
           MyText {
                visible: txCount == 0
-               opacity: 0.75
                text: "No transactions to display."
+               fontColor: Style.fontColorBright
           }
 
 		ListView {
@@ -46,7 +46,7 @@ Item {
                     anchors.left: parent ? parent.left : undefined
                     anchors.right: parent ? parent.right : undefined
                     height: 54
-                    color: "#2c435d"
+                    color: Style.historyBackgroundColor
 
                     property bool isout: false;
                     property string amount: "0";
@@ -84,7 +84,7 @@ Item {
                          Rectangle {
                               Layout.preferredWidth: 56
                               Layout.fillHeight: true
-                              color: "#406288"
+                              color: Style.historyBackgroundColorBright
 
                               Image {
                                    width: 32
@@ -113,7 +113,7 @@ Item {
                                    // date
                                    anchors.verticalCenter: parent.verticalCenter
                                    fontSize: 12
-                                   fontColor: "white"
+                                   fontColor: Style.fontColorBright
                                    text: date
 
                                    Component.onCompleted: {
@@ -131,7 +131,7 @@ Item {
                                    anchors.verticalCenter: parent.verticalCenter
                                    fontSize: 14
                                    text: description !== "" ? description : "..."
-                                   fontColor: description !== "" ? "white" : "#cccccc"
+                                   fontColor: description !== "" ? Style.fontColorBright : Style.fontColorDimmed
                                    Component.onCompleted: {
                                         parent.Layout.preferredWidth = width;
                                    }
@@ -145,7 +145,7 @@ Item {
                          Rectangle {
                               Layout.preferredWidth: 420
                               Layout.fillHeight: true
-                              color: "#406288"
+                              color: Style.historyBackgroundColorBright
 
                               MyText {
                                    anchors.right: parent.right
@@ -155,7 +155,7 @@ Item {
                                    fontSize: 14
                                    fontBold: true
                                    text: amount
-                                   fontColor: !isout ? "#00d304" : "red"
+                                   fontColor: !isout ? Style.historyFontColorPlusAmount : Style.historyFontColorMinAmount
                               }
                          }
                     }

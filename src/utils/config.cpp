@@ -25,6 +25,7 @@ static const QHash<Config::ConfigKey, ConfigDirective> configStrings = {
         {Config::homeWidget,{QS("homeWidget"), "ccs"}},
         {Config::donateBeg,{QS("donateBeg"), 1}},
         {Config::skin,{QS("skin"), "light"}},
+        {Config::openVRSkin,{QS("openVRSkin"), "default"}},
         {Config::preferredFiatCurrency,{QS("preferredFiatCurrency"), "USD"}},
         {Config::blockExplorer,{QS("blockExplorer"), "explore.wownero.com"}},
         {Config::walletDirectory,{QS("walletDirectory"), ""}},

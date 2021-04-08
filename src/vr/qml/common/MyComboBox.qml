@@ -14,7 +14,7 @@ ComboBox {
         leftPadding: 0
         rightPadding: parent.indicator.width + parent.spacing
         text: parent.displayText
-        horizontalAlignment: Text.AlignLeft
+        horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
@@ -27,7 +27,7 @@ ComboBox {
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             text: parent.text
-            color: parent.enabled ? "#ffffff" : "#909090"
+            color: parent.enabled ? Style.fontColor : Style.fontColorDimmed
         }
         background: Rectangle {
             color: parent.pressed ? "#406288" : (parent.hovered ? "#365473" : "#2c435d")
@@ -61,11 +61,11 @@ ComboBox {
         }
     }
 
-    onActivated: {
-		if (activeFocus) {
-			MyResources.playActivationSound()
-		}
-    }
+  //   onActivated: {
+		// if (activeFocus) {
+		// 	MyResources.playActivationSound()
+		// }
+  //   }
 
     Component.onCompleted: {
         popup.background.color = "#2c435d"

@@ -8,14 +8,14 @@ TextField {
     
     id: myTextField
     echoMode: passwordField ? TextInput.Password : TextInput.Normal
-    color: "#cccccc"
+    color: Style.fontColorDimmed
     text: ""
     font.pointSize: 20
     background: Button {
         hoverEnabled: true
         background: Rectangle {
             color: parent.hovered ? "#2c435d" : "#1b2939"
-            border.color: "#cccccc"
+            border.color: Style.fontColorDimmed
             border.width: 2
         }
         onClicked: {

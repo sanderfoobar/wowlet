@@ -186,6 +186,7 @@ target_compile_definitions(wowlet PUBLIC VR_API_PUBLIC)
 
 if(QML)
     qt5_import_qml_plugins(${PROJECT_NAME})
+    target_compile_definitions(wowlet PRIVATE HAS_QML=1)
 endif()
 
 target_compile_definitions(wowlet

@@ -5,6 +5,7 @@ import QtGraphicalEffects 1.0
 import QtQuick.Window 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.2
+import QtGraphicalEffects 1.0
 
 import "."
 
@@ -18,21 +19,67 @@ Rectangle {
     id: appWindow
     width: 1600
     height: 800
-    color: "#1b2939"
+    color: "transparent"
+
+    property var themes: {}
+    property string theme: "wownero"
+    signal initTheme();
+
+    // Components that have been dynamically created need to redraw
+    // after theme change (such as Repeater{}, Flow{} items, etc) so 
+    // that the changes propogate.
+    signal redraw();
+
+    // For gradient background
+    property int start_x: 0
+    property int start_y: 64
+    property int end_x: 1080
+    property int end_y: 416
+    property double gradientTicks: 1.0;
+
+    LinearGradient {
+        anchors.fill: parent
+        start: Qt.point(start_x, start_y)
+        end: Qt.point(end_x, end_y)
+
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: Style.backgroundGradientStartColor }
+            GradientStop { position: 1.0; color: Style.backgroundGradientStopColor }
+        }
+    }
+
+    Timer {
+        // animates the gradient background a bit.
+        id: gradientBackgroundTimer
+        repeat: true
+        interval: 10
+        triggeredOnStart: true
+
+        onTriggered: {
+            appWindow.gradientTicks += 0.004;  // speed
+            let newx = ((1080 - 200) * Math.sin(appWindow.gradientTicks) + 1080 + 200) / 2;
+            appWindow.end_x = newx;
+        }
+    }
 
     property var currentWallet;
     property bool disconnected: currentWallet ? currentWallet.disconnected : false
-    property string walletTitle: "long wallet name"
+    property string walletTitle: "placeholder"
     property string walletPath: ""
     property string statusText: "Idle"
-    property string balanceFormatted: "Balance: 25928.9543 WOW"
+    property string balanceFormatted: "Balance: 0.0 WOW"
     property bool wsConnected: false
     property int connectionStatus: Wallet.ConnectionStatus_Disconnected;
+    signal aboutClicked();
 
     property var balance: 0.0
     property var spendable: 0.0
 
     property DashboardPage dashboardPage: DashboardPage {
+        visible: false
+    }
+
+    property SettingsPage settingsPage: SettingsPage {
         visible: false
     }
 
@@ -66,13 +113,14 @@ Rectangle {
                 Layout.rightMargin: 16
 
                 MyText {
+                    fontColor: Style.fontColorBright
                     text: "Password: "
                 }
 
                 MyTextField {
                     id: walletOpenPassword
                     keyBoardUID: 591
-                    color: "#cccccc"
+                    color: Style.fontColorDimmed
                     text: ""
                     Layout.fillWidth: true
                     font.pointSize: 20
@@ -110,13 +158,14 @@ Rectangle {
                 Layout.rightMargin: 16
 
                 MyText {
+                    fontColor: Style.fontColorBright
                     text: "Name: "
                 }
 
                 MyTextField {
                     id: newWalletName
                     keyBoardUID: 590
-                    color: "#cccccc"
+                    color: Style.fontColorDimmed
                     text: ""
                     Layout.fillWidth: true
                     font.pointSize: 20
@@ -132,13 +181,14 @@ Rectangle {
                 Layout.rightMargin: 16
 
                 MyText {
+                    fontColor: Style.fontColorBright
                     text: "Password: "
                 }
 
                 MyTextField {
                     id: newWalletPassword
                     keyBoardUID: 592
-                    color: "#cccccc"
+                    color: Style.fontColorDimmed
                     text: ""
                     Layout.fillWidth: true
                     font.pointSize: 20
@@ -152,7 +202,7 @@ Rectangle {
                 Layout.topMargin: 20
                 Layout.leftMargin: 16
                 fontSize: 16
-                fontColor: "#cccccc"
+                fontColor: Style.fontColorDimmed
                 text: "The password field is optional."
             }
 
@@ -174,8 +224,35 @@ Rectangle {
         }
     }
 
+    // About/credits button
+    Rectangle {
+        visible: mainView.currentItem == dashboardPage
+        color: "transparent"
+        width: 140
+        height: 60
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+
+        MyText {
+            text: "Credits"
+            fontSize: 12
+            opacity: 0.3
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            fontColor: Style.fontColor
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                aboutClicked();
+            }
+        }
+    }
+
     StackView {
         id: mainView
+        visible: true
         anchors.fill: parent
 
         pushEnter: Transition {
@@ -225,6 +302,54 @@ Rectangle {
             ctx.initTor();
             ctx.initWS();
         }
+
+        // Start animating the background
+        gradientBackgroundTimer.start();
+        
+        try {
+            appWindow.themes = WowletVR.getThemes();
+            appWindow.theme = WowletVR.getCurrentTheme();
+        }
+        catch(err) {
+            // for debugging purposes - do not change color codes here, use themes.json instead.
+            appWindow.themes = {
+              "default": {
+                "fontColor": "white",
+                "fontColorDimmed": "#cccccc",
+                "fontColorBright": "#white",
+                "backgroundGradientStartColor": "#194f64",
+                "backgroundGradientStopColor": "#192e43",
+              },
+              "wownero": {
+                "fontColor": "#bd93f9",
+                "fontColorDimmed": "#cccccc",
+                "fontColorBright": "#e5d3ff",
+                "backgroundGradientStartColor": "#383a59",
+                "backgroundGradientStopColor": "#282a36",
+              }
+            }
+        }
+
+        appWindow.changeTheme(appWindow.theme);
+        appWindow.initTheme();
+    }
+
+    function changeTheme(theme) {
+        console.log("changeTheme", theme);
+
+        for (var key in appWindow.themes[theme]){
+            let val = appWindow.themes[theme][key];
+            if(Style.hasOwnProperty(key))
+                Style[key] = val;
+        }
+
+        if(appWindow.theme != theme) {
+            appWindow.theme = theme;
+            try { WowletVR.setCurrentTheme(theme); }
+            catch(err) {}
+        }
+
+        appWindow.redraw();
     }
 
     Connections {
@@ -251,17 +376,6 @@ Rectangle {
             appWindow.currentWallet.connectionStatusChanged.connect(onConnectionStatusChanged);
         }
 
-        // function onWalletOpened(Wallet *wallet) {
-            // currentWallet.moneySpent.connect(onWalletMoneySent)
-            // currentWallet.moneyReceived.connect(onWalletMoneyReceived)
-            // currentWallet.unconfirmedMoneyReceived.connect(onWalletUnconfirmedMoneyReceived)
-            // currentWallet.transactionCreated.connect(onTransactionCreated)
-            // currentWallet.connectionStatusChanged.connect(onWalletConnectionStatusChanged)
-            // currentWallet.transactionCommitted.connect(onTransactionCommitted);
-
-            // middlePanel.paymentClicked.connect(handlePayment);
-        // }
-
         function onBlockchainSync(height, target) {
             let blocks = (target > height) ? (target - height) : "?";
             let heightText = "Blockchain sync: " + blocks + " blocks remaining";
@@ -277,8 +391,6 @@ Rectangle {
         function onWalletClosed() {
             console.log("onWalletClosed");
 
-            appWindow.currentWallet.connectionStatusChanged.disconnect(onConnectionStatusChanged);
-
             appWindow.walletTitle = "";
             appWindow.balanceFormatted = "";
             appWindow.balance = 0.0;
@@ -291,8 +403,9 @@ Rectangle {
         }
 
         function onBalanceUpdated(balance, spendable) {
-            appWindow.balance = balance;
-            appWindow.spendable = spendable;
+            appWindow.balance = WowletVR.cdiv(balance);
+            appWindow.spendable = WowletVR.cdiv(spendable);
+            console.log("onBalanceUpdated", appWindow.spendable);
         }
 
         function onWalletOpenedError(err) {
@@ -327,13 +440,23 @@ Rectangle {
         }
 
         function onCreateTransactionSuccess(tx, address) {  // PendingTransaction
-            // auto-commit all tx's
-            //m_ctx->currentWallet->commitTransactionAsync(tx);
             console.log("onCreateTransactionSuccess", address)
         }
 
         function onTransactionCommitted(status, tx, txid) {  // bool,PendingTransaction,stringlist
             console.log("onTransactionCommitted", status)
+        }
+    }
+
+    Connections {
+        target: OverlayController
+
+        function onDashboardDeactivated() {
+            gradientBackgroundTimer.stop();
+        }
+
+        function onDashboardActivated() {
+            gradientBackgroundTimer.start();
         }
     }
 

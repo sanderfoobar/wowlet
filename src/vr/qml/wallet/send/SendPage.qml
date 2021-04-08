@@ -13,10 +13,6 @@ MyStackViewPage {
 
     property string destinationAddress: ""
 
-    property string enteredColor: "#365473"
-    property string exitedColor: "#2c435d"
-    property string pressedColor: "#406288"
-
     content: ColumnLayout {
         id: sendStateView
         property Item currentView
