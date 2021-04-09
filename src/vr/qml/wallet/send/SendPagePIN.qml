@@ -9,7 +9,7 @@ ColumnLayout {
     id: root
 
     Layout.fillWidth: true
-    property string _PINLookup: ""
+    property string pin: ""
 
     MyText {
         Layout.fillWidth: true
@@ -29,25 +29,11 @@ ColumnLayout {
 
             MyNumPad {
                 id: numPad
-                onCodeUpdated: {
-                    let codeFmt = "";
-
-                    for(var i = 0; i != 4; i++) {
-                        if(pin_code[i] !== undefined) {
-                            codeFmt += pin_code[i] + " ";
-                        } else {
-                            codeFmt += ". ";
-                        }
+                onButtonPress: {
+                    root.pin += val;
+                    if(root.pin.length === 4 && root.pin !== "0000") {
+                        return addressLookup();
                     }
-
-                    // update display thingy
-                    codeDisplay.text = codeFmt;
-
-                    // lol Qt
-                    codeFmt = codeFmt.replace(" ", "").replace(" ", "").replace(" ", "").replace(" ", "").replace(" ", "").trim();
-
-                    if(pin_code.length === 4 && codeFmt != "0000")
-                        addressLookup(codeFmt);
                 }
             }
 
@@ -66,7 +52,7 @@ ColumnLayout {
                 id: codeDisplay
                 Layout.preferredWidth: 390
                 visible: true
-                text: "0 0 0 0"
+                text: (root.pin[0] || ".") + " " + (root.pin[1] || ".") + " " + (root.pin[2] || ".") + " " + (root.pin[3] || ".");
                 color: Style.fontColor
                 font.bold: true
                 font.pointSize: 40
@@ -136,7 +122,7 @@ ColumnLayout {
                     }
 
                     MyText {
-                        text: _PINLookup
+                        text: root.pin
                     }
                 }
             }
@@ -148,18 +134,18 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
-    function addressLookup(code) {
-        if(_PINLookup !== "")
-            return;
-
-        _PINLookup = code;
-
+    function addressLookup() {
+        console.log("addressLookup()");
         idleContainer.visible = false;
         loadingContainer.visible = true;
 
         numPad.enabled = false;
 
-        ctx.onLookupReceivingPIN(code);
+        try {
+            ctx.onLookupReceivingPIN(root.pin);
+        } catch(err){
+            console.log("ctx.onLookupReceivingPIN() ignored")
+        }
     }
 
     function onPageCompleted(previousView) {
@@ -167,8 +153,9 @@ ColumnLayout {
     }
 
     function reset() {
+        console.log("SendPagePin reset()");
         // reset state
-        _PINLookup = "";
+        root.pin = "";
 
         idleContainer.visible = true;
         loadingContainer.visible = false;
@@ -176,8 +163,6 @@ ColumnLayout {
 
         numPad.enabled = true;
         numPad.reset();
-
-        codeDisplay.text = "0 0 0 0";
     }
 
     Connections {
@@ -186,7 +171,7 @@ ColumnLayout {
         function onPinLookupReceived(address, pin) {
             console.log("onPinLookupReceived", address);
 
-            if(pin === _PINLookup) {
+            if(pin === root.pin) {
                 sendStateController.destinationAddress = address;
                 sendStateView.state = "transferPage";
             } else {

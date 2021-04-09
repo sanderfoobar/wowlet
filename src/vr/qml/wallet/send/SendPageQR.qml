@@ -42,7 +42,11 @@ ColumnLayout {
         Layout.fillWidth: true
     }
 
-    function onPageCompleted(previousView){
+    function reset() {
+        
+    }
 
+    function onPageCompleted(previousView){
+        reset();
     }
 }

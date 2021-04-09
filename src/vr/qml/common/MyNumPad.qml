@@ -6,34 +6,23 @@ import "."
 ColumnLayout {
     id: root
     enabled: true
+    spacing: 16
     
     property double disabledOpacity: 0.4
-    property var code: [];
+    property bool compact: false
 
     signal resolvePressed();
-    signal codeUpdated(var pin_code);
-
-    function onButtonPress(val) {
-        code.push(val);
-
-        if(code.length === 5)
-            code = [val];
-
-        codeUpdated(code);
-    }
-
-    function reset() {
-        root.code = [];
-    }
+    signal buttonPress(string val);
+    signal clearPress();
 
     RowLayout {
-        spacing: 20
+        spacing: 18
 
         MyNumPadButton {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "1"
             onClicked: {
-                onButtonPress("1");
+                buttonPress("1");
             }
         }
 
@@ -41,7 +30,7 @@ ColumnLayout {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "2"
             onClicked: {
-                onButtonPress("2");
+                buttonPress("2");
             }
         }
 
@@ -49,19 +38,19 @@ ColumnLayout {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "3"
             onClicked: {
-                onButtonPress("3");
+                buttonPress("3");
             }
         }
     }
 
     RowLayout {
-        spacing: 20
+        spacing: 18
 
         MyNumPadButton {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "4"
             onClicked: {
-                onButtonPress("4");
+                buttonPress("4");
             }
         }
 
@@ -69,7 +58,7 @@ ColumnLayout {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "5"
             onClicked: {
-                onButtonPress("5");
+                buttonPress("5");
             }
         }
 
@@ -77,19 +66,19 @@ ColumnLayout {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "6"
             onClicked: {
-                onButtonPress("6");
+                buttonPress("6");
             }
         }
     }
 
     RowLayout {
-        spacing: 20
+        spacing: 18
 
         MyNumPadButton {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "7"
             onClicked: {
-                onButtonPress("7");
+                buttonPress("7");
             }
         }
 
@@ -97,7 +86,7 @@ ColumnLayout {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "8"
             onClicked: {
-                onButtonPress("8");
+                buttonPress("8");
             }
         }
 
@@ -105,32 +94,44 @@ ColumnLayout {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "9"
             onClicked: {
-                onButtonPress("9");
+                buttonPress("9");
             }
         }
     }
 
     RowLayout {
-        spacing: 20
+        spacing: 18
 
         MyNumPadButton {
             opacity: root.enabled ? 1 : disabledOpacity
             text: "0"
             onClicked: {
-                onButtonPress("0");
+                buttonPress("0");
+            }
+        }
+
+        MyNumPadButton {
+            visible: root.compact
+            opacity: root.enabled ? 1 : disabledOpacity
+            text: "."
+            onClicked: {
+                buttonPress(".");
             }
         }
 
         MyNumPadButton {
             opacity: root.enabled ? 1 : disabledOpacity
 
-            Layout.preferredWidth: 204
+            Layout.preferredWidth: root.compact ? 106 : 230
             fontSize: 16
-            text: "Clear"
+            text: root.compact ? "C" : "Clear"
             onClicked: {
-                root.code = [0,0,0,0];
-                root.codeUpdated(root.code);
+                clearPress();
             }
         }
     }
+
+    function reset() {
+
+    }    
 }

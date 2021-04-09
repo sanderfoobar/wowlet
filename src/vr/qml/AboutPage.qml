@@ -47,8 +47,8 @@ ColumnLayout {
         Layout.leftMargin: 40
         Layout.rightMargin: 40
         Layout.fillWidth: true
-        text: "Greetings: matzman666, qvqc, ez, Gatto, cisme, wowario, lza_menace, jwinterm, nioc, asymptotically, azy, selsta, kico, laura, thrmo, rottensox, solar, bl4sty, scoobybejesus"
         fontSize: 14
+        text: "Shoutouts: matzman666, qvqc, ez, Gatto, RAGEHAÜZ, cisme, wowario, lza_menace, jwinterm, nioc, asymptotically, azy, selsta, kico, laura, thrmo, rottensox, solar, bl4sty, scoobybejesus"
         wrap: true
     }
 

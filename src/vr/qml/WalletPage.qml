@@ -35,6 +35,7 @@ Rectangle {
     StackView {
         id: walletView
         anchors.fill: parent
+        initialItem: walletDashboardPage
 
         pushEnter: Transition {
             PropertyAnimation {
@@ -72,8 +73,6 @@ Rectangle {
                 easing.type: Easing.OutCubic
             }
         }
-
-        initialItem: walletDashboardPage
     }
 
     function onPageCompleted() {

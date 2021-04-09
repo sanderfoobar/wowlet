@@ -83,10 +83,6 @@ namespace wowletvr {
         qRegisterMetaType<TransactionInfo::Direction>();
         qRegisterMetaType<TransactionHistoryModel::TransactionInfoRole>();
 
-        // @TODO: custom DPI / AA
-//        QCoreApplication::setAttribute( Qt::AA_UseDesktopOpenGL );
-//        QCoreApplication::setAttribute( Qt::AA_Use96Dpi );
-
         if(!desktopMode) {
             if(!openvr_init::initializeOpenVR(openvr_init::OpenVrInitializationType::Overlay))
                 throw std::runtime_error("Error: initializeOpenVR()");

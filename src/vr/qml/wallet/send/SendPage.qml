@@ -8,6 +8,7 @@ import "."
 
 MyStackViewPage {
     id: sendStateController
+    height: 800
     width: 1600
     headerText: "Send"
 
@@ -32,9 +33,6 @@ MyStackViewPage {
                }
             }
 
-            // if(previousView !== null && currentView.viewName === "wizardHome")
-            //     wizardController.restart();
-
             if (currentView) {
                 sendStack.replace(currentView)
                 // Calls when view is opened
@@ -44,10 +42,6 @@ MyStackViewPage {
             }
 
             previousView = currentView;
-
-            // reset push direction
-            // if(wizardController.wizardState == "wizardHome")
-                // wizardController.wizardStackView.backTransition = false;
         }
 
         states: [
@@ -105,6 +99,7 @@ MyStackViewPage {
     onBackClicked: {
         // top back button to send/receive menu, reset default states for sendViews
         sendStateView.pinPage.onPageCompleted();
+        sendStateView.qrPage.onPageCompleted();
         sendStateView.dashPage.onPageCompleted();
         sendStateView.transferPage.onPageCompleted();
     }

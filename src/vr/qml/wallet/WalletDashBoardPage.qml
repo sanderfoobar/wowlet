@@ -95,5 +95,10 @@ MyStackViewPage {
 
     function onPageCompleted() {
         historyView.onPageCompleted();
+        try {
+            appWindow.fiatSymbol = WowletVR.preferredFiat();
+        } catch(err) {
+
+        }
     }
 }

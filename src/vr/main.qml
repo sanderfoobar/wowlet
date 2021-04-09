@@ -22,7 +22,8 @@ Rectangle {
     color: "transparent"
 
     property var themes: {}
-    property string theme: "wownero"
+    property string theme: "default"
+    property string fiatSymbol: "USD"
     signal initTheme();
 
     // Components that have been dynamically created need to redraw
@@ -309,24 +310,23 @@ Rectangle {
         try {
             appWindow.themes = WowletVR.getThemes();
             appWindow.theme = WowletVR.getCurrentTheme();
-        }
-        catch(err) {
+        } catch(err) {
             // for debugging purposes - do not change color codes here, use themes.json instead.
             appWindow.themes = {
-              "default": {
-                "fontColor": "white",
-                "fontColorDimmed": "#cccccc",
-                "fontColorBright": "#white",
-                "backgroundGradientStartColor": "#194f64",
-                "backgroundGradientStopColor": "#192e43",
-              },
-              "wownero": {
-                "fontColor": "#bd93f9",
-                "fontColorDimmed": "#cccccc",
-                "fontColorBright": "#e5d3ff",
-                "backgroundGradientStartColor": "#383a59",
-                "backgroundGradientStopColor": "#282a36",
-              }
+                "default": {
+                    "fontColor": "white",
+                    "fontColorDimmed": "#cccccc",
+                    "fontColorBright": "white",
+                    "backgroundGradientStartColor": "#225d73",
+                    "backgroundGradientStopColor": "#192e43",
+                }, 
+                "wownero": {
+                    "fontColor": "#bd93f9",
+                    "fontColorDimmed": "#cccccc",
+                    "fontColorBright": "#e5d3ff",
+                    "backgroundGradientStartColor": "#383a59",
+                    "backgroundGradientStopColor": "#282a36",
+                }
             }
         }
 

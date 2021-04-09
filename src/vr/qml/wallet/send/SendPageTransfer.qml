@@ -9,7 +9,8 @@ ColumnLayout {
     spacing: 30
 
     property string txDialogText: ""
-    property double amount: 0.0
+    property string amount: ""
+    property string amount_type: "wow"
     property bool canSend: false
 
     Layout.fillWidth: true
@@ -21,37 +22,85 @@ ColumnLayout {
         text: "How much would you like to send?"
     }
 
-    MyNumPadSendAmount {
-        id: myNumPadSendAmount
-        Layout.fillWidth: true
-        Layout.preferredHeight: 112
-        Layout.maximumHeight: 112
-
-        onAmountUpdated: {
-            root.amount = amount;
-            fiatText.text = WowletVR.amountToFiat(root.amount);
-
-            // @TODO: tx validation here
-            if(root.amount <= 0) {
-                root.canSend = false;
-            } else if(root.amount > appWindow.spendable) {
-                root.canSend = false;
-            } else {
-                root.canSend = true;
-            }
-        }
+    function count(input, needle) {
+        return input.split(".").length - 1;
     }
 
     RowLayout {
-        spacing: 30
-        Layout.topMargin: 20
-        Layout.fillHeight: true
-        Layout.fillWidth: true
+        spacing: 40
+
+        ColumnLayout {
+            Layout.preferredWidth: 320
+            Layout.preferredHeight: 400
+
+            MyNumPad {
+                id: numPad
+                compact: true
+                onButtonPress: {
+                    let periods = count(root.amount, ".");
+                    if(periods == 1 && val === ".") return;
+                    if(root.amount === "" && val === ".") return;
+                    if(root.amount.length > 7) return;
+
+                    root.amount += val;
+                }
+                onClearPress: {
+                    root.amount = "";
+                }
+            }
+
+            Rectangle {
+                Layout.fillHeight: true
+                Layout.preferredWidth: parent.Layout.preferredWidth
+                color: "transparent"
+            }
+        }
+
+        ColumnLayout {
+            spacing: 14
+            Layout.fillHeight: true
+            Layout.preferredWidth: 280
+
+            MyPushButton {
+                id: wowButton
+                opacity: enabled ? 1.0 : 0.4
+                enabled: root.amount_type === "fiat"
+
+                Layout.preferredWidth: 280
+                Layout.preferredHeight: 108
+
+                text: "Wownero"
+
+                onClicked: {
+                    root.amount_type = "wow"
+                }
+            }
+
+            MyPushButton {
+                id: fiatBtn
+                opacity: enabled ? 1.0 : 0.4
+                enabled: root.amount_type === "wow"
+
+                Layout.preferredWidth: 280
+                Layout.preferredHeight: 108
+
+                text: "Fiat"
+
+                onClicked: {
+                    root.amount_type = "fiat"
+                }
+            }
+
+            Item {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+            }
+        }
 
         ColumnLayout {
             spacing: 10
             Layout.fillHeight: true
-            Layout.maximumWidth: parent.width / 2
+
 
             RowLayout {
                 spacing: 30
@@ -78,7 +127,21 @@ ColumnLayout {
                     MyText {
                         fontSize: 24
                         fontColor: Style.fontColorBright
-                        text: root.amount + " WOW"
+                        text: {
+                            let rtn = "";
+                            if(root.amount === "") rtn += "0.0"
+                            else if(root.amount_type === "wow") {
+                                rtn += root.amount;
+                            } else {
+                                try {
+                                    rtn += WowletVR.fiatToWow(root.amount);
+                                } catch(err) {
+                                    return "ERROR";
+                                }
+                            }
+
+                            return rtn + " WOW";
+                        }
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                     }
@@ -111,7 +174,21 @@ ColumnLayout {
                         id: fiatText
                         fontSize: 18
                         fontColor: Style.fontColorBright
-                        text: "$0.00 USD"
+                        text: {
+                            let rtn = "";
+                            if(root.amount === "") rtn += "0.0"
+                            else if(root.amount_type === "fiat") {
+                                rtn += root.amount;
+                            } else {
+                                try {
+                                    rtn += WowletVR.wowToFiat(root.amount);
+                                } catch(err) {
+                                    return "ERROR";
+                                }
+                            }
+
+                            return rtn + " " + appWindow.fiatSymbol
+                        }
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.right: parent.right
                     }
@@ -153,133 +230,49 @@ ColumnLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
-        }
 
-        Rectangle {
-            color: "transparent"
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-        }
-    }
+            MyPushButton {
+                id: sendButton
 
-    RowLayout {
-        Layout.preferredWidth: parent.width
-        Layout.preferredHeight: 128
+                Layout.preferredWidth: 420
+                Layout.alignment: Qt.AlignRight
 
-        MyPushButton {
-            id: keyboardButton
-            Layout.preferredWidth: 700
-            
-            text: "Enter amount via virtual keyboard"
-            
-            onClicked: {
-                OverlayController.showKeyboard(text, 1337)
-            }
-        }
-        
-        MyPushButton {
-            id: sendButton
-            opacity: root.canSend ? 1.0 : 0.5
-            enabled: root.canSend
+                text: "Create transaction"
 
-            Layout.preferredWidth: 420
-            Layout.alignment: Qt.AlignRight
+                onClicked: {
+                    if(amount === "") return;
 
-            text: "Create transaction"
+                    let _amount = parseFloat(amount);
+                    if(root.amount_type == "fiat") {
+                        try {
+                            _amount = WowletVR.fiatToWow(_amount);
+                        } catch(err) {
+                            messagePopup.showMessage("Error", "Could not convert fiat to wow.");
+                            return;
+                        }
+                    }
 
-            onClicked: {
-                WowletVR.onCreateTransaction(destinationAddress, root.amount, "", false);  // no description
-                sendButton.enabled = false;
+                    if(amount <= 0) {
+                        messagePopup.showMessage("Error", "Amount was zero.");
+                        return;
+                    }
+
+                    WowletVR.onCreateTransaction(destinationAddress, _amount.toString(), "", false);  // no description
+                    sendButton.enabled = false;
+                }
             }
         }
     }
 
+    function onPageCompleted() {
+        root.amount = "";
+        root.amount_type = "wow";
+        root.txDialogText = "";
+    }
+    
     Item {
         Layout.fillWidth: true
         Layout.fillHeight: true
-    }
-
-    Connections {
-        target: OverlayController
-
-        function onKeyBoardInputSignal(input, userValue) {
-            if (userValue == 1337) {
-                let val = parseFloat(input);
-                if(val >= 0)
-                    myNumPadSendAmount.onAmountUpdated(val);
-            }
-        }
-    }
-
-    Connections {
-        target: ctx
-
-        function onInitiateTransaction() {
-            console.log("transactionStarted");
-
-            mainView.opacity = 0.4;
-            mainView.enabled = false;
-            root.canSend = false;
-            root.txDialogText = "Busy creating transaction. Hold on tight!";
-
-            waitPopup.open();
-        }
-
-        function onCreateTransactionError(message) { // str
-            console.log("onCreateTransactionError", message);
-            waitPopup.close();
-
-            mainView.opacity = 1.0;
-            mainView.enabled = true;
-            root.canSend = true;
-            root.txDialogText = "";
-
-            messagePopup.showMessage("Error creating tx", message);
-        }
-
-        function onCreateTransactionSuccess(tx, address) {  // PendingTransaction
-            console.log("onCreateTransactionSuccess", address)
-            root.txDialogText = "Submitting transaction to the Wownero network.";
-        }
-
-        function onTransactionCommitted(status, tx, txid) {  // bool,PendingTransaction,stringlist
-            console.log("onTransactionCommitted", status);
-            waitPopup.close();
-
-            mainView.opacity = 1.0;
-            mainView.enabled = true;
-            root.canSend = true;
-            root.txDialogText = "";
-
-            walletView.pop();
-        }
-    }
-
-    function onPageCompleted(previousView){
-
-    }
-
-    Popup {
-        id: waitPopup
-
-        implicitHeight: 100
-        implicitWidth: 1200
-        x: (parent.width - width) / 2
-        y: (parent.height - height) / 2
-
-        ColumnLayout {
-            anchors.fill: parent
-            MyText {
-                Layout.alignment: Qt.AlignHCenter
-                fontColor: Style.fontColor
-                text: root.txDialogText
-            }
-        }
-
-        background: Rectangle {
-            color: "black"
-            opacity: 0.8
-        }
     }
 
     Component.onCompleted: {

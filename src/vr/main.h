@@ -57,12 +57,25 @@ namespace wowletvr {
             m_pClipboard->setText(text, QClipboard::Selection);
         }
 
-        Q_INVOKABLE QString amountToFiat(double amount) {
+        Q_INVOKABLE QString preferredFiat() {
+            return config()->get(Config::preferredFiatCurrency).toString();
+        }
+
+        Q_INVOKABLE QString fiatToWow(double amount) {
             auto preferredFiatCurrency = config()->get(Config::preferredFiatCurrency).toString();
-            if (amount <= 0) return QString("0.00 %1").arg(preferredFiatCurrency);
+            if (amount <= 0) return QString("0.00");
+
+            double conversionAmount = AppContext::prices->convert(preferredFiatCurrency, "WOW", amount);
+            return QString("%1").arg(QString::number(conversionAmount, 'f', 2));
+        }
+
+        Q_INVOKABLE QString wowToFiat(double amount) {
+            auto preferredFiatCurrency = config()->get(Config::preferredFiatCurrency).toString();
+            if (amount <= 0) return QString("0.00");
 
             double conversionAmount = AppContext::prices->convert("WOW", preferredFiatCurrency, amount);
-            return QString("~%1 %2").arg(QString::number(conversionAmount, 'f', 2), preferredFiatCurrency);
+            if(conversionAmount <= 0) return QString("0.00");
+            return QString("~%1").arg(QString::number(conversionAmount, 'f', 2));
         }
 
     private:

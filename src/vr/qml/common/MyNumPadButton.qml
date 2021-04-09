@@ -11,8 +11,8 @@ Rectangle {
 
     signal clicked;
 
-    Layout.preferredWidth: 92
-    Layout.preferredHeight: 92
+    Layout.preferredWidth: 106
+    Layout.preferredHeight: 106
     color: Style.btnExitedColor
 
     MyText {

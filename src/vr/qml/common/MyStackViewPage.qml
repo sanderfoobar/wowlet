@@ -128,7 +128,6 @@ Rectangle {
 
     ColumnLayout {
         id: mainLayout
-        spacing: 12
         anchors.fill: parent
     }
 
@@ -147,7 +146,7 @@ Rectangle {
             anchors.leftMargin: 40
             anchors.rightMargin: 40
 
-            color: Style.fontColorDimmed
+            color: Style.dividerColor
             height: 1
         }
 
@@ -169,7 +168,7 @@ Rectangle {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 1
-                color: Style.fontColorDimmed
+                color: Style.dividerColor
             }
 
             RowLayout {
@@ -204,7 +203,7 @@ Rectangle {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 1
-                color: Style.fontColorDimmed
+                color: Style.dividerColor
             }
 
             RowLayout {
@@ -228,12 +227,21 @@ Rectangle {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: 1
-                color: Style.fontColorDimmed
+                color: Style.dividerColor
             }
 
             MyText {
                 fontSize: 14
-                text: "Balance: " + WowletVR.amountToFiat(appWindow.spendable);
+                text: {
+                    let rtn = "Balance: ";
+                    try {
+                        rtn += WowletVR.wowToFiat(appWindow.spendable);
+                    } catch(err) {
+                        rtn += "ERROR";
+                    }
+
+                    return rtn + " " + appWindow.fiatSymbol
+                }
                 color: Style.fontColorDimmed
             }
         }
@@ -251,7 +259,7 @@ Rectangle {
         content.Layout.topMargin = 10
         content.Layout.leftMargin = 40
         content.Layout.rightMargin = 40
-        content.Layout.bottomMargin = 40
+        content.Layout.bottomMargin = 10
 
         bigRect.parent = mainLayout
     }
