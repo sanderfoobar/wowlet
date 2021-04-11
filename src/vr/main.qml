@@ -105,7 +105,7 @@ Rectangle {
         id: enterPasswordDialog
         dialogTitle: "Enter Wallet Password"
         dialogWidth: 700
-        dialogHeight: 380
+        dialogHeight: 280
         
         dialogContentItem: ColumnLayout {
             RowLayout {
@@ -202,7 +202,7 @@ Rectangle {
             MyText {
                 Layout.topMargin: 20
                 Layout.leftMargin: 16
-                fontSize: 16
+                fontSize: 24
                 fontColor: Style.fontColorDimmed
                 text: "The password field is optional."
             }
@@ -236,7 +236,7 @@ Rectangle {
 
         MyText {
             text: "Credits"
-            fontSize: 12
+            fontSize: 16
             opacity: 0.3
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter

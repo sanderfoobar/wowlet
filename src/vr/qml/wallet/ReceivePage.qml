@@ -29,7 +29,7 @@ MyStackViewPage {
                     MyText {
                         width: parent.width
                         wrap: true
-                        fontSize: 14
+                        fontSize: 21
                         fontColor: Style.fontColorBright
                         text: "Give the following 4 digit PIN to the person that is sending you Wownero. PIN's are valid for 10 minutes and automatically renew."
                     }
@@ -46,7 +46,7 @@ MyStackViewPage {
                             id: statusText
                             width: parent.width
                             visible: true
-                            fontSize: 14
+                            fontSize: 21
                             fontColor: Style.fontColorBright
                             text: "Generating PIN..."
                         }
@@ -56,7 +56,7 @@ MyStackViewPage {
                             text: "- - - -"
                             color: Style.fontColor
                             font.bold: true
-                            font.pointSize: 40
+                            font.pointSize: 60
                             leftPadding: 20
                             rightPadding: 20
 
@@ -92,7 +92,7 @@ MyStackViewPage {
 
                     MyText {
                         width: parent.width
-                        fontSize: 14
+                        fontSize: 21
                         wrap: true
                         fontColor: Style.fontColorBright
                         text: "Alternatively, you may use one of the following methods to retreive your address."

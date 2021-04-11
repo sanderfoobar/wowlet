@@ -55,7 +55,7 @@ ColumnLayout {
                 text: (root.pin[0] || ".") + " " + (root.pin[1] || ".") + " " + (root.pin[2] || ".") + " " + (root.pin[3] || ".");
                 color: Style.fontColor
                 font.bold: true
-                font.pointSize: 40
+                font.pointSize: 60
                 leftPadding: 20
                 rightPadding: 20
 
@@ -91,7 +91,7 @@ ColumnLayout {
                 Layout.fillWidth: true
 
                 MyText {
-                    fontSize: 18
+                    fontSize: 22
                     fontColor: Style.fontColorBright
                     text: "Waiting on input..."
                 }
@@ -105,7 +105,7 @@ ColumnLayout {
                 Layout.fillWidth: true
 
                 MyText {
-                    fontSize: 18
+                    fontSize: 22
                     fontColor: Style.fontColorBright
                     text: "Looking up address..."
                 }

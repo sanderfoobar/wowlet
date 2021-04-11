@@ -39,7 +39,7 @@ Popup {
             implicitWidth: dialogWidth
             implicitHeight: dialogHeight
             anchors.centerIn: parent
-            radius: 24
+            radius: 36
             color: Style.backgroundColor
             border.color: Style.fontColorDimmed
             border.width: 2

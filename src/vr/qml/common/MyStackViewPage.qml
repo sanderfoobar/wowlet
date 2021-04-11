@@ -30,6 +30,7 @@ Rectangle {
                 Layout.preferredHeight: 70
 
                 RowLayout {
+                    spacing: 20
                     anchors.fill: parent
 
                     Rectangle {
@@ -53,12 +54,12 @@ Rectangle {
                         id: headerTitleContainer
                         color: "transparent"
                         Layout.preferredHeight: 50
-                        Layout.preferredWidth: headerTitle.width
+                        Layout.preferredWidth: headerTitle.width + 20
 
                         MyText {
                             id: headerTitle
                             text: headerText
-                            font.pointSize: 26
+                            font.pointSize: 38
                             anchors.verticalCenter: parent.verticalCenter
                             fontColor: Style.fontColorBright
                         }
@@ -105,7 +106,7 @@ Rectangle {
                 MyText{
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    fontSize: 14
+                    fontSize: 30
                     fontBold: true
                     text: appWindow.balanceFormatted
                 }
@@ -160,7 +161,7 @@ Rectangle {
             MyText {
                 Layout.leftMargin: 40
 
-                fontSize: 14
+                fontSize: 21
                 text: appWindow.statusText
                 color: Style.fontColorDimmed
             }
@@ -176,7 +177,7 @@ Rectangle {
                 spacing: 0
 
                 MyText {
-                    fontSize: 14
+                    fontSize: 21
                     text: "Daemon: "
                     color: Style.fontColorDimmed
                 }
@@ -211,7 +212,7 @@ Rectangle {
                 spacing: 0
 
                 MyText {
-                    fontSize: 14
+                    fontSize: 21
                     text: "WS: "
                     color: Style.fontColorDimmed
                 }
@@ -231,7 +232,7 @@ Rectangle {
             }
 
             MyText {
-                fontSize: 14
+                fontSize: 21
                 text: {
                     let rtn = "Balance: ";
                     try {

@@ -120,14 +120,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 
     if(openVREnabled) {
 #ifdef HAS_OPENVR
-        // @TODO: custom DPI / AA
-//        QCoreApplication::setAttribute( Qt::AA_UseDesktopOpenGL );
-//        QCoreApplication::setAttribute( Qt::AA_Use96Dpi );
-        if(qgetenv("scale") == "1")
-            QCoreApplication::setAttribute( Qt::AA_EnableHighDpiScaling );
-        if(qgetenv("noscale") == "1")
-            QCoreApplication::setAttribute( Qt::AA_DisableHighDpiScaling );
-
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
         QApplication vr_app(argc, argv);
         auto *ctx = new AppContext(&parser);
         auto *vr = new wowletvr::WowletVR(ctx, &parser, &vr_app);

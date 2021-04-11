@@ -112,7 +112,7 @@ Item {
                               MyText {
                                    // date
                                    anchors.verticalCenter: parent.verticalCenter
-                                   fontSize: 12
+                                   fontSize: 22
                                    fontColor: Style.fontColorBright
                                    text: date
 
@@ -129,7 +129,7 @@ Item {
 
                               MyText {
                                    anchors.verticalCenter: parent.verticalCenter
-                                   fontSize: 14
+                                   fontSize: 22
                                    text: description !== "" ? description : "..."
                                    fontColor: description !== "" ? Style.fontColorBright : Style.fontColorDimmed
                                    Component.onCompleted: {
@@ -152,7 +152,7 @@ Item {
                                    anchors.rightMargin: 10
 
                                    anchors.verticalCenter: parent.verticalCenter
-                                   fontSize: 14
+                                   fontSize: 24
                                    fontBold: true
                                    text: amount
                                    fontColor: !isout ? Style.historyFontColorPlusAmount : Style.historyFontColorMinAmount

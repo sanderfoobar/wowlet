@@ -4,7 +4,7 @@ import "."
 
 Text {
 	property bool wrap: false
-	property int fontSize: 16
+	property int fontSize: 24
 	property bool fontBold: false
 	property string fontColor: Style.fontColor
 

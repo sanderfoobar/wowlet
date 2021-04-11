@@ -123,7 +123,7 @@ ColumnLayout {
             opacity: root.enabled ? 1 : disabledOpacity
 
             Layout.preferredWidth: root.compact ? 106 : 230
-            fontSize: 16
+            fontSize: 36
             text: root.compact ? "C" : "Clear"
             onClicked: {
                 clearPress();

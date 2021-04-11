@@ -27,7 +27,7 @@ ColumnLayout {
 		RowLayout {
             MyText {
                 text: "Welcome to Wowlet VR"
-                font.pointSize: 24
+                font.pointSize: 36
                 Layout.leftMargin: 0
             }
 
@@ -44,7 +44,7 @@ ColumnLayout {
                 MyText{
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    fontSize: 14
+                    fontSize: 21
                     text: "Version beta (Qt " + qtRuntimeVersion + ")"
                 }
             }
@@ -119,7 +119,7 @@ ColumnLayout {
 							return currentItem['fileName'].replace(".keys", "");
 						}
 					}
-					font.pointSize: 14
+					font.pointSize: 21
 					anchors.horizontalCenter: parent.horizontalCenter
 					anchors.top: parent.top
 					anchors.topMargin: 14

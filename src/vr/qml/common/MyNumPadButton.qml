@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 Rectangle {
     id: root
     property string text: ""
-    property int fontSize: 22
+    property int fontSize: 32
     property alias mouseArea: mouseArea
     property alias btnTextColor: btnText.fontColor
 

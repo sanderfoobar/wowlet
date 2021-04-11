@@ -125,7 +125,7 @@ ColumnLayout {
                     Layout.preferredHeight: 68
 
                     MyText {
-                        fontSize: 24
+                        fontSize: 32
                         fontColor: Style.fontColorBright
                         text: {
                             let rtn = "";
@@ -172,7 +172,7 @@ ColumnLayout {
 
                     MyText {
                         id: fiatText
-                        fontSize: 18
+                        fontSize: 26
                         fontColor: Style.fontColorBright
                         text: {
                             let rtn = "";

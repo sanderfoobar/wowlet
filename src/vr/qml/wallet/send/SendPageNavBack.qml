@@ -38,7 +38,7 @@ RowLayout {
                 Layout.alignment: Qt.AlignLeft
                 fontBold: true
                 text: "back"
-                fontSize: 16
+                fontSize: 24
             }
         }
 

@@ -47,7 +47,7 @@ ColumnLayout {
         Layout.leftMargin: 40
         Layout.rightMargin: 40
         Layout.fillWidth: true
-        fontSize: 14
+        fontSize: 21
         text: "Shoutouts: matzman666, qvqc, ez, Gatto, RAGEHAÜZ, cisme, wowario, lza_menace, jwinterm, nioc, asymptotically, azy, selsta, kico, laura, thrmo, rottensox, solar, bl4sty, scoobybejesus"
         wrap: true
     }
@@ -56,7 +56,7 @@ ColumnLayout {
         Layout.leftMargin: 40
         Layout.rightMargin: 40
         Layout.fillWidth: true
-        fontSize: 14
+        fontSize: 21
         text: "dsc - April 2021"
         wrap: true
     }

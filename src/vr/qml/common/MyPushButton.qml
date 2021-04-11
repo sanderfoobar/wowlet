@@ -51,7 +51,7 @@ Item {
             Layout.fillWidth: root.hasIcon ? true : false
             Layout.alignment: root.hasIcon ? Qt.AlignLeft : Qt.AlignHCenter
             text: root.text
-            fontSize: 16
+            fontSize: 26
             fontColor: Style.btnTextColor
         }
     }

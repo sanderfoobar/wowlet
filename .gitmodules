@@ -5,3 +5,6 @@
 	path = monero
 	url = https://git.wownero.com/wownero/wownero
 	branch = wowlet
+[submodule "contrib/quirc"]
+	path = contrib/quirc
+	url = https://github.com/dlbeer/quirc.git

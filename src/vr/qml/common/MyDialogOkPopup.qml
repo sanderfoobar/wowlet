@@ -17,7 +17,7 @@ Popup {
     property int dialogHeight: 300
 
     property Item dialogContentItem: MyText {
-        fontSize: 16
+        fontSize: 36
         text: dialogText
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
