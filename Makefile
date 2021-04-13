@@ -56,7 +56,7 @@ depends:
 
 windows:
 	mkdir -p build/$(target)/release
-	cd build/$(target)/release && cmake -D STATIC=ON -DREPRODUCIBLE=$(or ${SOURCE_DATE_EPOCH},OFF) -DTOR_VERSION=$(or ${TOR_VERSION}, OFF) -DOPENVR=ON -DQML=ON -DWITH_SCANNER=ON -DTOR_BIN=$(or ${TOR_BIN},OFF) -D DEV_MODE=$(or ${DEV_MODE},OFF) -D BUILD_TAG=$(tag) -D CMAKE_BUILD_TYPE=Debug -D CMAKE_TOOLCHAIN_FILE=$(root)/$(target)/share/toolchain.cmake ../../.. && $(MAKE)
+	cd build/$(target)/release && cmake -D STATIC=ON -DZLIB_ROOT=/usr/x86_64-w64-mingw32/ -DREPRODUCIBLE=$(or ${SOURCE_DATE_EPOCH},OFF) -DTOR_VERSION=$(or ${TOR_VERSION}, OFF) -DOPENVR=ON -DQML=ON -DWITH_SCANNER=ON -DTOR_BIN=$(or ${TOR_BIN},OFF) -D DEV_MODE=$(or ${DEV_MODE},OFF) -D BUILD_TAG=$(tag) -D CMAKE_BUILD_TYPE=Debug -D CMAKE_TOOLCHAIN_FILE=$(root)/$(target)/share/toolchain.cmake ../../.. && $(MAKE)
 
 
 windows-mxe-release: CMAKEFLAGS += -DBUILD_TAG="win-x64"
