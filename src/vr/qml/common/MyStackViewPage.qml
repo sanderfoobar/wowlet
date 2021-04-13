@@ -241,15 +241,17 @@ Rectangle {
                 text: {
                     let rtn = "Balance: ";
                     try {
-                        if(!appWindow.streamerMode)
+                        if(!appWindow.streamerMode) {
                             rtn += WowletVR.wowToFiat(appWindow.spendable);
+                            return rtn + " " + appWindow.fiatSymbol
+                        }
                         else
                             rtn += "HIDDEN";
                     } catch(err) {
                         rtn += "ERROR";
                     }
 
-                    return rtn + " " + appWindow.fiatSymbol
+                    return rtn;
                 }
                 color: Style.fontColorDimmed
             }
