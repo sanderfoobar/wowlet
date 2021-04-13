@@ -5,6 +5,10 @@ set(CMAKE_AUTOUIC ON)
 # pthread
 find_package(Threads REQUIRED)
 
+# PNG
+find_package(ZLIB REQUIRED)
+find_package(PNG REQUIRED)
+
 # Compile these source files (.h/.cpp)
 file(GLOB SOURCE_FILES
         "*.h"
@@ -34,9 +38,9 @@ file(GLOB SOURCE_FILES
         )
 
 if(QML)
-    find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Network Svg Xml WebSockets Quick Qml QuickControls2 QmlImportScanner)
+    find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Network Svg Xml WebSockets Quick Qml QuickControls2 QmlImportScanner Multimedia)
 else()
-    find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Network Svg Xml WebSockets)
+    find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Network Svg Xml WebSockets Multimedia)
 endif()
 
 if(OPENVR)
@@ -57,6 +61,7 @@ add_subdirectory(libwalletqt)
 add_subdirectory(model)
 add_subdirectory(utils)
 add_subdirectory(openpgp)
+add_subdirectory(QR-Code-scanner)
 
 qt5_add_resources(RESOURCES assets.qrc)
 
@@ -256,7 +261,22 @@ target_link_libraries(wowlet PUBLIC
         ${ICU_LIBRARIES}
         openpgp
         Threads::Threads
-        ${QRENCODE_LIBRARY})
+        ${QRENCODE_LIBRARY}
+        qrdecoder
+        )
+
+# Link scanner
+if(WITH_SCANNER)
+    target_link_libraries(wowlet PUBLIC qrscanner)
+    if(LINUX AND NOT ANDROID)
+        target_link_libraries(wowlet PUBLIC
+                jpeg
+                v4l2
+                v4lconvert
+                rt
+                )
+    endif()
+endif()
 
 # Link OpenVR
 if(OPENVR)

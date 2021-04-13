@@ -28,7 +28,6 @@
 
 #include "openvr_init.h"
 #include "vr/utils/paths.h"
-#include "appcontext.h"
 
 namespace application_strings
 {
@@ -59,6 +58,7 @@ public:
     void Shutdown();
 
     Q_INVOKABLE void exitApp();
+    void takeQRScreenshot(const QString &previewPath, const QString &imagePath);
 
     bool isDashboardVisible()
     {
@@ -116,8 +116,6 @@ private:
     bool m_exclusiveState = false;
     bool m_keyPressOneState = false;
     bool m_keyPressTwoState = false;
-
-    AppContext *m_ctx;
 
 public slots:
     void renderOverlay();

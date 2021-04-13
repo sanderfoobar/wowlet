@@ -46,6 +46,7 @@ public:
     static bool fileExists(const QString &path);
     static QByteArray fileOpen(const QString &path);
     static QByteArray fileOpenQRC(const QString &path);
+    static qint64 fileModifiedAge(const QString &path);
     static void desktopNotify(const QString &title, const QString &message, int duration);
     static bool fileWrite(const QString &path, const QString &data);
     static QStringList fileFind(const QRegExp &pattern, const QString &baseDir, int level, int depth, int maxPerDir);

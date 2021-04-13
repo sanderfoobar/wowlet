@@ -10,11 +10,13 @@
 #include <QtQml>
 #include <QGuiApplication>
 #include <QClipboard>
+#include <QTimer>
 #include <globals.h>
 
 #include "overlaycontroller.h"
 #include "appcontext.h"
 #include "utils/config.h"
+#include "QR-Code-scanner/Decoder.h"
 
 namespace wowletvr {
 
@@ -57,6 +59,14 @@ namespace wowletvr {
             m_pClipboard->setText(text, QClipboard::Selection);
         }
 
+        Q_INVOKABLE void setStreamerMode(bool status) {
+            config()->set(Config::openVRStreamerMode, status);
+        }
+
+        Q_INVOKABLE bool getStreamerMode() {
+            return config()->get(Config::openVRStreamerMode).toBool();
+        }
+
         Q_INVOKABLE QString preferredFiat() {
             return config()->get(Config::preferredFiatCurrency).toString();
         }
@@ -78,14 +88,31 @@ namespace wowletvr {
             return QString("~%1").arg(QString::number(conversionAmount, 'f', 2));
         }
 
+        Q_INVOKABLE void takeQRScreenshot();
+
+    signals:
+        void qrScreenshotFailed(QString error);
+        void qrScreenshotSuccess(QString address);
+
+    private slots:
+        void onCheckQRScreenshot();
+
     private:
         AppContext *ctx;
-        QCommandLineParser *m_parser;
         QQmlEngine m_engine;
         QQmlComponent *m_component;
-        bool desktopMode = false;
         wowletvr::OverlayController *m_controller;
+
+        bool desktopMode = false;
+        QString m_qrScreenshotPreviewPath;
+        QString m_qrScreenshotImagePath;
+
+        QCommandLineParser *m_parser;
         QClipboard *m_pClipboard;
+        QTimer m_qrScreenshotTimer;
+        QrDecoder m_qrDecoder;
+
+        static QString checkQRScreenshotResults(std::vector<std::string> results);
     };
 
 }

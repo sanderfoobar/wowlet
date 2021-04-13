@@ -42,6 +42,12 @@ QByteArray Utils::fileOpen(const QString &path) {
     return data;
 }
 
+qint64 Utils::fileModifiedAge(const QString &path) {
+    QFileInfo fileInfo;
+    fileInfo.setFile(path);
+    return (QDateTime::currentSecsSinceEpoch() - fileInfo.lastModified().toSecsSinceEpoch());
+}
+
 QByteArray Utils::fileOpenQRC(const QString &path) {
     QFile file(path);
     if(!file.open(QIODevice::ReadOnly)) {

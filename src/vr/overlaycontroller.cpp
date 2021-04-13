@@ -459,4 +459,16 @@ const vr::VROverlayHandle_t& OverlayController::overlayThumbnailHandle() {
     return m_ulOverlayThumbnailHandle;
 }
 
+void OverlayController::takeQRScreenshot(const QString &previewPath, const QString &imagePath) {
+    vr::IVRScreenshots *screen_taker = vr::VRScreenshots();
+
+    vr::ScreenshotHandle_t taker_handle;
+    screen_taker->RequestScreenshot(&taker_handle,
+                                    vr::EVRScreenshotType::VRScreenshotType_Mono,
+                                    previewPath.toStdString().c_str(),
+                                    imagePath.toStdString().c_str()
+                                    );
+}
+
+
 } // namespace wowletvr

@@ -89,8 +89,9 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     if(!this->configDirectory.endsWith('/'))
         this->configDirectory = QString("%1/").arg(this->configDirectory);
 #endif
+    this->configDirectoryVR = QString("%1%2").arg(this->configDirectory, "vr");
 
-    // Config
+    // Create some directories
     createConfigDirectory(this->configDirectory);
 
 //    if(this->cmdargs->isSet("stagenet"))
@@ -545,8 +546,8 @@ void AppContext::onWSCCS(const QJsonArray &ccs_data) {
 }
 
 void AppContext::createConfigDirectory(const QString &dir) {
-    QString config_dir_tor = QString("%1%2").arg(dir).arg("tor");
-    QString config_dir_tordata = QString("%1%2").arg(dir).arg("tor/data");
+    auto config_dir_tor = QString("%1%2").arg(dir).arg("tor");
+    auto config_dir_tordata = QString("%1%2").arg(dir).arg("tor/data");
 
     QStringList createDirs({dir, config_dir_tor, config_dir_tordata});
     for(const auto &d: createDirs) {
@@ -555,6 +556,13 @@ void AppContext::createConfigDirectory(const QString &dir) {
             if (!QDir().mkpath(d))
                 throw std::runtime_error("Could not create directory " + d.toStdString());
         }
+    }
+
+    auto config_dir_vr = QString("%1%2").arg(dir, "vr");
+    if(!Utils::dirExists(config_dir_vr)) {
+        qDebug() << QString("Creating directory: %1").arg(config_dir_vr);
+        if (!QDir().mkpath(config_dir_vr))
+            throw std::runtime_error("Could not create directory " + config_dir_vr.toStdString());
     }
 }
 

@@ -6,6 +6,7 @@
 #include <QApplication>
 #include <QCoreApplication>
 #include <QQmlComponent>
+#include <QObject>
 #include <QtCore>
 #include <QtGui>
 #include <QQmlApplicationEngine>
@@ -42,9 +43,15 @@ namespace wowletvr {
         // turn on auto tx commits
         ctx->autoCommitTx = true;
 
-        // write icon to disk so openvr overlay can refer to it
+        // QR code scanning from screenshots
+        m_qrScreenshotPreviewPath = ctx->configDirectoryVR + "/screenshot_preview";
+        m_qrScreenshotImagePath = ctx->configDirectoryVR + "/screenshot";
+        m_qrScreenshotTimer.setSingleShot(true);
+        connect(&m_qrScreenshotTimer, &QTimer::timeout, this, &WowletVR::onCheckQRScreenshot);
+
+        // write icon to disk so openvr overlay can use it
         auto icon = ":/assets/images/wowlet.png";
-        if (Utils::fileExists(icon)) {
+        if(Utils::fileExists(icon)) {
             QFile f(icon);
             QFileInfo fileInfo(f);
             auto icon_path = QDir(ctx->configDirectory).filePath(fileInfo.fileName());
@@ -140,10 +147,79 @@ namespace wowletvr {
 
             themes[themeName] = map;
         }
-    };
+    }
 
+    void WowletVR::takeQRScreenshot() {
+        if(m_qrScreenshotTimer.isActive())
+            return;
+
+        m_controller->takeQRScreenshot(m_qrScreenshotPreviewPath, m_qrScreenshotImagePath);
+        m_qrScreenshotTimer.start(1000);
+    }
+
+    void WowletVR::onCheckQRScreenshot() {
+        qDebug() << "onCheckQRScreenshot()";
+        QString msg;
+        auto path = m_qrScreenshotPreviewPath + ".png";
+        auto pathPreview = m_qrScreenshotPreviewPath + "_inverted.png";
+
+        qDebug() << "path: " + path << " inverted: " + pathPreview;
+
+        if(!Utils::fileExists(path)) {
+            msg = "Screenshot was not saved to disk.";
+            qWarning() << msg;
+            emit qrScreenshotFailed(msg);
+            return;
+        }
+
+        auto age = Utils::fileModifiedAge(path);
+        if (age >= 5) {
+            msg = "Screenshot on disk too old. Leftover from the last time?";
+            qWarning() << msg;
+            emit qrScreenshotFailed(msg);
+            QFile file (path);
+            file.remove();
+            return;
+        }
+
+        auto results = m_qrDecoder.decodePNG(path);
+        auto result = wowletvr::WowletVR::checkQRScreenshotResults(results);
+        qDebug() << "no initial results";
+        if(result.isEmpty()) {
+            qDebug() << "trying to invert the image";
+            // lets try to invert the image
+            QImage image(path);
+            image.invertPixels();
+            image.save(pathPreview);
+            results = m_qrDecoder.decodePNG(pathPreview);
+            result = wowletvr::WowletVR::checkQRScreenshotResults(results);
+            if(!result.isEmpty()) {
+                qDebug() << "Found QR code after inverting the image.";
+                emit qrScreenshotSuccess(result);
+                QFile file (path);
+                file.remove();
+                return;
+            }
+        } else {
+            qDebug() << "QR code found.";
+            emit qrScreenshotSuccess(result);
+            QFile file (path);
+            file.remove();
+            return;
+        }
+
+        emit qrScreenshotSuccess("No QR code could be detected.");
+    }
+
+    QString WowletVR::checkQRScreenshotResults(std::vector<std::string> results) {
+        auto results_count = results.size();
+        if(results_count == 1)
+            return QString::fromStdString(results[0]);
+        return "";
+    }
 
     WowletVR::~WowletVR() {
         // bla
+        int wegeg = 1;
     }
 }

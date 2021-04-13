@@ -29,6 +29,7 @@ public:
         autoOpenWalletPath,
         skin,
         openVRSkin,
+        openVRStreamerMode,
         preferredFiatCurrency,
         blockExplorer,
         walletDirectory,

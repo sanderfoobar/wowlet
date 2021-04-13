@@ -48,7 +48,7 @@ ColumnLayout {
         Layout.rightMargin: 40
         Layout.fillWidth: true
         fontSize: 21
-        text: "Shoutouts: matzman666, qvqc, ez, Gatto, RAGEHAÜZ, cisme, wowario, lza_menace, jwinterm, nioc, asymptotically, azy, selsta, kico, laura, thrmo, rottensox, solar, bl4sty, scoobybejesus"
+        text: "Shoutouts: matzman666, qvqc, ez, Gatto, RAGEHAÜZ, cisme, wowario, lza_menace, jwinterm, nioc, asymptotically, azy, selsta, kico, laura, thrmo, rottensox, GNVR, solar, bl4sty, scoobybejesus, Valve Corporation for OpenVR"
         wrap: true
     }
 

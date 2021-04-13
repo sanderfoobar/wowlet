@@ -24,6 +24,7 @@ Rectangle {
     property var themes: {}
     property string theme: "default"
     property string fiatSymbol: "USD"
+    property bool streamerMode: false
     signal initTheme();
 
     // Components that have been dynamically created need to redraw
@@ -307,6 +308,7 @@ Rectangle {
         // Start animating the background
         gradientBackgroundTimer.start();
         
+        // init some theme stuff
         try {
             appWindow.themes = WowletVR.getThemes();
             appWindow.theme = WowletVR.getCurrentTheme();
@@ -329,9 +331,13 @@ Rectangle {
                 }
             }
         }
-
         appWindow.changeTheme(appWindow.theme);
         appWindow.initTheme();
+
+        // streamer mode enabled?
+        try {
+            appWindow.streamerMode = WowletVR.getStreamerMode();
+        } catch(err){}
     }
 
     function changeTheme(theme) {

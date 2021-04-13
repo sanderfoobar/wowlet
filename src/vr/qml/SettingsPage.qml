@@ -27,6 +27,13 @@ ColumnLayout {
             wrap: true
         }
 
+        Rectangle {
+            color: Style.dividerColor
+            height: 1
+            Layout.topMargin: 10
+            Layout.fillWidth: true
+        }
+
         RowLayout {
             spacing: 30
 
@@ -63,6 +70,43 @@ ColumnLayout {
                     if(displayText !== "" && displayText !== appWindow.theme) {
                         appWindow.changeTheme(displayText);
                         needsRestart = true;
+                    }
+                }
+            }
+        }
+
+        RowLayout {
+            spacing: 30
+
+            MyText {
+                text: "Streamer mode (" + (appWindow.streamerMode ? "ON" : "OFF") + ")"
+            }
+
+            RowLayout {
+                spacing: 20
+                Layout.fillWidth: true
+                Layout.preferredHeight: 56
+
+                MyPushButton {
+                    Layout.preferredWidth: 100
+                    enabled: !appWindow.streamerMode
+                    opacity: !appWindow.streamerMode ? 1.0 : 0.3
+                    text: "On"
+                    onClicked: {
+                        appWindow.streamerMode = !appWindow.streamerMode;
+                        WowletVR.setStreamerMode(appWindow.streamerMode);
+                    }
+                }
+
+                MyPushButton {
+                    Layout.preferredWidth: 100
+                    enabled: appWindow.streamerMode
+                    opacity: appWindow.streamerMode ? 1.0 : 0.3
+                    text: "Off"
+
+                    onClicked: {
+                        appWindow.streamerMode = !appWindow.streamerMode;
+                        WowletVR.setStreamerMode(appWindow.streamerMode);
                     }
                 }
             }

@@ -54,6 +54,7 @@ public:
     QString accountName;
     QString configRoot;
     QString configDirectory;
+    QString configDirectoryVR;
     QString defaultWalletDir;
     QString defaultWalletDirRoot;
     QString tmpTxDescription;

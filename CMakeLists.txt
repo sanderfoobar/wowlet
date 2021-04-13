@@ -382,7 +382,20 @@ if(OPENVR)
     add_definitions(-DVR_API_PUBLIC)
     add_definitions(-DOPENVR_BUILD_STATIC)  # is this needed?
     add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/contrib/openvr")
-    message(STATUS "yeepp")
+endif()
+
+if(APPLE)
+    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/contrib/KDMacTouchBar")
+endif()
+
+if(WITH_SCANNER)
+    add_library(quirc STATIC
+            contrib/quirc/lib/decode.c
+            contrib/quirc/lib/identify.c
+            contrib/quirc/lib/quirc.c
+            contrib/quirc/lib/version_db.c
+            )
+    target_include_directories(quirc PUBLIC contrib/quirc/lib)
 endif()
 
 add_subdirectory(src)

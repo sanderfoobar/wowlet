@@ -108,7 +108,12 @@ Rectangle {
                     anchors.bottom: parent.bottom
                     fontSize: 30
                     fontBold: true
-                    text: appWindow.balanceFormatted
+                    text: {
+                        if(!appWindow.streamerMode)
+                            return appWindow.balanceFormatted;
+                        else
+                            return "HIDDEN";
+                    }
                 }
             }
         }
@@ -236,7 +241,10 @@ Rectangle {
                 text: {
                     let rtn = "Balance: ";
                     try {
-                        rtn += WowletVR.wowToFiat(appWindow.spendable);
+                        if(!appWindow.streamerMode)
+                            rtn += WowletVR.wowToFiat(appWindow.spendable);
+                        else
+                            rtn += "HIDDEN";
                     } catch(err) {
                         rtn += "ERROR";
                     }
