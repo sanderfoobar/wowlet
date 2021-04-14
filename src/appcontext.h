@@ -54,14 +54,19 @@ public:
     QString accountName;
     QString configRoot;
     QString configDirectory;
+    QString configDirectoryVR;
     QString defaultWalletDir;
     QString defaultWalletDirRoot;
     QString tmpTxDescription;
+    QString wsUrl = "6wku2m4zrv6j666crlo7lzofv6ud6enzllyhou3ijeigpukymi37caad.onion";
 
     QString walletPath;
     QString walletPassword = "";
+    QString walletName;
     bool walletViewOnly = false;
     NetworkType::Type networkType;
+
+    Q_PROPERTY(QString walletName MEMBER walletName);
 
     QString applicationPath;
 
@@ -73,6 +78,11 @@ public:
     PendingTransaction::Priority tx_priority = PendingTransaction::Priority::Priority_Low;
     quint32 tx_mixin = static_cast<const quint32 &>(10);
     QString seedLanguage = "English";  // 14 word `monero-seed` only has English
+    // turn this on if you want to auto commit tx's after they have
+    // been created. Caution while using this setting is advised. This
+    // probably also breaks the default QtWidgets GUI. It is meant for
+    // alternative users of AppContext.
+    bool autoCommitTx = false;
 
     QNetworkAccessManager *network;
     QNetworkAccessManager *networkClearnet;
@@ -88,35 +98,45 @@ public:
     static QMap<QString, QString> txDescriptionCache;
     static QMap<QString, QString> txCache;
     static TxFiatHistory *txFiatHistory;
-
-    QList<WalletKeysFiles> listWallets() {
-        // return listing of wallet .keys items
-        m_walletKeysFilesModel->refresh();
-        return m_walletKeysFilesModel->listWallets();
-    }
+    static bool isQML;
 
     // libwalletqt
     bool refreshed = false;
+
     WalletManager *walletManager;
     Wallet *currentWallet = nullptr;
     void createWallet(WowletSeed seed, const QString &path, const QString &password);
+    Q_INVOKABLE void createWalletWithoutSpecifyingSeed(const QString &name, const QString &password);
     void createWalletViewOnly(const QString &path, const QString &password, const QString &address, const QString &viewkey, const QString &spendkey, quint64 restoreHeight);
     void createWalletFinish(const QString &password);
     void syncStatusUpdated(quint64 height, quint64 target);
     void updateBalance();
-    void initTor();
+    Q_INVOKABLE void initTor();
+    Q_INVOKABLE void initWS();
     void initRestoreHeights();
-    void initWS();
     void donateBeg();
     void refreshModels();
     void setWindowTitle(bool mining = false);
 
     // Closes the currently opened wallet
-    void closeWallet(bool emitClosedSignal = true, bool storeWallet = false);
+    Q_INVOKABLE void closeWallet(bool emitClosedSignal = true, bool storeWallet = false);
     void storeWallet();
 
+    Q_INVOKABLE QVariantList listWallets() {
+        m_walletKeysFilesModel->refresh();
+
+        QVariantList list;
+        for(const WalletKeysFiles &wallet: m_walletKeysFilesModel->listWallets())
+            list << wallet.toVariant();
+        return list;
+    }
+
+    Q_INVOKABLE QString displayAmount(quint64 amount) {
+        return Utils::balanceFormat(amount);
+    }
+
 public slots:
-    void onOpenWallet(const QString& path, const QString &password);
+    Q_INVOKABLE void onOpenWallet(const QString& path, const QString &password);
     void onCreateTransaction(QString address, quint64 amount, const QString description, bool all);
     void onCreateTransactionMultiDest(const QVector<QString> &addresses, const QVector<quint64> &amounts, const QString &description);
     void onCancelTransaction(PendingTransaction *tx, const QVector<QString> &address);
@@ -125,6 +145,9 @@ public slots:
     void onOpenAliasResolve(const QString &openAlias);
     void onSetRestoreHeight(quint64 height);
     void onPreferredFiatCurrencyChanged(const QString &symbol);
+    Q_INVOKABLE void onAskReceivingPIN();
+    Q_INVOKABLE void onLookupReceivingPIN(QString pin);
+    Q_INVOKABLE QString getAddress(quint32 accountIndex, quint32 addressIndex);
 
 private slots:
     void onWSNodes(const QJsonArray &nodes);
@@ -151,6 +174,7 @@ signals:
     void walletClosed();
 
     void balanceUpdated(quint64 balance, quint64 spendable);
+    void balanceUpdatedFormatted(QString fmt);
     void blockchainSync(int height, int target);
     void refreshSync(int height, int target);
     void synchronized();
@@ -165,12 +189,17 @@ signals:
     void createTransactionError(QString message);
     void createTransactionCancelled(const QVector<QString> &address, double amount);
     void createTransactionSuccess(PendingTransaction *tx, const QVector<QString> &address);
+    void wsConnected();
+    void wsDisconnected();
     void redditUpdated(QList<QSharedPointer<RedditPost>> &posts);
     void nodesUpdated(QList<QSharedPointer<WowletNode>> &nodes);
     void ccsUpdated(QList<QSharedPointer<CCSEntry>> &entries);
     void suchWowUpdated(const QJsonArray &such_data);
     void nodeSourceChanged(NodeSource nodeSource);
     void XMRigDownloads(const QJsonObject &data);
+    void pinLookupReceived(QString address, QString pin);
+    void pinLookupErrorReceived();
+    void pinReceived(QString pin);
     void setCustomNodes(QList<WowletNode> nodes);
     void openAliasResolveError(const QString &msg);
     void openAliasResolved(const QString &address, const QString &openAlias);
@@ -186,8 +215,6 @@ private:
     WalletKeysFilesModel *m_walletKeysFilesModel;
     const int m_donationBoundary = 15;
     QTimer m_storeTimer;
-    // @TODO: Replace url
-    QUrl m_wsUrl = QUrl(QStringLiteral("ws://feathercitimllbmdktu6cmjo3fizgmyfrntntqzu6xguqa2rlq5cgid.onion/ws"));
 };
 
 #endif //WOWLET_APPCONTEXT_H

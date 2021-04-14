@@ -21,15 +21,21 @@ class TransactionHistoryModel : public QAbstractTableModel
     Q_PROPERTY(TransactionHistory * transactionHistory READ transactionHistory WRITE setTransactionHistory NOTIFY transactionHistoryChanged)
 
 public:
-    enum Column
+    enum TransactionInfoRole
     {
         Date = 0,
         Description,
         Amount,
         TxID,
         FiatAmount,
+        TransactionIsOutRole,
+        TransactionFailedRole,
+        TransactionPendingRole,
+        TransactionConfirmationsRole,
+        TransactionConfirmationsRequiredRole,
         COUNT
     };
+    Q_ENUM(TransactionInfoRole)
 
     explicit TransactionHistoryModel(QObject * parent = nullptr);
     void setTransactionHistory(TransactionHistory * th);
@@ -44,6 +50,7 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
+    int customColumnCount = 5;
 signals:
     void transactionHistoryChanged();
 

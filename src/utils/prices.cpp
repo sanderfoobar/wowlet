@@ -38,7 +38,7 @@ void Prices::cryptoPricesReceived(const QJsonArray &data) {
     for(auto &&entry: data) {
         marketStruct ms;
         QJsonObject obj = entry.toObject();
-        ms.symbol = obj.value("symbol").toString();
+        ms.symbol = obj.value("symbol").toString().toUpper();
         ms.image = obj.value("image").toString();
         ms.name = obj.value("name").toString();
         ms.price_usd = obj.value("current_price").toDouble();
@@ -85,9 +85,8 @@ double Prices::convert(const QString &symbolFrom, const QString &symbolTo, doubl
 }
 
 void Prices::fiatPricesReceived(const QJsonObject &data) {
-    QJsonObject rates = data.value("rates").toObject();
     for(const auto &currency: fiat.keys())
-        if(rates.contains(currency))
-            this->rates.insert(currency, rates.value(currency).toDouble());
+        if(data.contains(currency))
+            this->rates.insert(currency, data.value(currency).toDouble());
     emit fiatPricesUpdated();
 }

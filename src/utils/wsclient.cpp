@@ -8,16 +8,16 @@
 #include "wsclient.h"
 #include "appcontext.h"
 
-WSClient::WSClient(AppContext *ctx, const QUrl &url, QObject *parent) :
+WSClient::WSClient(AppContext *ctx, const QString &url, QObject *parent) :
         QObject(parent),
-        url(url),
         m_ctx(ctx) {
     connect(&this->webSocket, &QWebSocket::binaryMessageReceived, this, &WSClient::onbinaryMessageReceived);
     connect(&this->webSocket, &QWebSocket::connected, this, &WSClient::onConnected);
     connect(&this->webSocket, &QWebSocket::disconnected, this, &WSClient::closed);
     connect(&this->webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &WSClient::onError);
 
-    m_tor = url.host().endsWith(".onion");
+    m_tor = url.contains(".onion");
+    this->url = QString("ws://%1/ws").arg(url);
 
     // Keep websocket connection alive
     connect(&m_pingTimer, &QTimer::timeout, [this]{

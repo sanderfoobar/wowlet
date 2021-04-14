@@ -11,6 +11,8 @@ set(VERSION "beta-1")
 
 option(FETCH_DEPS "Download dependencies if they are not found" ON)
 option(XMRIG "Include XMRig module" ON)
+option(OPENVR "Include OpenVR support" OFF)
+option(QML "Include QtQuick (QML)" OFF)
 option(TOR_BIN "Path to Tor binary to embed inside WOWlet" OFF)
 option(STATIC "Link libraries statically, requires static Qt")
 option(USE_DEVICE_TREZOR "Trezor support compilation" OFF)
@@ -24,16 +26,26 @@ include(FindCcache)
 include(CheckIncludeFile)
 include(CheckSymbolExists)
 
-if(DEBUG)
-    set(CMAKE_VERBOSE_MAKEFILE ON)
-endif()
-
 set(WOWNERO_HEAD "f611d5c9e32bc62f1735f6571b0bdb95cc020531")
 set(BUILD_GUI_DEPS ON)
 set(ARCH "x86-64")
 set(BUILD_64 ON)
 set(INSTALL_VENDORED_LIBUNBOUND ${STATIC})
 set(USE_SINGLE_BUILDDIR ON)
+if(OPENVR)
+    set(QML ON)
+endif()
+
+# Are we in debug mode?
+set(_CMAKE_BUILD_TYPE "")
+string(TOUPPER "${CMAKE_BUILD_TYPE}" _CMAKE_BUILD_TYPE)
+if("${_CMAKE_BUILD_TYPE}" STREQUAL "DEBUG")
+    set(DEBUG ON)
+
+    set(CMAKE_VERBOSE_MAKEFILE ON)
+    message(STATUS "OPENVR: ${OPENVR}")
+    message(STATUS "QML: ${QML}")
+endif()
 
 check_include_file(sys/prctl.h HAVE_SYS_PRCTL_H)
 check_symbol_exists(prctl "sys/prctl.h" HAVE_PRCTL)
@@ -87,7 +99,7 @@ if(GIT_FOUND)
     if(NOT _WOWNERO_HEAD STREQUAL WOWNERO_HEAD)
         message(FATAL_ERROR "[submodule] Monero HEAD was at ${_WOWNERO_HEAD} but should be at ${WOWNERO_HEAD}")
     else()
-        message(STATUS "[submodule] Monero HEAD @ ${WOWNERO_HEAD}")
+        message(STATUS "[submodule] Wownero HEAD @ ${WOWNERO_HEAD}")
     endif()
 endif()
 
@@ -363,6 +375,27 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LD_SECURITY_FLAGS} ${STA
 
 if(APPLE)
     add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/contrib/KDMacTouchBar")
+endif()
+
+if(OPENVR)
+    # Add contrib/openvr as library
+    add_definitions(-DVR_API_PUBLIC)
+    add_definitions(-DOPENVR_BUILD_STATIC)  # is this needed?
+    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/contrib/openvr")
+endif()
+
+if(APPLE)
+    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/contrib/KDMacTouchBar")
+endif()
+
+if(WITH_SCANNER)
+    add_library(quirc STATIC
+            contrib/quirc/lib/decode.c
+            contrib/quirc/lib/identify.c
+            contrib/quirc/lib/quirc.c
+            contrib/quirc/lib/version_db.c
+            )
+    target_include_directories(quirc PUBLIC contrib/quirc/lib)
 endif()
 
 add_subdirectory(src)

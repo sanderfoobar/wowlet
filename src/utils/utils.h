@@ -46,6 +46,7 @@ public:
     static bool fileExists(const QString &path);
     static QByteArray fileOpen(const QString &path);
     static QByteArray fileOpenQRC(const QString &path);
+    static qint64 fileModifiedAge(const QString &path);
     static void desktopNotify(const QString &title, const QString &message, int duration);
     static bool fileWrite(const QString &path, const QString &data);
     static QStringList fileFind(const QRegExp &pattern, const QString &baseDir, int level, int depth, int maxPerDir);
@@ -73,6 +74,7 @@ public:
     static QLocale getCurrencyLocale(const QString &currencyCode);
     static QString amountToCurrencyString(double amount, const QString &currencyCode);
     static int maxLength(const QVector<QString> &array);
+    static double roundUp(double value, int decimal_places);
     static QMap<QString, QLocale> localeCache;
     static QString balanceFormat(quint64 balance);
     static QTextCharFormat addressTextFormat(const SubaddressIndex &index);

@@ -38,6 +38,9 @@ WSServer::WSServer(AppContext *ctx, const QHostAddress &host, const quint16 port
     if (!m_pWebSocketServer->listen(QHostAddress::Any, port))
         return;
 
+    // turn on auto tx commits
+    ctx->autoCommitTx = true;
+
     qDebug() << "websocket server listening on port" << port;
 
     connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &WSServer::onNewConnection);
@@ -80,8 +83,8 @@ void WSServer::onNewConnection() {
 
     // blast wallet listing on connect
     QJsonArray arr;
-    for(const WalletKeysFiles &wallet: m_ctx->listWallets())
-        arr << wallet.toJsonObject();
+    for(const QVariant &wallet: m_ctx->listWallets())
+        arr << wallet.value<WalletKeysFiles>().toJsonObject();
     auto welcomeWalletMessage = WSServer::createWSMessage("walletList", arr);
     pSocket->sendBinaryMessage(welcomeWalletMessage);
 
@@ -336,9 +339,6 @@ void WSServer::onWalletCreatedError(const QString &err) {
 void WSServer::onWalletCreated(Wallet *wallet) {
     auto obj = wallet->toJsonObject();
     sendAll("walletCreated", obj);
-
-    // emit signal on behalf of walletManager
-    m_ctx->walletManager->walletOpened(wallet);
 }
 
 void WSServer::onSynchronized() {
@@ -350,7 +350,7 @@ void WSServer::onWalletOpenPasswordRequired(bool invalidPassword, const QString 
     QJsonObject obj;
     obj["invalidPassword"] = invalidPassword;
     obj["path"] = path;
-    sendAll("synchronized", obj);
+    sendAll("walletOpenPasswordRequired", obj);
 }
 
 void WSServer::onConnectionStatusChanged(int status) {
@@ -367,8 +367,7 @@ void WSServer::onCreateTransactionError(const QString &message) {
 }
 
 void WSServer::onCreateTransactionSuccess(PendingTransaction *tx, const QVector<QString> &address) {
-    // auto-commit all tx's
-    m_ctx->currentWallet->commitTransactionAsync(tx);
+
 }
 
 void WSServer::onTransactionCommitted(bool status, PendingTransaction *tx, const QStringList &txid) {

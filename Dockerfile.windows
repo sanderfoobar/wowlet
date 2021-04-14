@@ -8,7 +8,7 @@ ENV OPENSSL_ROOT_DIR=/usr/local/openssl/
 ENV TOR_BIN=/usr/local/tor/bin/tor.exe
 
 RUN apt update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y curl wget zip automake build-essential cmake gcc-mingw-w64 g++-mingw-w64 gettext git libtool pkg-config \
+    DEBIAN_FRONTEND=noninteractive apt install -y curl nano wget zip automake build-essential cmake gcc-mingw-w64 g++-mingw-w64 gettext git libtool pkg-config \
     python && \
     rm -rf /var/lib/apt/lists/*
 
@@ -27,8 +27,12 @@ RUN make -j$THREADS -C /depends HOST=x86_64-w64-mingw32 NO_QT=1
 RUN git clone git://code.qt.io/qt/qt5.git -b ${QT_VERSION} --depth 1 && \
     cd qt5 && \
     git clone git://code.qt.io/qt/qtbase.git -b ${QT_VERSION} --depth 1 && \
+    git clone git://code.qt.io/qt/qtdeclarative.git -b ${QT_VERSION} --depth 1 && \
+    git clone git://code.qt.io/qt/qtgraphicaleffects.git -b ${QT_VERSION} --depth 1 && \
     git clone git://code.qt.io/qt/qtimageformats.git -b ${QT_VERSION} --depth 1 && \
     git clone git://code.qt.io/qt/qtmultimedia.git -b ${QT_VERSION} --depth 1 && \
+    git clone git://code.qt.io/qt/qtquickcontrols.git -b ${QT_VERSION} --depth 1 && \
+    git clone git://code.qt.io/qt/qtquickcontrols2.git -b ${QT_VERSION} --depth 1 && \
     git clone git://code.qt.io/qt/qtsvg.git -b ${QT_VERSION} --depth 1 && \
     git clone git://code.qt.io/qt/qttools.git -b ${QT_VERSION} --depth 1 && \
     git clone git://code.qt.io/qt/qttranslations.git -b ${QT_VERSION} --depth 1 && \
@@ -38,8 +42,8 @@ RUN git clone git://code.qt.io/qt/qt5.git -b ${QT_VERSION} --depth 1 && \
     ./configure --prefix=/depends/x86_64-w64-mingw32 -xplatform win32-g++ \
     -device-option CROSS_COMPILE=/usr/bin/x86_64-w64-mingw32- \
     -I $(pwd)/qtbase/src/3rdparty/angle/include \
-    -opensource -confirm-license -release -static -static-runtime -no-opengl \
-    -no-avx -openssl -I /depends/x86_64-w64-mingw32/include -L /depends/x86_64-w64-mingw32/lib \
+    -opensource -confirm-license -release -static -static-runtime -opengl dynamic -no-angle \
+    -no-feature-qml-worker-script -no-avx -openssl -I /depends/x86_64-w64-mingw32/include -L /depends/x86_64-w64-mingw32/lib \
     -qt-freetype -qt-harfbuzz -qt-libjpeg -qt-libpng -qt-pcre -qt-zlib \
     -skip gamepad -skip location -skip qt3d -skip qtactiveqt -skip qtandroidextras \
     -skip qtcanvas3d -skip qtcharts -skip qtconnectivity -skip qtdatavis3d -skip qtdoc \
@@ -47,7 +51,6 @@ RUN git clone git://code.qt.io/qt/qt5.git -b ${QT_VERSION} --depth 1 && \
     -skip qtscript -skip qtscxml -skip qtsensors -skip qtserialbus -skip qtserialport \
     -skip qtspeech -skip qttools -skip qtvirtualkeyboard -skip qtwayland -skip qtwebchannel \
     -skip qtwebengine -skip qtwebview -skip qtwinextras -skip qtx11extras \
-    -skip qtdeclarative -skip qtquickcontrols -skip qtquickcontrols2 \
     -skip serialbus -skip webengine \
     -nomake examples -nomake tests -nomake tools && \
     make -j$THREADS && \
@@ -94,7 +97,7 @@ RUN git clone -b v1.2.11 --depth 1 https://github.com/madler/zlib && \
 # libpng -> libqrencode
 RUN git clone -b libpng16 --depth 1 https://github.com/glennrp/libpng.git && \
     cd libpng && \
-    git reset --hard dbe3e0c43e549a1602286144d94b0666549b18e6 && \
+    git reset --hard a37d4836519517bdce6cb9d956092321eca3e73b && \
     CPPFLAGS="-I/depends/x86_64-w64-mingw32/include" LDFLAGS="-L/depends/x86_64-w64-mingw32/lib" \
     ./configure --host=x86_64-w64-mingw32 --prefix=/depends/x86_64-w64-mingw32 && \
     make -j$THREADS && \
@@ -122,11 +125,11 @@ RUN wget https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.16.tar.gz && \
     rm -rf $(pwd)
 
 # OpenSSL -> Tor
-RUN wget https://www.openssl.org/source/openssl-1.1.1i.tar.gz && \
-    echo "e8be6a35fe41d10603c3cc635e93289ed00bf34b79671a3a4de64fcee00d5242 openssl-1.1.1i.tar.gz" | sha256sum -c && \
-    tar -xzf openssl-1.1.1i.tar.gz && \
-    rm openssl-1.1.1i.tar.gz && \
-    cd openssl-1.1.1i && \
+RUN wget https://www.openssl.org/source/openssl-1.1.1k.tar.gz && \
+    echo "892a0875b9872acd04a9fde79b1f943075d5ea162415de3047c327df33fbaee5 openssl-1.1.1k.tar.gz" | sha256sum -c && \
+    tar -xzf openssl-1.1.1k.tar.gz && \
+    rm openssl-1.1.1k.tar.gz && \
+    cd openssl-1.1.1k && \
     ./Configure mingw64 no-shared no-dso --cross-compile-prefix=x86_64-w64-mingw32- --prefix=/usr/local/openssl && \
     make -j$THREADS && \
     make -j$THREADS install_sw && \
@@ -146,10 +149,9 @@ RUN wget https://github.com/libevent/libevent/releases/download/release-2.1.11-s
     make -j$THREADS install && \
     rm -rf $(pwd)
 
-ENV TOR_VERSION=0.4.5.5-rc
-RUN git clone -b tor-0.4.5.5-rc --depth 1 https://git.torproject.org/tor.git && \
+RUN git clone -b tor-0.4.5.7 --depth 1 https://git.torproject.org/tor.git && \
     cd tor  && \
-    git reset --hard b36a00e9a9d3eb4b2949951afaa72e45fb7e68cd && \
+    git reset --hard 83f895c015de55201e5f226f84a866f30f5ee14b && \
     ./autogen.sh && \
     ./configure --host=x86_64-w64-mingw32 \
     --disable-asciidoc \
@@ -181,3 +183,4 @@ RUN git clone https://git.wownero.com/wowlet/monero-seed.git && \
     make -Cbuild -j$THREADS && \
     make -Cbuild install && \
     rm -rf $(pwd)
+

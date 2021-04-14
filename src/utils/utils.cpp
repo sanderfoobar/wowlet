@@ -42,6 +42,12 @@ QByteArray Utils::fileOpen(const QString &path) {
     return data;
 }
 
+qint64 Utils::fileModifiedAge(const QString &path) {
+    QFileInfo fileInfo;
+    fileInfo.setFile(path);
+    return (QDateTime::currentSecsSinceEpoch() - fileInfo.lastModified().toSecsSinceEpoch());
+}
+
 QByteArray Utils::fileOpenQRC(const QString &path) {
     QFile file(path);
     if(!file.open(QIODevice::ReadOnly)) {
@@ -397,6 +403,11 @@ QLocale Utils::getCurrencyLocale(const QString &currencyCode) {
         localeCache[currencyCode] = locale;
     }
     return locale;
+}
+
+double Utils::roundUp(double value, int decimal_places) {
+    const double multiplier = std::pow(10.0, decimal_places);
+    return std::ceil(value * multiplier) / multiplier;
 }
 
 QString Utils::amountToCurrencyString(double amount, const QString &currencyCode) {

@@ -10,7 +10,9 @@
 
 class WalletKeysFiles
 {
+    Q_GADGET
 public:
+    WalletKeysFiles();
     WalletKeysFiles(const QFileInfo &info, int networkType, QString address);
 
     QString fileName() const;
@@ -20,6 +22,13 @@ public:
     QString address() const;
 
     QJsonObject toJsonObject() const;
+    QVariant toVariant() const;
+
+    Q_PROPERTY(qint64 modified READ modified)
+    Q_PROPERTY(QString fileName READ fileName)
+    Q_PROPERTY(QString path READ path)
+    Q_PROPERTY(QString address READ address)
+    Q_PROPERTY(int networkType READ networkType)
 
 private:
     QString m_fileName;
@@ -28,6 +37,8 @@ private:
     int m_networkType;
     QString m_address;
 };
+Q_DECLARE_METATYPE(WalletKeysFiles)
+
 
 class WalletKeysFilesModel : public QAbstractTableModel
 {

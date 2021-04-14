@@ -57,8 +57,7 @@ signals:
     void thumbReceived(SuchWowPost *test);
 
 private:
-    // @TODO: Replace url
-    QString m_weburl = "http://feathercitimllbmdktu6cmjo3fizgmyfrntntqzu6xguqa2rlq5cgid.onion/suchwow";
+    QString m_weburl;
     AppContext *m_ctx = nullptr;
     UtilsNetworking *m_networkThumb = nullptr;
     UtilsNetworking *m_networkImg = nullptr;
