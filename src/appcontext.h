@@ -58,8 +58,7 @@ public:
     QString defaultWalletDir;
     QString defaultWalletDirRoot;
     QString tmpTxDescription;
-    QString wsUrl = "51.195.148.161:1338";
-//    QString wsUrl = "feathercitimllbmdktu6cmjo3fizgmyfrntntqzu6xguqa2rlq5cgid.onion";
+    QString wsUrl = "6wku2m4zrv6j666crlo7lzofv6ud6enzllyhou3ijeigpukymi37caad.onion";
 
     QString walletPath;
     QString walletPassword = "";
