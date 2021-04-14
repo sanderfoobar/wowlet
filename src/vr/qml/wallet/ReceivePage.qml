@@ -129,6 +129,7 @@ MyStackViewPage {
                     text: "Save QR image"
                     Layout.preferredHeight: 70
                     Layout.fillWidth: true
+                    visible: false
 
                     onClicked: {
 
