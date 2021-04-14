@@ -12,7 +12,6 @@
     <file>assets/images/appicons/128x128.png</file>
     <file>assets/images/appicons/256x256.png</file>
     <file>assets/images/arrow.svg</file>
-    <file>assets/images/banners/1.png</file>
     <file>assets/images/bitcoin.png</file>
     <file>assets/images/camera_dark.png</file>
     <file>assets/images/camera_white.png</file>
@@ -29,7 +28,6 @@
     <file>assets/images/confirmed.svg</file>
     <file>assets/images/connect.svg</file>
     <file>assets/images/copy.png</file>
-    <file>assets/images/cutexmrfox.png</file>
     <file>assets/images/edit.png</file>
     <file>assets/images/exchange.png</file>
     <file>assets/images/exchange_white.png</file>
@@ -54,54 +52,83 @@
     <file>assets/images/network.png</file>
     <file>assets/images/offline_tx.png</file>
     <file>assets/images/person.svg</file>
-    <file>assets/images/photos/illiterate_illuminati.png</file>
-    <file>assets/images/photos/wow1.png</file>
-    <file>assets/images/photos/wow2.png</file>
-    <file>assets/images/photos/wow3.png</file>
-    <file>assets/images/photos/wow4.png</file>
-    <file>assets/images/photos/wow5.png</file>
-    <file>assets/images/photos/wow6.png</file>
-    <file>assets/images/photos/wow7.png</file>
-    <file>assets/images/photos/wow8.png</file>
-    <file>assets/images/photos/wow9.png</file>
-    <file>assets/images/photos/wow10.png</file>
-    <file>assets/images/photos/wow11.png</file>
-    <file>assets/images/photos/wow12.png</file>
-    <file>assets/images/photos/wow13.png</file>
-    <file>assets/images/photos/wow14.png</file>
-    <file>assets/images/photos/wow15.png</file>
-    <file>assets/images/photos/wow16.png</file>
-    <file>assets/images/photos/wow17.png</file>
-    <file>assets/images/photos/wow18.png</file>
-    <file>assets/images/photos/wow19.png</file>
-    <file>assets/images/photos/wow20.png</file>
-    <file>assets/images/photos/wow21.png</file>
-    <file>assets/images/photos/wow22.png</file>
-    <file>assets/images/photos/wow23.png</file>
-    <file>assets/images/photos/wow24.png</file>
-    <file>assets/images/photos/wow25.png</file>
-    <file>assets/images/photos/wow26.png</file>
-    <file>assets/images/photos/wow27.png</file>
-    <file>assets/images/photos/wow28.png</file>
-    <file>assets/images/photos/wow29.png</file>
-    <file>assets/images/photos/wow30.png</file>
-    <file>assets/images/photos/wow31.png</file>
-    <file>assets/images/photos/wow32.png</file>
-    <file>assets/images/photos/wow33.png</file>
-    <file>assets/images/photos/wow34.png</file>
-    <file>assets/images/photos/wow35.png</file>
-    <file>assets/images/photos/wow36.png</file>
-    <file>assets/images/photos/wow37.png</file>
-    <file>assets/images/photos/wow38.png</file>
-    <file>assets/images/photos/wow39.png</file>
-    <file>assets/images/photos/wow40.png</file>
-    <file>assets/images/photos/wow41.png</file>
-    <file>assets/images/photos/wow42.png</file>
-    <file>assets/images/photos/wow43.png</file>
-    <file>assets/images/photos/wow44.png</file>
-    <file>assets/images/photos/wow45.png</file>
-    <file>assets/images/photos/wow46.png</file>
-    <file>assets/images/photos/wow47.png</file>
+    <file>assets/images/illiterate_illuminati.png</file>
+    <file>assets/images/welcome/wow1.png</file>
+    <file>assets/images/welcome/wow2.png</file>
+    <file>assets/images/welcome/wow3.png</file>
+    <file>assets/images/welcome/wow4.png</file>
+    <file>assets/images/welcome/wow5.png</file>
+    <file>assets/images/welcome/wow6.png</file>
+    <file>assets/images/welcome/wow7.png</file>
+    <file>assets/images/welcome/wow8.png</file>
+    <file>assets/images/welcome/wow9.png</file>
+    <file>assets/images/welcome/wow10.png</file>
+    <file>assets/images/welcome/wow11.png</file>
+    <file>assets/images/welcome/wow12.png</file>
+    <file>assets/images/welcome/wow13.png</file>
+    <file>assets/images/welcome/wow14.png</file>
+    <file>assets/images/welcome/wow15.png</file>
+    <file>assets/images/welcome/wow16.png</file>
+    <file>assets/images/welcome/wow17.png</file>
+    <file>assets/images/welcome/wow18.png</file>
+    <file>assets/images/welcome/wow19.png</file>
+    <file>assets/images/welcome/wow20.png</file>
+    <file>assets/images/welcome/wow21.png</file>
+    <file>assets/images/welcome/wow22.png</file>
+    <file>assets/images/welcome/wow23.png</file>
+    <file>assets/images/welcome/wow24.png</file>
+    <file>assets/images/welcome/wow25.png</file>
+    <file>assets/images/welcome/wow26.png</file>
+    <file>assets/images/welcome/wow27.png</file>
+    <file>assets/images/welcome/wow28.png</file>
+    <file>assets/images/welcome/wow29.png</file>
+    <file>assets/images/welcome/wow30.png</file>
+    <file>assets/images/welcome/wow31.png</file>
+    <file>assets/images/welcome/wow32.png</file>
+    <file>assets/images/welcome/wow33.png</file>
+    <file>assets/images/welcome/wow34.png</file>
+    <file>assets/images/welcome/wow35.png</file>
+    <file>assets/images/welcome/wow36.png</file>
+    <file>assets/images/welcome/wow37.png</file>
+    <file>assets/images/welcome/wow38.png</file>
+    <file>assets/images/welcome/wow39.png</file>
+    <file>assets/images/welcome/wow40.png</file>
+    <file>assets/images/welcome/wow41.png</file>
+    <file>assets/images/welcome/wow42.png</file>
+    <file>assets/images/welcome/wow43.png</file>
+    <file>assets/images/welcome/wow44.png</file>
+    <file>assets/images/welcome/wow45.png</file>
+    <file>assets/images/welcome/wow46.png</file>
+    <file>assets/images/welcome/wow47.png</file>
+    <file>assets/images/welcome/wow48.png</file>
+    <file>assets/images/welcome/wow49.png</file>
+    <file>assets/images/welcome/wow50.png</file>
+    <file>assets/images/welcome/wow51.png</file>
+    <file>assets/images/welcome/wow52.png</file>
+    <file>assets/images/welcome/wow53.png</file>
+    <file>assets/images/welcome/wow54.png</file>
+    <file>assets/images/welcome/wow55.png</file>
+    <file>assets/images/welcome/wow56.png</file>
+    <file>assets/images/welcome/wow57.png</file>
+    <file>assets/images/welcome/wow58.png</file>
+    <file>assets/images/welcome/wow59.png</file>
+    <file>assets/images/welcome/wow60.png</file>
+    <file>assets/images/welcome/wow61.png</file>
+    <file>assets/images/welcome/wow62.png</file>
+    <file>assets/images/welcome/wow63.png</file>
+    <file>assets/images/welcome/wow64.png</file>
+    <file>assets/images/welcome/wow65.png</file>
+    <file>assets/images/welcome/wow66.png</file>
+    <file>assets/images/welcome/wow67.png</file>
+    <file>assets/images/welcome/wow68.png</file>
+    <file>assets/images/welcome/wow69.png</file>
+    <file>assets/images/welcome/wow70.png</file>
+    <file>assets/images/welcome/wow71.png</file>
+    <file>assets/images/welcome/wow72.png</file>
+    <file>assets/images/welcome/wow73.png</file>
+    <file>assets/images/welcome/wow74.png</file>
+    <file>assets/images/welcome/wow75.png</file>
+    <file>assets/images/welcome/wow76.png</file>
     <file>assets/images/preferences.png</file>
     <file>assets/images/preferences.svg</file>
     <file>assets/images/qrcode.png</file>
