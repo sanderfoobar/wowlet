@@ -5,9 +5,11 @@ set(CMAKE_AUTOUIC ON)
 # pthread
 find_package(Threads REQUIRED)
 
-# PNG
-find_package(ZLIB REQUIRED)
-find_package(PNG REQUIRED)
+if(QML)
+    # PNG
+    find_package(ZLIB REQUIRED)
+    find_package(PNG REQUIRED)
+endif()
 
 # Compile these source files (.h/.cpp)
 file(GLOB SOURCE_FILES
@@ -61,7 +63,10 @@ add_subdirectory(libwalletqt)
 add_subdirectory(model)
 add_subdirectory(utils)
 add_subdirectory(openpgp)
-add_subdirectory(QR-Code-scanner)
+
+if(WITH_SCANNER)
+    add_subdirectory(QR-Code-scanner)
+endif()
 
 qt5_add_resources(RESOURCES assets.qrc)
 
@@ -262,12 +267,11 @@ target_link_libraries(wowlet PUBLIC
         openpgp
         Threads::Threads
         ${QRENCODE_LIBRARY}
-        qrdecoder
         )
 
 # Link scanner
 if(WITH_SCANNER)
-    target_link_libraries(wowlet PUBLIC qrscanner)
+    target_link_libraries(wowlet PUBLIC qrdecoder qrscanner)
     if(LINUX AND NOT ANDROID)
         target_link_libraries(wowlet PUBLIC
                 jpeg
@@ -309,8 +313,8 @@ if(STATIC)
             Qt5::QSvgIconPlugin
             Qt5::QSvgPlugin)
     if(UNIX AND NOT APPLE)
-        target_link_libraries(wowlet
-            Qt5::QXcbIntegrationPlugin)
+	    target_link_libraries(wowlet PUBLIC
+            	Qt5::QXcbIntegrationPlugin)
     endif()
 endif()
 
