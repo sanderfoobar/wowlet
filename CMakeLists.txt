@@ -5,9 +5,9 @@ message(STATUS "Initiating compile using CMake ${CMAKE_VERSION}")
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 set(VERSION_MAJOR "0")
-set(VERSION_MINOR "1")
+set(VERSION_MINOR "2")
 set(VERSION_REVISION "0")
-set(VERSION "beta-1")
+set(VERSION "beta-2")
 
 option(FETCH_DEPS "Download dependencies if they are not found" ON)
 option(XMRIG "Include XMRig module" ON)
