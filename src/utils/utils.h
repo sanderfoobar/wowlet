@@ -8,6 +8,9 @@
 #include <QStandardItemModel>
 #include <QApplication>
 #include <QTextCharFormat>
+#ifdef __ANDROID__
+#include <QtAndroid>
+#endif
 
 #include <monero_seed/monero_seed.hpp>
 
@@ -80,10 +83,13 @@ public:
     static QTextCharFormat addressTextFormat(const SubaddressIndex &index);
 
     template<typename QEnum>
-    static QString QtEnumToString (const QEnum value)
-    {
+    static QString QtEnumToString (const QEnum value) {
         return QString::fromStdString(std::string(QMetaEnum::fromType<QEnum>().valueToKey(value)));
     }
+
+#ifdef __ANDROID__
+    static bool androidAskPermissions(const QVector<QString> &permissions);
+#endif
 };
 
 class AppContext;  // forward declaration

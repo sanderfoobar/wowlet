@@ -39,7 +39,12 @@ public:
     ~AppContext() override;
     bool isTails = false;
     bool isWhonix = false;
+    bool isAndroid = false;
+    bool isLinux = false;
+    bool isMac = false;
+    bool isWindows = false;
     bool isDebug = false;
+    bool androidDebug = false;
 
     // Donation config
     const QString donationAddress = "Wo3MWeKwtA918DU4c69hVSNgejdWFCRCuWjShRY66mJkU2Hv58eygJWDJS1MNa2Ge5M1WjUkGHuLqHkweDxwZZU42d16v94mP";
@@ -50,6 +55,7 @@ public:
 
     QString coinName = "wownero";
     bool isTorSocks = false;
+    QString pathGenericData;
     QString homeDir;
     QString accountName;
     QString configRoot;
@@ -215,6 +221,11 @@ private:
     WalletKeysFilesModel *m_walletKeysFilesModel;
     const int m_donationBoundary = 15;
     QTimer m_storeTimer;
+
+    void setupPathsUnix();
+    void setupPathsWindows();
+    void setupPathsAndroid();
+    void setupPathsTails();
 };
 
 #endif //WOWLET_APPCONTEXT_H

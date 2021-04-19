@@ -14,6 +14,12 @@
 #include "vr/main.h"
 #endif
 
+#ifdef HAS_ANDROID_DEBUG
+#include "mobile/main.h"
+#elif HAS_ANDROID
+#include "mobile/main.h"
+#endif
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
@@ -43,6 +49,10 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     for(int i = 0; i != argc; i++){
         argv_ << QString::fromStdString(argv[i]);
     }
+
+    QCoreApplication::setApplicationName("wowlet");
+    QCoreApplication::setOrganizationDomain("wownero.org");
+    QCoreApplication::setOrganizationName("wownero.org");
 
     QCommandLineParser parser;
     parser.setApplicationDescription("wowlet");
@@ -91,8 +101,11 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     QCommandLineOption openVROption(QStringList() << "openvr", "Start Wowlet OpenVR");
     parser.addOption(openVROption);
 
-    QCommandLineOption openVRDebugOption(QStringList() << "openvr-debug", "Start the Wowlet VR interface without initializing OpenVR - for debugging purposes.");
+    QCommandLineOption openVRDebugOption(QStringList() << "openvr-debug", "Start the Wowlet VR interface without initializing OpenVR - for debugging purposes. Requires -DOPENVR=ON CMake definition.");
     parser.addOption(openVRDebugOption);
+
+    QCommandLineOption androidDebugOption(QStringList() << "android-debug", "Start the Android interface without actually running on Android - for debugging purposes. Requires -DANDROID_DEBUG=ON CMake definition.");
+    parser.addOption(androidDebugOption);
 
     auto parsed = parser.parse(argv_);
     if(!parsed) {
@@ -111,12 +124,28 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     bool backgroundAddressEnabled = parser.isSet(backgroundOption);
     bool openVREnabled = parser.isSet(openVROption);
     bool cliMode = exportContacts || exportTxHistory || backgroundAddressEnabled;
-
+    bool androidDebug = parser.isSet(androidDebugOption);
+    bool android = false;
+#ifdef __ANDROID__
+    android = true;
+#endif
     qRegisterMetaType<QVector<QString>>();
 
 #ifdef HAS_QML
     qputenv("QML_DISABLE_DISK_CACHE", "1");
 #endif
+
+    if(android || androidDebug) {
+#ifndef HAS_QML
+        qCritical() << "Wowlet compiled without QML support. Try -DQML=ON";
+        return 1;
+#endif
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        QGuiApplication mobile_app(argc, argv);
+        auto *ctx = new AppContext(&parser);
+        auto *mobile = new mobile::Mobile(ctx, &parser, &mobile_app);
+        return mobile_app.exec();
+    }
 
     if(openVREnabled) {
 #ifdef HAS_OPENVR
@@ -138,9 +167,6 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     if(cliMode) {
         auto *ctx = new AppContext(&parser);
         QCoreApplication cli_app(argc, argv);
-        QCoreApplication::setApplicationName("wowlet");
-        QCoreApplication::setOrganizationDomain("wownero.org");
-        QCoreApplication::setOrganizationName("wownero.org");
 
         ctx->applicationPath = QString(argv[0]);
         ctx->isDebug = debugMode;
@@ -191,10 +217,6 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 
     QApplication app(argc, argv);
 
-    QApplication::setApplicationName("wowlet");
-    QApplication::setOrganizationDomain("wownero.org");
-    QApplication::setOrganizationName("wownero.org");
-
     parser.process(app); // Parse again for --help and --version
 
     if(!quiet) {
@@ -204,8 +226,10 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
         if (stagenet) info["Mode"] = "Stagenet";
         else if (testnet) info["Mode"] = "Testnet";
         else info["Mode"] = "Mainnet";
+#ifndef QT_NO_SSL
         info["SSL"] = QSslSocket::sslLibraryVersionString();
         info["SSL build"] = QSslSocket::sslLibraryBuildVersionString();
+#endif
         for (const auto &k: info.keys())
             qWarning().nospace().noquote() << QString("%1: %2").arg(k).arg(info[k]);
     }

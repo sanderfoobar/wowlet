@@ -256,11 +256,14 @@ QStandardItem *Utils::qStandardItem(const QString& text, QFont &font) {
 }
 
 QString Utils::getUnixAccountName() {
+#ifdef __ANDROID__
+    return "";
+#endif
     QString accountName = qgetenv("USER"); // mac/linux
     if (accountName.isEmpty())
         accountName = qgetenv("USERNAME"); // Windows
     if (accountName.isEmpty())
-        throw std::runtime_error("Could derive system account name from env vars: USER or USERNAME");
+        throw std::runtime_error("Could not derive system account name from env vars: USER or USERNAME");
     return accountName;
 }
 
@@ -455,3 +458,26 @@ QTextCharFormat Utils::addressTextFormat(const SubaddressIndex &index) {
     }
     return QTextCharFormat();
 }
+
+#ifdef __ANDROID__
+bool Utils::androidAskPermissions(const QVector<QString> &permissions) {
+    bool rtn = true;
+    if(QtAndroid::androidSdkVersion() >= 23) {
+        for(const QString &permission : permissions) {
+            auto result = QtAndroid::checkPermission(permission);
+            if(result != QtAndroid::PermissionResult::Granted) {
+                auto resultHash = QtAndroid::requestPermissionsSync(QStringList({permission}));
+                if(resultHash[permission] != QtAndroid::PermissionResult::Granted) {
+                    qDebug() << "Fail to get permission" << permission;
+                    rtn = false;
+                } else {
+                    qDebug() << "Permission" << permission << "granted!";
+                }
+            } else {
+                qDebug() << "Permission" << permission << "already granted!";
+            }
+        }
+    }
+    return rtn;
+}
+#endif
