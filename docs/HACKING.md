@@ -28,7 +28,7 @@ by running this command: `pandoc wowlet.1.md -s -t man -o wowlet.1 && gzip wowle
 apt install -y git cmake libqrencode-dev build-essential cmake libboost-all-dev \
 miniupnpc libunbound-dev graphviz doxygen libunwind8-dev pkg-config libssl-dev \
 libzmq3-dev libsodium-dev libhidapi-dev libnorm-dev libusb-1.0-0-dev libpgm-dev \
-libprotobuf-dev protobuf-compiler libgcrypt20-dev
+libprotobuf-dev protobuf-compiler libgcrypt20-dev libpng-dev
 ```
 
 ## Mac OS
@@ -107,6 +107,4 @@ To skip the wizards and open a wallet directly use `--wallet-file`:
 ./wowlet --use-local-tor --wallet-file /home/user/Wownero/wallets/bla.keys
 ```
 
-It is recommended that you use `--stagenet` for development. Testnet is also possible, 
-but you'll have to provide Wownero a testnet node of your own.
  

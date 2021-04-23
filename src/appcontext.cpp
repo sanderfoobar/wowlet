@@ -30,76 +30,68 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     this->cmdargs = cmdargs;
     AppContext::isQML = false;
 
+    // OS & env
 #if defined(Q_OS_MAC)
+    this->isMac = true;
     this->isTorSocks = qgetenv("DYLD_INSERT_LIBRARIES").indexOf("libtorsocks") >= 0;
+#elif __ANDROID__
+    this->isAndroid = true;
 #elif defined(Q_OS_LINUX)
+    this->isLinux = true;
     this->isTorSocks = qgetenv("LD_PRELOAD").indexOf("libtorsocks") >= 0;
-#elif defined(Q_OS_WIN)
-    this->isTorSocks = false;
-#endif
-
     this->isTails = TailsOS::detect();
     this->isWhonix = WhonixOS::detect();
+#elif defined(Q_OS_WIN)
+    this->isWindows = true;
+    this->isTorSocks = false;
+#endif
+    this->androidDebug = cmdargs->isSet("android-debug");
 
-    //Paths
+    // Paths
+    this->pathGenericData = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
     this->configRoot = QDir::homePath();
-    if (isTails) { // #if defined(PORTABLE)
-        QString portablePath = []{
-            QString appImagePath = qgetenv("APPIMAGE");
-            if (appImagePath.isEmpty()) {
-                qDebug() << "Not an appimage, using currentPath()";
-                return QDir::currentPath() + "/.wowlet";
-            }
-
-            QFileInfo appImageDir(appImagePath);
-            return appImageDir.absoluteDir().path() + "/.wowlet";
-        }();
-
-
-        if (QDir().mkpath(portablePath)) {
-            this->configRoot = portablePath;
-        } else {
-            qCritical() << "Unable to create portable directory: " << portablePath;
-        }
-    }
-
     this->accountName = Utils::getUnixAccountName();
     this->homeDir = QDir::homePath();
 
+    this->configDirectory = QString("%1/.config/wowlet/").arg(this->configRoot);
+    this->configDirectoryVR = QString("%1%2").arg(this->configDirectory, "vr");
+
+    if (isTails) this->setupPathsTails();
+
     QString walletDir = config()->get(Config::walletDirectory).toString();
-    if (walletDir.isEmpty()) {
-#if defined(Q_OS_LINUX) or defined(Q_OS_MAC)
-        this->defaultWalletDir = QString("%1/Wownero/wallets").arg(this->configRoot);
-        this->defaultWalletDirRoot = QString("%1/Wownero").arg(this->configRoot);
-#elif defined(Q_OS_WIN)
-        this->defaultWalletDir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/Wownero";
-        this->defaultWalletDirRoot = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-#endif
+    if(walletDir.isEmpty()) {
+        if (isAndroid && !androidDebug) setupPathsAndroid();
+        else if (isWindows) setupPathsWindows();
+        else if (isLinux || isMac) setupPathsUnix();
     } else {
         this->defaultWalletDir = walletDir;
         this->defaultWalletDirRoot = walletDir;
     }
 
+#ifdef __ANDROID__
+    // can haz disk I/O?
+    QVector<QString> perms = {
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE"
+    };
+    Utils::androidAskPermissions(perms);
+#endif
+
     // Create wallet dirs
+    qDebug() << "creating " << defaultWalletDir;
     if (!QDir().mkpath(defaultWalletDir))
         qCritical() << "Unable to create dir: " << defaultWalletDir;
 
-    this->configDirectory = QString("%1/.config/wowlet/").arg(this->configRoot);
-#if defined(Q_OS_UNIX)
-    if(!this->configDirectory.endsWith('/'))
-        this->configDirectory = QString("%1/").arg(this->configDirectory);
-#endif
-    this->configDirectoryVR = QString("%1%2").arg(this->configDirectory, "vr");
-
     // Create some directories
     createConfigDirectory(this->configDirectory);
-
-//    if(this->cmdargs->isSet("stagenet"))
-//        this->networkType = NetworkType::STAGENET;
-//    else if(this->cmdargs->isSet("testnet"))
-//        this->networkType = NetworkType::TESTNET;
-//    else
     this->networkType = NetworkType::MAINNET;
+
+    qDebug() << "configRoot: " << this->configRoot;
+    qDebug() << "homeDir: " << this->homeDir;
+    qDebug() << "customWalletDir: " << walletDir;
+    qDebug() << "defaultWalletDir: " << this->defaultWalletDir;
+    qDebug() << "defaultWalletDirRoot: " << this->defaultWalletDirRoot;
+    qDebug() << "configDirectory: " << this->configDirectory;
 
 //    auto nodeSourceUInt = config()->get(Config::nodeSource).toUInt();
 //    AppContext::nodeSource = static_cast<NodeSource>(nodeSourceUInt);
@@ -558,12 +550,14 @@ void AppContext::createConfigDirectory(const QString &dir) {
         }
     }
 
+#ifdef HAS_OPENVR
     auto config_dir_vr = QString("%1%2").arg(dir, "vr");
     if(!Utils::dirExists(config_dir_vr)) {
         qDebug() << QString("Creating directory: %1").arg(config_dir_vr);
         if (!QDir().mkpath(config_dir_vr))
             throw std::runtime_error("Could not create directory " + config_dir_vr.toStdString());
     }
+#endif
 }
 
 void AppContext::createWalletWithoutSpecifyingSeed(const QString &name, const QString &password) {
@@ -949,3 +943,38 @@ void AppContext::refreshModels() {
     this->currentWallet->coins()->refresh(this->currentWallet->currentSubaddressAccount());
     // Todo: set timer for refreshes
 }
+
+void AppContext::setupPathsUnix() {
+    this->defaultWalletDir = QString("%1/Wownero/wallets").arg(this->configRoot);
+    this->defaultWalletDirRoot = QString("%1/Wownero").arg(this->configRoot);
+}
+
+void AppContext::setupPathsWindows() {
+    this->defaultWalletDir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/Wownero";
+    this->defaultWalletDirRoot = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+}
+
+void AppContext::setupPathsAndroid() {
+    this->defaultWalletDir = QString("%1/Wownero/wallets").arg(this->pathGenericData);
+    this->defaultWalletDirRoot = QString("%1/Wownero").arg(this->pathGenericData);
+}
+
+void AppContext::setupPathsTails() {
+    QString portablePath = []{
+        QString appImagePath = qgetenv("APPIMAGE");
+        if (appImagePath.isEmpty()) {
+            qDebug() << "Not an appimage, using currentPath()";
+            return QDir::currentPath() + "/.wowlet";
+        }
+
+        QFileInfo appImageDir(appImagePath);
+        return appImageDir.absoluteDir().path() + "/.wowlet";
+    }();
+
+    if (QDir().mkpath(portablePath)) {
+        this->configRoot = portablePath;
+    } else {
+        qCritical() << "Unable to create portable directory: " << portablePath;
+    }
+}
+

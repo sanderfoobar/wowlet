@@ -57,6 +57,15 @@ if(OPENVR)
     list(APPEND SOURCE_FILES ${SOURCE_FILES_QML})
 endif()
 
+if(ANDROID OR ANDROID_DEBUG)
+    qt5_add_resources(RESOURCES mobile/qml.qrc)
+    file(GLOB SOURCE_FILES_QML
+            "mobile/*.h"
+            "mobile/*.cpp"
+            )
+    list(APPEND SOURCE_FILES ${SOURCE_FILES_QML})
+endif()
+
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-deprecated-declarations")  # @TODO: removeme
 
 add_subdirectory(libwalletqt)
@@ -98,11 +107,16 @@ if(APPLE)
     list(APPEND RESOURCES ${ICON})
 endif()
 
-add_executable(wowlet ${EXECUTABLE_FLAG} main.cpp
-        ${SOURCE_FILES}
-        ${RESOURCES}
-        ${ASSETS_TOR}
-)
+if(NOT ANDROID)
+    add_executable(wowlet ${EXECUTABLE_FLAG} main.cpp
+            ${SOURCE_FILES}
+            ${RESOURCES}
+            ${ASSETS_TOR}
+            )
+else()
+    add_library(wowlet SHARED ${SOURCE_FILES} ${RESOURCES})
+    set_target_properties(wowlet PROPERTIES COMPILE_DEFINITIONS "ANDROID")
+endif()
 
 # mac os bundle
 set_target_properties(wowlet PROPERTIES
@@ -160,6 +174,14 @@ endif()
 
 if(XMRIG)
     target_compile_definitions(wowlet PRIVATE HAS_XMRIG=1)
+endif()
+
+if(ANDROID)
+    target_compile_definitions(wowlet PRIVATE HAS_ANDROID=1)
+endif()
+
+if(ANDROID_DEBUG)
+    target_compile_definitions(wowlet PRIVATE HAS_ANDROID_DEBUG=1)
 endif()
 
 if(OPENVR)
@@ -220,6 +242,13 @@ else()
     target_link_libraries(wowlet PUBLIC monero-seed::monero-seed)
 endif()
 
+if(ANDROID)
+    # yolo some hardcoded paths
+    target_include_directories(wowlet PUBLIC
+            /opt/android/prefix/include/QtAndroidExtras/
+            )
+endif()
+
 # Link Wownero core libraries
 target_link_libraries(wowlet PUBLIC
         wallet_merged
@@ -261,6 +290,33 @@ else()
             Qt5::WebSockets)
 endif()
 
+if(ANDROID)
+    # yolo some hardcoded paths
+    target_link_libraries(wowlet PUBLIC
+            /opt/android/prefix/lib/libQt5QuickTemplates2_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5Quick_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5QmlModels_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5Qml_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5Svg_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5Widgets_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5Gui_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5Xml_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5XmlPatterns_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5Network_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5Core_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5VirtualKeyboard_arm64-v8a.so
+            /opt/android/prefix/lib/libQt5AndroidExtras_arm64-v8a.so
+            /opt/android/prefix/plugins/bearer/libplugins_bearer_qandroidbearer_arm64-v8a.so
+            GLESv2
+            log
+            z
+            jnigraphics
+            android
+            EGL
+            c++_shared
+            )
+endif()
+
 # Link random other stuff
 target_link_libraries(wowlet PUBLIC
         ${ICU_LIBRARIES}
@@ -294,7 +350,7 @@ if(OPENVR)
 endif()
 
 if(APPLE)
-    target_link_libraries(wowlet
+    target_link_libraries(wowlet PUBLIC
             KDMacTouchBar
             )
     target_include_directories(wowlet
@@ -329,3 +385,19 @@ endif()
 install(TARGETS wowlet
         DESTINATION ${CMAKE_INSTALL_PREFIX}
         )
+
+
+message(STATUS "=============================================")
+message(STATUS "VERSION_MAJOR: ${VERSION_MAJOR}")
+message(STATUS "VERSION_MINOR: ${VERSION_MINOR}")
+message(STATUS "VERSION_REVISION: ${VERSION_REVISION}")
+message(STATUS "STATIC: ${STATIC}")
+message(STATUS "Include QtQuick (QML): ${QML}")
+message(STATUS "VERSION: ${VERSION}")
+message(STATUS "Include the XMRIG tab: ${XMRIG}")
+message(STATUS "Include Valve's OpenVR library: ${OPENVR}")
+message(STATUS "This build is for Android: ${ANDROID}")
+message(STATUS "This build is for testing the Android app on desktop: ${ANDROID_DEBUG}")
+message(STATUS "TOR_BIN: ${TOR_BIN}")
+message(STATUS "DONATE_BEG: ${DONATE_BEG}")
+message(STATUS "=============================================")
