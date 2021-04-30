@@ -22,13 +22,13 @@ mkdir -p "$DEBDIR/usr/share/icons/hicolor/256x256/apps/"
 
 # Copy over assets
 
-cp "$PWD/src/assets/control" "$DEBDIR/DEBIAN/control"
-cp "$PWD/src/assets/copyright" "$DEBDIR/debian/copyright"
-cp "$PWD/src/assets/copyright" "$DEBDIR/usr/share/doc/wowlet/copyright"
-cp "$PWD/src/assets/changelog.gz" "$DEBDIR/usr/share/doc/wowlet/changelog.gz"
+cp "$PWD/contrib/debian/control" "$DEBDIR/DEBIAN/control"
+cp "$PWD/contrib/debian/copyright" "$DEBDIR/debian/copyright"
+cp "$PWD/contrib/debian/copyright" "$DEBDIR/usr/share/doc/wowlet/copyright"
+cp "$PWD/contrib/debian/changelog.gz" "$DEBDIR/usr/share/doc/wowlet/changelog.gz"
 cp "$PWD/src/assets/org.wowlet.wowlet.metainfo.xml" "$DEBDIR/usr/share/metainfo/org.wowlet.wowlet.metainfo.xml"
 cp "$PWD/README.md" "$DEBDIR/usr/share/doc/wowlet/README"
-cp "$PWD/SECURITY.md" "$DEBDIR/usr/share/doc/wowlet/SECURITY"
+cp "$PWD/docs/SECURITY.md" "$DEBDIR/usr/share/doc/wowlet/SECURITY"
 cp "$PWD/build/bin/wowlet" "$DEBDIR/usr/bin/wowlet"
 cp "$PWD/src/assets/org.wowlet.wowlet.desktop" "$DEBDIR/usr/share/applications/org.wowlet.wowlet.desktop"
 cp "$PWD/src/assets/wowlet.1.gz" "$DEBDIR/usr/share/man/man1/wowlet.1.gz"
@@ -43,4 +43,4 @@ cp "$PWD/src/assets/images/appicons/256x256.png" "$DEBDIR/usr/share/icons/hicolo
 # Build deb package
 
 dpkg-deb --build $DEBDIR
-mv wowlet.DebDir.deb wowlet_1.0_amd64.deb
+mv wowlet.DebDir.deb wowlet_2.0_amd64.deb
