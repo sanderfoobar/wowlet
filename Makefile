@@ -43,6 +43,7 @@ CMAKEFLAGS = \
 	$(CMAKEFLAGS_EXTRA)
 
 release-static: CMAKEFLAGS += -DBUILD_TAG="linux-x64"
+release-static: CMAKEFLAGS += -DXMRIG=ON
 release-static: CMAKEFLAGS += -DTOR_BIN=$(or ${TOR_BIN},OFF)
 release-static: CMAKEFLAGS += -DCMAKE_BUILD_TYPE=Release
 release-static: CMAKEFLAGS += -DREPRODUCIBLE=$(or ${SOURCE_DATE_EPOCH},OFF)

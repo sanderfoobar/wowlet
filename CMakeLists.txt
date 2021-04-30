@@ -30,7 +30,6 @@ include(CheckSymbolExists)
 
 set(WOWNERO_HEAD "f611d5c9e32bc62f1735f6571b0bdb95cc020531")
 set(BUILD_GUI_DEPS ON)
-set(ARCH "x86-64" CACHE STRING "Target architecture")
 set(BUILD_64 ON CACHE BOOL "Build 64-bit binaries")
 set(INSTALL_VENDORED_LIBUNBOUND ${STATIC})
 set(USE_SINGLE_BUILDDIR ON)
