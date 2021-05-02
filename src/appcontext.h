@@ -221,6 +221,9 @@ private:
     WalletKeysFilesModel *m_walletKeysFilesModel;
     const int m_donationBoundary = 15;
     QTimer m_storeTimer;
+    QTimer m_hibernateTimer;
+    std::chrono::seconds m_hibernateDetectInterval{300};
+    std::chrono::time_point<std::chrono::steady_clock> m_hibernatePreviousTime;
 
     void setupPathsUnix();
     void setupPathsWindows();

@@ -111,6 +111,24 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
         this->storeWallet();
     });
 
+    // If system clock skewed for >= 300 seconds, assume a wake-up from hibernate and reload the websocket connection
+    if(!this->isAndroid)
+        m_hibernateTimer.start(3 * 1000);
+
+    m_hibernatePreviousTime = std::chrono::steady_clock::now();
+    connect(&m_hibernateTimer, &QTimer::timeout, [this]() {
+        const auto now = std::chrono::steady_clock::now();
+        const auto elapsed = now - m_hibernatePreviousTime;
+
+        if(elapsed >= m_hibernateDetectInterval) {
+            qCritical() << "Clock skew detected, resetting websocket connection";
+            this->ws->webSocket.abort();
+            this->ws->start();
+        }
+
+        m_hibernatePreviousTime = now;
+    });
+
     // restore height lookup
     this->initRestoreHeights();
 
