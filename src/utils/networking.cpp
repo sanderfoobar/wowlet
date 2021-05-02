@@ -16,6 +16,7 @@ void UtilsNetworking::setUserAgent(const QString &userAgent) {
 }
 
 void UtilsNetworking::get(const QString &url) {
+    busy = true;
     QNetworkRequest request;
     request.setUrl(QUrl(url));
     request.setRawHeader("User-Agent", m_userAgent.toUtf8());
@@ -26,6 +27,7 @@ void UtilsNetworking::get(const QString &url) {
 }
 
 QNetworkReply* UtilsNetworking::getJson(const QString &url) {
+    busy = true;
     QNetworkRequest request;
     request.setUrl(QUrl(url));
     request.setRawHeader("User-Agent", m_userAgent.toUtf8());
@@ -35,6 +37,7 @@ QNetworkReply* UtilsNetworking::getJson(const QString &url) {
 }
 
 QNetworkReply* UtilsNetworking::postJson(const QString &url, const QJsonObject &data) {
+    busy = true;
     QNetworkRequest request;
     request.setUrl(QUrl(url));
     request.setRawHeader("User-Agent", m_userAgent.toUtf8());
@@ -61,6 +64,8 @@ void UtilsNetworking::webResponse(QNetworkReply *reply) {
         emit webErrorReceived(err);
     else
         emit webReceived(data);
+
+    busy = false;
 }
 
 QString UtilsNetworking::validateJSON(QNetworkReply *reply){

@@ -57,31 +57,33 @@ void SuchWowWidget::setupTable() {
 }
 
 void SuchWowWidget::onWS(QJsonArray such_data) {
-    if(this->m_rendered) return; // only draw once
-    if(this->m_ctx == nullptr) {
+    if(this->m_ctx == nullptr)
         m_ctx = MainWindow::getContext();
-    }
 
     for (auto &&such_post: such_data) {
         auto obj = such_post.toObject();
-        auto s = new SuchWowPost(m_ctx, this);
-        s->added_by = obj.value("added_by").toString();
-        s->addy = obj.value("addy").toString();
-        s->title = obj.value("title").toString();
-        s->img = obj.value("img").toString();
-        s->thumb = obj.value("thumb").toString();
-        s->href = obj.value("href").toString();
-        m_posts.push_back(s);
+        auto uid = obj.value("id").toInt();
+        if(m_lookup.contains(uid)) continue;
 
-        connect(s, &SuchWowPost::thumbReceived, this, &SuchWowWidget::addThumb);
-        s->download_thumb();
-        s->download_img();
+        auto post = new SuchWowPost(m_ctx, this);
+        post->added_by = obj.value("added_by").toString();
+        post->addy = obj.value("addy").toString();
+        post->title = obj.value("title").toString();
+        post->img = obj.value("img").toString();
+        post->thumb = obj.value("thumb").toString();
+        post->href = obj.value("href").toString();;
+        post->uid = uid;
+
+        m_lookup[post->uid] = post;
+        connect(post, &SuchWowPost::thumbReceived, this, &SuchWowWidget::addThumb);
+        post->download_thumb();
     }
 }
 
-void SuchWowWidget::addThumb(SuchWowPost *test) {
-    auto *item = new QListWidgetItem(QIcon(test->thumb_data), test->title);
+void SuchWowWidget::addThumb(SuchWowPost *post) {
+    auto *item = new SuchWidgetItem(QIcon(post->thumb_data), post->title, post);
     ui->listWidget->addItem(item);
+    ui->listWidget->sortItems();
 }
 
 void SuchWowWidget::showContextMenu(const QPoint &pos) {
@@ -95,12 +97,18 @@ void SuchWowWidget::suchImage() {
     auto *post = this->itemToPost();
     if(post == nullptr)
         return;
-    if(!post->img_data) {
-        QMessageBox::warning(this, "wh00pz", "Image not dowloaded yet.");
+
+    if(!post->img_data && !post->isFetchingImage()) {
+        connect(post, &SuchWowPost::imgReceived, this, &SuchWowWidget::showImage);
+        post->download_img();
         return;
     }
 
-    const auto title = QString("%1 - %2").arg(post->title).arg(post->added_by);
+    this->showImage(post);
+}
+
+void SuchWowWidget::showImage(SuchWowPost *post) {
+    const auto title = QString("%1 - %2").arg(post->title, post->added_by);
     QMessageBox mb(title, "",
                    QMessageBox::NoIcon,
                    QMessageBox::Ok,
@@ -119,11 +127,12 @@ void SuchWowWidget::suchDonate() {
 SuchWowPost *SuchWowWidget::itemToPost() {
     QListWidgetItem *item = ui->listWidget->currentItem();
     QString title = item->text();
-    for(auto &post: m_posts){
-        if(post->title == title) {
-            return post;
-        }
+
+    for(const auto &such_key: m_lookup.keys()) {
+        if(m_lookup[such_key]->title == title)
+            return m_lookup[such_key];
     }
+
     return nullptr;
 }
 

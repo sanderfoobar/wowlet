@@ -26,6 +26,8 @@ public:
     void setUserAgent(const QString &userAgent);
     static QString validateJSON(QNetworkReply *reply);
 
+    bool busy = false;
+
 private slots:
     void webResponse(QNetworkReply *reply);
 

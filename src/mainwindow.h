@@ -4,6 +4,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtGlobal>
+
 #ifdef Q_OS_MAC
 #include "src/kdmactouchbar.h"
 #endif
