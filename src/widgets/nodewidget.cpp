@@ -80,12 +80,7 @@ void NodeWidget::showContextMenu(const QPoint &pos, const WowletNode &node) {
 }
 
 void NodeWidget::onContextConnect() {
-    QObject *obj = sender();
-    if (obj == ui->customView)
-        m_activeView = ui->customView;
-    else
-        m_activeView = ui->wsView;
-
+    //QObject *obj = sender();
     WowletNode node = this->selectedNode();
     if (!node.full.isEmpty())
         emit connectToNode(node);
