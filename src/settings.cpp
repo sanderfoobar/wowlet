@@ -47,6 +47,9 @@ Settings::Settings(QWidget *parent) :
     connect(ui->comboBox_blockExplorer, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Settings::comboBox_blockExplorerChanged);
     connect(ui->comboBox_redditFrontend, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Settings::comboBox_redditFrontendChanged);
 
+    // setup reddit combobox
+    ui->comboBox_redditFrontend->setCurrentText(config()->get(Config::redditFrontend).toString());
+
     // setup preferred fiat currency combobox
     QStringList fiatCurrencies;
     for (int index = 0; index < ui->comboBox_fiatCurrency->count(); index++)
