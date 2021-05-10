@@ -13,8 +13,8 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->setupUi(this);
     this->setWindowIcon(QIcon("://assets/images/appicons/64x64.png"));
 
-    QPixmap p(":assets/images/illiterate_illuminati.png");
-    ui->aboutImage->setPixmap(p.scaled(128, 128, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    QPixmap p(":assets/images/credits.jpg");
+    ui->aboutImage->setPixmap(p.scaled(800, 600, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     auto about = Utils::fileOpenQRC(":assets/about.txt");
     auto about_text = Utils::barrayToString(about);
     about_text = about_text.replace("<wowlet_version>", WOWLET_VERSION);
