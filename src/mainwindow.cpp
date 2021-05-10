@@ -377,6 +377,7 @@ void MainWindow::initMain() {
     this->setEnabled(false);
     this->show();
     m_wizard = this->createWizard(WalletWizard::Page_Menu);
+    m_wizard->randomBanner();
     m_wizard->show();
     this->touchbarShowWizard();
 }
@@ -530,6 +531,7 @@ void MainWindow::showWizard(WalletWizard::Page startPage) {
     m_wizard->setStartId(startPage);
     m_wizard->restart();
     m_wizard->setEnabled(true);
+    m_wizard->randomBanner();
     m_wizard->show();
 }
 
