@@ -147,6 +147,13 @@ public slots:
     void onCreateTransactionSuccess(PendingTransaction *tx, const QVector<QString> &address);
     void onTransactionCommitted(bool status, PendingTransaction *tx, const QStringList& txid);
 
+    // tickers
+    void onUpdateWowWidget();
+    void onUpdateFiatBalanceWidget();
+    void onUpdateBTCWidget();
+    void onUpdateSATWidget();
+    void onUpdateXMRWidget();
+
 signals:
     void closed();
 
@@ -191,7 +198,10 @@ private:
     QAction *m_trayActionSend;
     QAction *m_trayActionHistory;
 
-    QList<TickerWidget*> m_tickerWidgets;
+    TickerWidget *m_tickerWOW;
+    TickerWidget *m_tickerBTC;
+    TickerWidget *m_tickerSAT;
+    TickerWidget *m_tickerXMR;
     TickerWidget *m_balanceWidget;
 
     // lower status bar

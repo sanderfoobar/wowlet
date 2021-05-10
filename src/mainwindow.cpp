@@ -7,6 +7,7 @@
 #include <QCoreApplication>
 #include <QSystemTrayIcon>
 #include <QMessageBox>
+#include <QGroupBox>
 #include <QFileDialog>
 
 #include "mainwindow.h"
@@ -129,14 +130,28 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
 #endif
 
     // ticker widgets
-    m_tickerWidgets.append(new TickerWidget(this, "WOW"));
-    m_tickerWidgets.append(new TickerWidget(this, "BTC"));
-    for(auto tickerWidget: m_tickerWidgets) {
-        ui->tickerLayout->addWidget(tickerWidget);
-    }
+    m_tickerWOW = new TickerWidget(this, "WOW");
+    ui->tickerLayout->addWidget(m_tickerWOW);
 
-    m_balanceWidget = new TickerWidget(this, "WOW", "Balance", true, true);
+    m_tickerSAT = new TickerWidget(this, "Satoshi");
+    m_tickerSAT->hidePct(true);
+    ui->tickerLayout->addWidget(m_tickerSAT);
+
+    m_tickerBTC = new TickerWidget(this, "BTC");
+    ui->tickerLayout->addWidget(m_tickerBTC);
+
+    m_tickerXMR = new TickerWidget(this, "XMR");
+    ui->tickerLayout->addWidget(m_tickerXMR);
+
+    m_balanceWidget = new TickerWidget(this, "Balance");
+    m_balanceWidget->hidePct(true);
     ui->fiatTickerLayout->addWidget(m_balanceWidget);
+
+    connect(m_tickerWOW, &TickerWidget::reload, this, &MainWindow::onUpdateWowWidget);
+    connect(m_tickerBTC, &TickerWidget::reload, this, &MainWindow::onUpdateBTCWidget);
+    connect(m_tickerSAT, &TickerWidget::reload, this, &MainWindow::onUpdateSATWidget);
+    connect(m_tickerSAT, &TickerWidget::reload, this, &MainWindow::onUpdateXMRWidget);
+    connect(m_balanceWidget, &TickerWidget::reload, this, &MainWindow::onUpdateFiatBalanceWidget);
 
     // Send widget
     connect(ui->sendWidget, &SendWidget::createTransaction, m_ctx, QOverload<const QString, quint64, const QString, bool>::of(&AppContext::onCreateTransaction));
@@ -252,10 +267,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     }
 
     // settings connects
-    // Update ticker widget(s) on home tab when settings preferred fiat currency is changed
-    for(auto tickerWidget: m_tickerWidgets)
-        connect(m_windowSettings, &Settings::preferredFiatCurrencyChanged, tickerWidget, &TickerWidget::init);
-    connect(m_windowSettings, &Settings::preferredFiatCurrencyChanged, m_balanceWidget, &TickerWidget::init);
+    connect(m_windowSettings, &Settings::preferredFiatCurrencyChanged, this, &MainWindow::onUpdateFiatBalanceWidget);
     connect(m_windowSettings, &Settings::preferredFiatCurrencyChanged, m_ctx, &AppContext::onPreferredFiatCurrencyChanged);
     connect(m_windowSettings, &Settings::preferredFiatCurrencyChanged, ui->sendWidget, QOverload<>::of(&SendWidget::onPreferredFiatCurrencyChanged));
 
@@ -632,7 +644,6 @@ void MainWindow::onBalanceUpdated(quint64 balance, quint64 spendable) {
 
     m_statusLabelBalance->setToolTip("Click for details");
     m_statusLabelBalance->setText(label_str);
-    m_balanceWidget->setHidden(hide);
 }
 
 void MainWindow::setStatusText(const QString &text, bool override, int timeout) {
@@ -1320,6 +1331,85 @@ void MainWindow::showBalanceDialog() {
     auto *dialog = new BalanceDialog(this, m_ctx->currentWallet);
     dialog->exec();
     dialog->deleteLater();
+}
+
+void MainWindow::onUpdateSATWidget() {
+    if(!AppContext::prices->markets.count() || !AppContext::prices->rates.count())
+        return;
+    auto wowObj = AppContext::prices->markets["WOW"];
+    QString satStr = QString::number(wowObj.price_sat);
+    m_tickerSAT->setFiatText(satStr);
+}
+
+void MainWindow::onUpdateWowWidget() {
+    if(!AppContext::prices->markets.count() || !AppContext::prices->rates.count())
+        return;
+    QString fiatCurrency = config()->get(Config::preferredFiatCurrency).toString();
+    if(!AppContext::prices->rates.contains(fiatCurrency)){
+        config()->set(Config::preferredFiatCurrency, "USD");
+        fiatCurrency = "USD";
+    }
+
+    auto wowObj = AppContext::prices->markets["WOW"];
+    auto currencyText = Utils::amountToCurrencyString(wowObj.price_usd, fiatCurrency);
+    m_tickerWOW->setFiatText(currencyText);
+
+    auto pct24h = AppContext::prices->markets["WOW"].price_usd_change_pct_24h;
+    auto pct24hText = QString::number(pct24h, 'f', 2);
+    this->m_tickerWOW->setPctText(pct24hText, pct24h >= 0.0);
+}
+
+void MainWindow::onUpdateBTCWidget() {
+    if(!AppContext::prices->markets.count() || !AppContext::prices->rates.count())
+        return;
+    QString fiatCurrency = config()->get(Config::preferredFiatCurrency).toString();
+    if(!AppContext::prices->rates.contains(fiatCurrency)){
+        config()->set(Config::preferredFiatCurrency, "USD");
+        fiatCurrency = "USD";
+    }
+
+    double conversion = AppContext::prices->convert("BTC", fiatCurrency, 1.0);
+    auto conversionText = Utils::amountToCurrencyString(conversion, fiatCurrency);
+    m_tickerBTC->setFiatText(conversionText);
+
+    auto pct24h = AppContext::prices->markets["BTC"].price_usd_change_pct_24h;
+    auto pct24hText = QString::number(pct24h, 'f', 2);
+    this->m_tickerBTC->setPctText(pct24hText, pct24h >= 0.0);
+}
+
+void MainWindow::onUpdateXMRWidget() {
+    if(!AppContext::prices->markets.count() || !AppContext::prices->rates.count())
+        return;
+    QString fiatCurrency = config()->get(Config::preferredFiatCurrency).toString();
+    if(!AppContext::prices->rates.contains(fiatCurrency)){
+        config()->set(Config::preferredFiatCurrency, "USD");
+        fiatCurrency = "USD";
+    }
+
+    double conversion = AppContext::prices->convert("XMR", fiatCurrency, 1.0);
+    auto conversionText = Utils::amountToCurrencyString(conversion, fiatCurrency);
+    m_tickerXMR->setFiatText(conversionText);
+
+    auto pct24h = AppContext::prices->markets["XMR"].price_usd_change_pct_24h;
+    auto pct24hText = QString::number(pct24h, 'f', 2);
+    this->m_tickerXMR->setPctText(pct24hText, pct24h >= 0.0);
+}
+
+void MainWindow::onUpdateFiatBalanceWidget() {
+    bool hide = config()->get(Config::hideBalance).toBool();
+    m_balanceWidget->setHidden(hide);
+
+    if(!AppContext::prices->markets.count() || !AppContext::prices->rates.count())
+        return;
+    QString fiatCurrency = config()->get(Config::preferredFiatCurrency).toString();
+    if(!AppContext::prices->rates.contains(fiatCurrency)){
+        config()->set(Config::preferredFiatCurrency, "USD");
+        fiatCurrency = "USD";
+    }
+
+    double conversion = AppContext::prices->convert("WOW", fiatCurrency, AppContext::balance);
+    auto conversionText = Utils::amountToCurrencyString(conversion, fiatCurrency);
+    m_balanceWidget->setFiatText(conversionText);
 }
 
 QString MainWindow::statusDots() {

@@ -41,7 +41,9 @@ void Prices::cryptoPricesReceived(const QJsonArray &data) {
         ms.symbol = obj.value("symbol").toString().toUpper();
         ms.image = obj.value("image").toString();
         ms.name = obj.value("name").toString();
-        ms.price_usd = obj.value("current_price").toDouble();
+        ms.price_usd = obj.value("current_price").toDouble(0);
+        ms.price_btc = obj.value("current_price_btc").toDouble(0.0);
+        ms.price_sat = obj.value("current_price_satoshi").toInt(0);
         ms.price_usd_change_pct_24h = obj.value("price_change_percentage_24h").toDouble();
 
         if(ms.price_usd <= 0) continue;
