@@ -25,6 +25,7 @@
 #include "calcwindow.h"
 #include "widgets/ccswidget.h"
 #include "widgets/redditwidget.h"
+#include "widgets/forumwidget.h"
 #include "widgets/tickerwidget.h"
 #include "widgets/xmrigwidget.h"
 #include "utils/networking.h"
@@ -83,8 +84,10 @@ public:
     };
 
     enum TabsHome {
-        CCS,
-        REDDIT
+        FORUM,
+        REDDIT,
+        SUCHWOW,
+        WFS
     };
 
 public slots:

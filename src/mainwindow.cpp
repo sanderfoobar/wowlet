@@ -182,6 +182,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     connect(ui->ccsWidget, &CCSWidget::selected, this, &MainWindow::showSendScreen);
     connect(m_ctx, &AppContext::ccsUpdated, ui->ccsWidget->model(), &CCSModel::updateEntries);
     connect(m_ctx, &AppContext::redditUpdated, ui->redditWidget->model(), &RedditModel::updatePosts);
+    connect(m_ctx, &AppContext::forumUpdated, ui->forumWidget->model(), &ForumModel::updatePosts);
     connect(m_ctx, &AppContext::suchWowUpdated, ui->suchWowWidget, &SuchWowWidget::onWS);
     connect(ui->suchWowWidget, &SuchWowWidget::donate, this, &MainWindow::suchDonate);
 
