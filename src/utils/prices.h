@@ -15,6 +15,8 @@ struct marketStruct {
     QString name;
     QString image;
     double price_usd;
+    double price_btc;
+    uint price_sat;
     double price_usd_change_pct_24h;
 };
 
