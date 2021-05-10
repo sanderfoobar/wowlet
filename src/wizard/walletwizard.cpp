@@ -42,87 +42,12 @@ WalletWizard::WalletWizard(AppContext *ctx, WalletWizard::Page startPage, QWidge
         setStartId(Page_Menu);
 
     setButtonText(QWizard::CancelButton, "Close");
-    QStringList headers = {
-            ":/assets/images/welcome/wow1.png",
-            ":/assets/images/welcome/wow2.png",
-            ":/assets/images/welcome/wow3.png",
-            ":/assets/images/welcome/wow4.png",
-            ":/assets/images/welcome/wow5.png",
-            ":/assets/images/welcome/wow6.png",
-            ":/assets/images/welcome/wow7.png",
-            ":/assets/images/welcome/wow8.png",
-            ":/assets/images/welcome/wow9.png",
-            ":/assets/images/welcome/wow10.png",
-            ":/assets/images/welcome/wow11.png",
-            ":/assets/images/welcome/wow12.png",
-            ":/assets/images/welcome/wow13.png",
-            ":/assets/images/welcome/wow14.png",
-            ":/assets/images/welcome/wow15.png",
-            ":/assets/images/welcome/wow16.png",
-            ":/assets/images/welcome/wow17.png",
-            ":/assets/images/welcome/wow18.png",
-            ":/assets/images/welcome/wow19.png",
-            ":/assets/images/welcome/wow20.png",
-            ":/assets/images/welcome/wow21.png",
-            ":/assets/images/welcome/wow22.png",
-            ":/assets/images/welcome/wow23.png",
-            ":/assets/images/welcome/wow24.png",
-            ":/assets/images/welcome/wow25.png",
-            ":/assets/images/welcome/wow26.png",
-            ":/assets/images/welcome/wow27.png",
-            ":/assets/images/welcome/wow28.png",
-            ":/assets/images/welcome/wow29.png",
-            ":/assets/images/welcome/wow30.png",
-            ":/assets/images/welcome/wow31.png",
-            ":/assets/images/welcome/wow32.png",
-            ":/assets/images/welcome/wow33.png",
-            ":/assets/images/welcome/wow34.png",
-            ":/assets/images/welcome/wow35.png",
-            ":/assets/images/welcome/wow36.png",
-            ":/assets/images/welcome/wow37.png",
-            ":/assets/images/welcome/wow38.png",
-            ":/assets/images/welcome/wow39.png",
-            ":/assets/images/welcome/wow40.png",
-            ":/assets/images/welcome/wow41.png",
-            ":/assets/images/welcome/wow42.png",
-            ":/assets/images/welcome/wow43.png",
-            ":/assets/images/welcome/wow44.png",
-            ":/assets/images/welcome/wow45.png",
-            ":/assets/images/welcome/wow46.png",
-            ":/assets/images/welcome/wow47.png",
-            ":/assets/images/welcome/wow48.png",
-            ":/assets/images/welcome/wow49.png",
-            ":/assets/images/welcome/wow50.png",
-            ":/assets/images/welcome/wow51.png",
-            ":/assets/images/welcome/wow52.png",
-            ":/assets/images/welcome/wow53.png",
-            ":/assets/images/welcome/wow54.png",
-            ":/assets/images/welcome/wow55.png",
-            ":/assets/images/welcome/wow56.png",
-            ":/assets/images/welcome/wow57.png",
-            ":/assets/images/welcome/wow58.png",
-            ":/assets/images/welcome/wow59.png",
-            ":/assets/images/welcome/wow60.png",
-            ":/assets/images/welcome/wow61.png",
-            ":/assets/images/welcome/wow62.png",
-            ":/assets/images/welcome/wow63.png",
-            ":/assets/images/welcome/wow64.png",
-            ":/assets/images/welcome/wow65.png",
-            ":/assets/images/welcome/wow66.png",
-            ":/assets/images/welcome/wow67.png",
-            ":/assets/images/welcome/wow68.png",
-            ":/assets/images/welcome/wow69.png",
-            ":/assets/images/welcome/wow70.png",
-            ":/assets/images/welcome/wow71.png",
-            ":/assets/images/welcome/wow72.png",
-            ":/assets/images/welcome/wow73.png",
-            ":/assets/images/welcome/wow74.png",
-            ":/assets/images/welcome/wow75.png",
-            ":/assets/images/welcome/wow76.png"
-    };
-    int random = QRandomGenerator::global()->bounded(headers.count());
-    auto header = headers.at(random);
-    setPixmap(QWizard::WatermarkPixmap, QPixmap(header));
+
+    // load banners
+    QDirIterator it(":/assets/images/welcome/", QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        m_banners << it.next();
+    }
 
     setWizardStyle(WizardStyle::ModernStyle);
     setOption(QWizard::NoBackButtonOnStartPage);
@@ -141,6 +66,12 @@ WalletWizard::WalletWizard(AppContext *ctx, WalletWizard::Page startPage, QWidge
         const auto walletPasswd = this->field("walletPasswd").toString();
         emit openWallet(path, walletPasswd);
     });
+}
+
+void WalletWizard::randomBanner() {
+    int random = QRandomGenerator::global()->bounded(m_banners.count());
+    auto header = m_banners.at(random);
+    setPixmap(QWizard::WatermarkPixmap, QPixmap(header));
 }
 
 void WalletWizard::createWallet() {
