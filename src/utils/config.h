@@ -48,6 +48,7 @@ public:
         windowState,
         firstRun,
         hideBalance,
+        hideFiatBalance,
         redditFrontend,
         showHistorySyncNotice
     };

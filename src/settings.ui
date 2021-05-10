@@ -161,7 +161,7 @@
        <item row="5" column="0">
         <widget class="QCheckBox" name="checkBox_hideBalance">
          <property name="text">
-          <string>Hide balance</string>
+          <string>Hide balances</string>
          </property>
         </widget>
        </item>
@@ -189,6 +189,13 @@
            <string>teddit.net</string>
           </property>
          </item>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QCheckBox" name="checkBox_hideFiatBalance">
+         <property name="text">
+          <string>Hide fiat balance</string>
+         </property>
         </widget>
        </item>
       </layout>
