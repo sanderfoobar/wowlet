@@ -21,6 +21,10 @@ Settings::Settings(QWidget *parent) :
 
     connect(ui->btnCopyToClipboard, &QPushButton::clicked, this, &Settings::copyToClipboard);
     connect(ui->checkBox_externalLink, &QCheckBox::clicked, this, &Settings::checkboxExternalLinkWarn);
+    connect(ui->checkBox_hideFiatBalance, &QCheckBox::toggled, [this](bool toggled){
+        config()->set(Config::hideFiatBalance, toggled);
+        m_ctx->updateBalance();
+    });
     connect(ui->checkBox_hideBalance, &QCheckBox::toggled, [this](bool toggled){
         config()->set(Config::hideBalance, toggled);
         m_ctx->updateBalance();

@@ -1398,7 +1398,7 @@ void MainWindow::onUpdateXMRWidget() {
 }
 
 void MainWindow::onUpdateFiatBalanceWidget() {
-    bool hide = config()->get(Config::hideBalance).toBool();
+    bool hide = config()->get(Config::hideBalance).toBool() || config()->get(Config::hideFiatBalance).toBool();
     m_balanceWidget->setHidden(hide);
 
     if(!AppContext::prices->markets.count() || !AppContext::prices->rates.count())
