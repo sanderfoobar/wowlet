@@ -101,9 +101,31 @@
           <property name="documentMode">
            <bool>true</bool>
           </property>
+          <widget class="QWidget" name="tab_4">
+           <attribute name="title">
+            <string>Forum</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="ForumWidget" name="forumWidget" native="true"/>
+            </item>
+           </layout>
+          </widget>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
-            <string>/r/Wownero</string>
+            <string>Reddit</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_7">
             <property name="leftMargin">
@@ -326,7 +348,7 @@
      <x>0</x>
      <y>0</y>
      <width>1156</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -753,6 +775,12 @@
    <class>SuchWowWidget</class>
    <extends>QWidget</extends>
    <header>widgets/suchwowwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ForumWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/forumwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

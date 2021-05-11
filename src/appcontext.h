@@ -19,6 +19,7 @@
 #include "utils/txfiathistory.h"
 #include "utils/WowletSeed.h"
 #include "widgets/RedditPost.h"
+#include "widgets/ForumPost.h"
 #include "widgets/CCSEntry.h"
 #include "utils/RestoreHeightLookup.h"
 #include "utils/nodes.h"
@@ -160,6 +161,7 @@ private slots:
     void onWSMessage(const QJsonObject& msg);
     void onWSCCS(const QJsonArray &ccs_data);
     void onWSReddit(const QJsonArray& reddit_data);
+    void onWSForum(const QJsonArray& forum_data);
 
     void onMoneySpent(const QString &txId, quint64 amount);
     void onMoneyReceived(const QString &txId, quint64 amount);
@@ -198,6 +200,7 @@ signals:
     void wsConnected();
     void wsDisconnected();
     void redditUpdated(QList<QSharedPointer<RedditPost>> &posts);
+    void forumUpdated(QList<QSharedPointer<ForumPost>> &posts);
     void nodesUpdated(QList<QSharedPointer<WowletNode>> &nodes);
     void ccsUpdated(QList<QSharedPointer<CCSEntry>> &entries);
     void suchWowUpdated(const QJsonArray &such_data);

@@ -433,7 +433,6 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
         QJsonArray crypto_rates = msg.value("data").toArray();
         AppContext::prices->cryptoPricesReceived(crypto_rates);
     }
-
     else if(cmd == "fiat_rates") {
         QJsonObject fiat_rates = msg.value("data").toObject();
         AppContext::prices->fiatPricesReceived(fiat_rates);
@@ -442,17 +441,18 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
         QJsonArray reddit_data = msg.value("data").toArray();
         this->onWSReddit(reddit_data);
     }
-
+    else if(cmd == "forum") {
+        QJsonArray forum_data = msg.value("data").toArray();
+        this->onWSForum(forum_data);
+    }
     else if(cmd == "funding_proposals") {
         auto ccs_data = msg.value("data").toArray();
         this->onWSCCS(ccs_data);
     }
-
     else if(cmd == "suchwow") {
         QJsonArray such_data = msg.value("data").toArray();
         emit suchWowUpdated(such_data);
     }
-
     else if(cmd == "txFiatHistory") {
         auto txFiatHistory_data = msg.value("data").toObject();
         AppContext::txFiatHistory->onWSData(txFiatHistory_data);
@@ -505,6 +505,23 @@ void AppContext::onWSNodes(const QJsonArray &nodes) {
         l.append(r);
     }
     this->nodes->onWSNodesReceived(l);
+}
+
+void AppContext::onWSForum(const QJsonArray& forum_data) {
+    QList<QSharedPointer<ForumPost>> l;
+
+    for (auto &&entry: forum_data) {
+        auto obj = entry.toObject();
+        auto forumPost = new ForumPost(
+                obj.value("title").toString(),
+                obj.value("author").toString(),
+                obj.value("permalink").toString(),
+                obj.value("comments").toInt());
+        QSharedPointer<ForumPost> r = QSharedPointer<ForumPost>(forumPost);
+        l.append(r);
+    }
+
+    emit forumUpdated(l);
 }
 
 void AppContext::onWSReddit(const QJsonArray& reddit_data) {
