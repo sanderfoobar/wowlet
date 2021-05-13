@@ -45,6 +45,7 @@ public:
     bool isMac = false;
     bool isWindows = false;
     bool isDebug = false;
+    static bool isQML;
     bool androidDebug = false;
 
     // Donation config
@@ -105,7 +106,7 @@ public:
     static QMap<QString, QString> txDescriptionCache;
     static QMap<QString, QString> txCache;
     static TxFiatHistory *txFiatHistory;
-    static bool isQML;
+    QJsonObject versionPending;
 
     // libwalletqt
     bool refreshed = false;
@@ -219,6 +220,7 @@ signals:
     void initiateTransaction();
     void endTransaction();
     void setTitle(const QString &title); // set window title
+    void versionOutdated(QString version_string, QJsonObject data);
 
 private:
     WalletKeysFilesModel *m_walletKeysFilesModel;

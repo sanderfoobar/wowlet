@@ -48,6 +48,7 @@ static const QHash<Config::ConfigKey, ConfigDirective> configStrings = {
         {Config::hideBalance, {QS("hideBalance"), false}},
         {Config::hideFiatBalance, {QS("hideFiatBalance"), false}},
         {Config::redditFrontend, {QS("redditFrontend"), "old.reddit.com"}},
+        {Config::ignoreUpdateWarning, {QS("ignoreUpdateWarning"), ""}},
         {Config::showHistorySyncNotice, {QS("showHistorySyncNotice"), true}}
 };
 

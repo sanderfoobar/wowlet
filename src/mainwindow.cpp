@@ -19,11 +19,13 @@
 #include "dialog/viewonlydialog.h"
 #include "dialog/broadcasttxdialog.h"
 #include "dialog/tximportdialog.h"
+#include "dialog/updatedialog.h"
 #include "dialog/passworddialog.h"
 #include "dialog/balancedialog.h"
 #include "dialog/WalletCacheDebugDialog.h"
 #include "ui_mainwindow.h"
 #include "globals.h"
+#include "config-wowlet.h"
 #include "utils/ColorScheme.h"
 
 // libwalletqt
@@ -38,6 +40,8 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
 {
     pMainWindow = this;
     ui->setupUi(this);
+
+    ui->label_outdated->setVisible(false);
 
     m_windowSettings = new Settings(this);
     m_aboutDialog = new AboutDialog(this);
@@ -337,6 +341,9 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     // window title
     connect(m_ctx, &AppContext::setTitle, this, &QMainWindow::setWindowTitle);
 
+    // Version warning
+    connect(m_ctx, &AppContext::versionOutdated, this, &MainWindow::onVersionWarning);
+
     // init touchbar
 #ifdef Q_OS_MAC
     m_touchbar = new KDMacTouchBar(this);
@@ -428,6 +435,7 @@ void MainWindow::initMenu() {
     connect(ui->actionSeed, &QAction::triggered, this, &MainWindow::showSeedDialog);
     connect(ui->actionPassword, &QAction::triggered, this, &MainWindow::showPasswordDialog);
     connect(ui->actionKeys, &QAction::triggered, this, &MainWindow::showKeysDialog);
+    connect(this, &MainWindow::updateDialog, this, &MainWindow::showUpdateDialog);
     connect(ui->actionViewOnly, &QAction::triggered, this, &MainWindow::showViewOnlyDialog);
     connect(ui->actionStore_wallet, &QAction::triggered, [this]{
         m_ctx->currentWallet->store();
@@ -632,6 +640,8 @@ void MainWindow::onWalletOpened(Wallet *wallet) {
     this->updatePasswordIcon();
 
     m_updateBytes.start(100);
+
+    if(m_showUpdateWarning == 1) emit updateDialog();
 }
 
 void MainWindow::onBalanceUpdated(quint64 balance, quint64 spendable) {
@@ -886,6 +896,12 @@ void MainWindow::updatePasswordIcon() {
     m_statusBtnPassword->setIcon(icon);
 }
 
+void MainWindow::onVersionWarning(QString current_string, QJsonObject version_data) {
+    if(m_showUpdateWarning != -1)
+        m_showUpdateWarning = 1;
+    ui->label_outdated->setVisible(true);
+}
+
 void MainWindow::showRestoreHeightDialog() {
     // settings custom restore height is only available for 25 word seeds
     auto seed = m_ctx->currentWallet->getCacheAttribute("wowlet.seed");
@@ -909,6 +925,17 @@ void MainWindow::showRestoreHeightDialog() {
         m_restoreDialog->disconnect();
         m_restoreDialog->deleteLater();
     });
+}
+
+void MainWindow::showUpdateDialog() {
+    if(config()->get(Config::ignoreUpdateWarning).toString() == WOWLET_VERSION_SEMVER) {
+        m_showUpdateWarning = -1;
+        return;
+    }
+
+    auto *dialog = new UpdateDialog(m_ctx, this);
+    dialog->show();
+    m_showUpdateWarning = -1;
 }
 
 void MainWindow::showKeysDialog() {

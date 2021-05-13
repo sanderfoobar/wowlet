@@ -81,6 +81,7 @@ public:
     static QMap<QString, QLocale> localeCache;
     static QString balanceFormat(quint64 balance);
     static QTextCharFormat addressTextFormat(const SubaddressIndex &index);
+    static bool versionOutdated(const QString &current_version, const QString &newest_version);
 
     template<typename QEnum>
     static QString QtEnumToString (const QEnum value) {

@@ -50,7 +50,8 @@ public:
         hideBalance,
         hideFiatBalance,
         redditFrontend,
-        showHistorySyncNotice
+        showHistorySyncNotice,
+        ignoreUpdateWarning
     };
 
     ~Config() override;

@@ -4,8 +4,8 @@ project(wowlet)
 message(STATUS "Initiating compile using CMake ${CMAKE_VERSION}")
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-set(VERSION_MAJOR "0")
-set(VERSION_MINOR "2")
+set(VERSION_MAJOR "2")
+set(VERSION_MINOR "0")
 set(VERSION_REVISION "0")
 set(VERSION "beta-2")
 
