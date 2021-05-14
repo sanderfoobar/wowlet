@@ -76,10 +76,12 @@ public:
 
 public slots:
     void onWS(QJsonArray such_data);
+    void onPreferredFiatCurrencyChanged(const QString &symbol);
 
 private slots:
     void addThumb(SuchWowPost *post);
     void showImage(SuchWowPost *post);
+    void onTipSliderChanged(int value);
 
 signals:
     void donate(QString donate);
@@ -89,6 +91,7 @@ private:
     void setupTable();
     void suchDonate();
     void suchImage();
+    void setTipAmountLabel(double tipAmount = 0.0);
     SuchWowPost* itemToPost();
     void showContextMenu(const QPoint &pos);
 
