@@ -51,13 +51,9 @@ ColumnLayout {
         function onQrScreenshotSuccess(address) {
             root.takingScreenshot = false;
             console.log("onPinLookupReceived", address);
-            if(!address.startsWith("wownero:")) {
-                messagePopup.showMessage("Invalid QR code", "QR data did not start with \"wownero:\"");
-                return;
-            }
 
             if(sendStateView.currentView === sendStateView.qrPage) {
-                sendStateController.destinationAddress = address.slice(8);
+                sendStateController.destinationAddress = address;
                 sendStateView.state = "transferPage";
             }
         }
