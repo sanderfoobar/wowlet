@@ -51,7 +51,8 @@ public:
         hideFiatBalance,
         redditFrontend,
         showHistorySyncNotice,
-        ignoreUpdateWarning
+        ignoreUpdateWarning,
+        suchWowTipAmount
     };
 
     ~Config() override;

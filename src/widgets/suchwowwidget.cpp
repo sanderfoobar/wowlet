@@ -47,6 +47,16 @@ SuchWowWidget::SuchWowWidget(QWidget *parent) :
     m_contextMenu->addAction("Donate", this, &SuchWowWidget::suchDonate);
 
     connect(ui->listWidget, &QListWidget::customContextMenuRequested, this, &SuchWowWidget::showContextMenu);
+
+    // tip amount slider
+    ui->slider_tipAmount->setMinimum(1);
+    ui->slider_tipAmount->setMaximum(60);
+    ui->slider_tipAmount->setTickInterval(1);
+    ui->slider_tipAmount->setSingleStep(1);
+    double tipAmount = config()->get(Config::suchWowTipAmount).toDouble();
+    ui->slider_tipAmount->setValue((int)(tipAmount * 10));
+    connect(ui->slider_tipAmount, &QSlider::valueChanged, this, &SuchWowWidget::onTipSliderChanged);
+    this->setTipAmountLabel();
 }
 
 void SuchWowWidget::setupTable() {
@@ -134,6 +144,24 @@ SuchWowPost *SuchWowWidget::itemToPost() {
     }
 
     return nullptr;
+}
+
+void SuchWowWidget::setTipAmountLabel(double tipAmount) {
+    if(tipAmount == 0.0)
+        tipAmount = config()->get(Config::suchWowTipAmount).toDouble();
+
+    QString amount_fmt = Utils::amountToCurrencyString(tipAmount, config()->get(Config::preferredFiatCurrency).toString());
+    ui->label_tipAmount->setText(QString("Default tip amount (%1)").arg(amount_fmt));
+}
+
+void SuchWowWidget::onTipSliderChanged(int value) {
+    double amount = (double)value / 10;
+    config()->set(Config::suchWowTipAmount, amount);
+    setTipAmountLabel(amount);
+}
+
+void SuchWowWidget::onPreferredFiatCurrencyChanged(const QString &symbol) {
+    this->setTipAmountLabel();
 }
 
 SuchWowWidget::~SuchWowWidget() {

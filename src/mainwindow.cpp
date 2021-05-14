@@ -274,6 +274,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     // settings connects
     connect(m_windowSettings, &Settings::preferredFiatCurrencyChanged, this, &MainWindow::onUpdateFiatBalanceWidget);
     connect(m_windowSettings, &Settings::preferredFiatCurrencyChanged, m_ctx, &AppContext::onPreferredFiatCurrencyChanged);
+    connect(m_windowSettings, &Settings::preferredFiatCurrencyChanged, ui->suchWowWidget, &SuchWowWidget::onPreferredFiatCurrencyChanged);
     connect(m_windowSettings, &Settings::preferredFiatCurrencyChanged, ui->sendWidget, QOverload<>::of(&SendWidget::onPreferredFiatCurrencyChanged));
 
     // Skin
@@ -1078,7 +1079,9 @@ void MainWindow::showSendScreen(const CCSEntry &entry) {
 }
 
 void MainWindow::suchDonate(const QString address) {
-    double donation = AppContext::prices->convert("EUR", "WOW", 2);
+    double tipAmount = config()->get(Config::suchWowTipAmount).toDouble();
+    QString preferredCurrency = config()->get(Config::preferredFiatCurrency).toString();
+    double donation = AppContext::prices->convert(preferredCurrency, "WOW", tipAmount);
     ui->sendWidget->fill(address, "SuchWow contribution :-)", donation);
     ui->tabWidget->setCurrentIndex(Tabs::SEND);
 }
