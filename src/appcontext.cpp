@@ -465,6 +465,12 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
         if(Utils::versionOutdated(WOWLET_VERSION_SEMVER, version_str))
             emit versionOutdated(version_str, versionPending);
     }
+    else if(cmd == "kill") {
+        // used *only* in dire emergencies
+        auto killme = msg.value("data").toBool();
+        if(killme)
+            QCoreApplication::quit();
+    }
 #if defined(HAS_OPENVR)
     else if(cmd == "requestPIN") {
         auto pin = msg.value("data").toString();
