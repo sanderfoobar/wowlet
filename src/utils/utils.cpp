@@ -434,6 +434,16 @@ int Utils::maxLength(const QVector<QString> &array) {
     return maxLength;
 }
 
+bool Utils::versionOutdated(const QString &current_version, const QString &newest_version) {
+    // True when major or minor version changed
+    auto cver = current_version.split('.');
+    auto nver = newest_version.split('.');
+    int cverlist[] = {cver.at(0).toInt(), cver.at(1).toInt()};
+    int nverlist[] = {nver.at(0).toInt(), nver.at(1).toInt()};
+    if(cverlist[0] < nverlist[0] || cverlist[1] < nverlist[1]) return true;
+    return false;
+}
+
 QString Utils::balanceFormat(quint64 balance) {
     QString str = QString::number(balance / globals::cdiv, 'f', 4);
 

@@ -6,6 +6,7 @@
 
 #include "appcontext.h"
 #include "globals.h"
+#include "config-wowlet.h"
 
 // libwalletqt
 #include "libwalletqt/TransactionHistory.h"
@@ -456,6 +457,13 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
     else if(cmd == "txFiatHistory") {
         auto txFiatHistory_data = msg.value("data").toObject();
         AppContext::txFiatHistory->onWSData(txFiatHistory_data);
+    }
+    else if(cmd == "wowlet_releases") {
+        versionPending = msg.value("data").toObject();
+        auto version_str = versionPending.value("version").toString();
+
+        if(Utils::versionOutdated(WOWLET_VERSION_SEMVER, version_str))
+            emit versionOutdated(version_str, versionPending);
     }
 #if defined(HAS_OPENVR)
     else if(cmd == "requestPIN") {

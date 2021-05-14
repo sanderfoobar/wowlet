@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1156</width>
-    <height>502</height>
+    <height>506</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -85,6 +85,13 @@
            <layout class="QHBoxLayout" name="fiatTickerLayout"/>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_outdated">
+          <property name="text">
+           <string>Warning: outdated wowlet version</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Line" name="line">

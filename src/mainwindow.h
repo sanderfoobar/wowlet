@@ -38,6 +38,7 @@
 #include "dialog/verifyproofdialog.h"
 #include "dialog/seeddialog.h"
 #include "dialog/passwordchangedialog.h"
+#include "dialog/updatedialog.h"
 #include "dialog/keysdialog.h"
 #include "dialog/aboutdialog.h"
 #include "dialog/restoredialog.h"
@@ -115,6 +116,7 @@ public slots:
     void showSendScreen(const CCSEntry &entry);
     void suchDonate(const QString address);
     void skinChanged(const QString &skinName);
+    void onVersionWarning(QString current_string, QJsonObject data);
     void menuTorClicked();
     void onBlockchainSync(int height, int target);
     void onRefreshSync(int height, int target);
@@ -158,6 +160,7 @@ public slots:
     void onUpdateXMRWidget();
 
 signals:
+    void updateDialog();
     void closed();
 
 private:
@@ -173,6 +176,7 @@ private:
     void saveGeo();
     void restoreGeo();
     void showDebugInfo();
+    void showUpdateDialog();
     void showNodeExhaustedMessage();
     void showWSNodeExhaustedMessage();
     void createUnsignedTxDialog(UnsignedTransaction *tx);
@@ -236,6 +240,7 @@ private:
     bool m_constructingTransaction = false;
     bool m_statusOverrideActive = false;
     QTimer m_txTimer;
+    int m_showUpdateWarning = 0;
 
 private slots:
     void menuToggleTabVisible(const QString &key);
