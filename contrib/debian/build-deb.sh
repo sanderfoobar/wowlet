@@ -43,4 +43,4 @@ cp "$PWD/src/assets/images/appicons/256x256.png" "$DEBDIR/usr/share/icons/hicolo
 # Build deb package
 
 dpkg-deb --build $DEBDIR
-mv wowlet.DebDir.deb wowlet_2.0_amd64.deb
+mv wowlet.DebDir.deb wowlet_2.1_amd64.deb
