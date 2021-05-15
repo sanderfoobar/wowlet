@@ -184,31 +184,33 @@ namespace wowletvr {
 
         auto results = m_qrDecoder.decodePNG(path);
         auto result = wowletvr::WowletVR::checkQRScreenshotResults(results);
-        qDebug() << "no initial results";
+        qDebug() << "QR code try #1: " << result;
         if(result.isEmpty()) {
             qDebug() << "trying to invert the image";
-            // lets try to invert the image
             QImage image(path);
             image.invertPixels();
             image.save(pathPreview);
             results = m_qrDecoder.decodePNG(pathPreview);
             result = wowletvr::WowletVR::checkQRScreenshotResults(results);
-            if(!result.isEmpty()) {
-                qDebug() << "Found QR code after inverting the image.";
+            qDebug() << "QR code try #2: " << result;
+        }
+
+        if(!result.isEmpty()) {
+            qDebug() << "QR code decoded, trying address validation.";
+
+            if(result.toLower().startsWith("wownero:"))
+                result = result.remove(0, 8);
+
+            if(WalletManager::addressValid(result, NetworkType::MAINNET)) {
+                qDebug() << "QR code appears valid.";
                 emit qrScreenshotSuccess(result);
-                QFile file (path);
+                QFile file(path);
                 file.remove();
                 return;
             }
-        } else {
-            qDebug() << "QR code found.";
-            emit qrScreenshotSuccess(result);
-            QFile file (path);
-            file.remove();
-            return;
         }
 
-        emit qrScreenshotSuccess("No QR code could be detected.");
+        emit qrScreenshotFailed("No QR code could be detected.");
     }
 
     QString WowletVR::checkQRScreenshotResults(std::vector<std::string> results) {
