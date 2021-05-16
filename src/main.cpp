@@ -135,6 +135,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     qputenv("QML_DISABLE_DISK_CACHE", "1");
 #endif
 
+#ifdef __ANDROID__
     if(android || androidDebug) {
 #ifndef HAS_QML
         qCritical() << "Wowlet compiled without QML support. Try -DQML=ON";
@@ -146,6 +147,7 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
         auto *mobile = new mobile::Mobile(ctx, &parser, &mobile_app);
         return mobile_app.exec();
     }
+#endif
 
     if(openVREnabled) {
 #ifdef HAS_OPENVR

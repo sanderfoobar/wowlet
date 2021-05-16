@@ -27,7 +27,7 @@ Replace `master` with the desired version tag (e.g. `beta-4`) to build the relea
 #### 2. Base image
 
 ```bash
-docker build --tag wowlet:linux --build-arg THREADS=4 .
+docker build --tag wowlet:linux --build-arg THREADS=6 .
 ```
 
 Building the base image takes a while. You only need to build the base image once.
@@ -37,7 +37,7 @@ Building the base image takes a while. You only need to build the base image onc
 ##### Standalone binary
 
 ```bash
-docker run --rm -it -v $PWD:/wowlet -w /wowlet wowlet:linux sh -c 'make release-static -j4'
+docker run --rm -it -v $PWD:/wowlet -w /wowlet wowlet:linux sh -c 'make release-static -j6'
 ```
 
 If you're re-running a build make sure to `rm -rf build/` first.
@@ -67,7 +67,7 @@ Replace `master` with the desired version tag (e.g. `beta-4`) to build the relea
 
 
 ```bash
-docker build -f Dockerfile.windows --tag wowlet:win --build-arg THREADS=4 .
+docker build -f Dockerfile.windows --tag wowlet:win --build-arg THREADS=6 .
 ```
 
 Building the base image takes a while. You only need to build the base image once.
@@ -75,7 +75,7 @@ Building the base image takes a while. You only need to build the base image onc
 #### 3. Build
 
 ```bash
-docker run --rm -it -v $PWD:/wowlet -w /wowlet wowlet:win sh -c 'make depends root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j4'
+docker run --rm -it -v $PWD:/wowlet -w /wowlet wowlet:win sh -c 'make windows root=/depends target=x86_64-w64-mingw32 tag=win-x64 -j6'
 ```
 
 If you're re-running a build make sure to `rm -rf build/` first.
