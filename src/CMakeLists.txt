@@ -136,10 +136,10 @@ file(GLOB_RECURSE SRC_HEADERS *.h)
 
 target_include_directories(wowlet PUBLIC
         ${CMAKE_BINARY_DIR}/src/wowlet_autogen/include
-        ${CMAKE_SOURCE_DIR}/monero/include
-        ${CMAKE_SOURCE_DIR}/monero/src
-        ${CMAKE_SOURCE_DIR}/monero/external/easylogging++
-        ${CMAKE_SOURCE_DIR}/monero/contrib/epee/include
+        ${CMAKE_SOURCE_DIR}/wownero/include
+        ${CMAKE_SOURCE_DIR}/wownero/src
+        ${CMAKE_SOURCE_DIR}/wownero/external/easylogging++
+        ${CMAKE_SOURCE_DIR}/wownero/contrib/epee/include
         ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/daemon
@@ -251,14 +251,9 @@ endif()
 
 # Link Wownero core libraries
 target_link_libraries(wowlet PUBLIC
-        wallet_merged
-        ${LMDB_LIBRARY}
         epee
-        ${UNBOUND_LIBRARY}
-        ${SODIUM_LIBRARY}
+        wallet_api
         easylogging
-        blockchain_db
-        hardforks
         ${Boost_LIBRARIES}
         ${OPENSSL_LIBRARIES}
         ${CMAKE_DL_LIBS}

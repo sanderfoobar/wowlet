@@ -16,5 +16,6 @@ target_include_directories(openpgp PUBLIC
 
 target_link_libraries(openpgp
   PUBLIC
+    epee
     ${GCRYPT_LIBRARY}
     ${GPG_ERROR_LIBRARY})
