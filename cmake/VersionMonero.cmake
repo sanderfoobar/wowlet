@@ -4,7 +4,7 @@
 find_package(Git QUIET)
 # Check what commit we're on
 execute_process(COMMAND "${GIT_EXECUTABLE}" rev-parse --short=9 HEAD RESULT_VARIABLE RET OUTPUT_VARIABLE COMMIT OUTPUT_STRIP_TRAILING_WHITESPACE
-                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/monero)
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/wownero)
 
 if(RET)
     # Something went wrong, set the version tag to -unknown
@@ -37,7 +37,7 @@ endif()
 
 # Check latest tagged release
 execute_process(COMMAND "${GIT_EXECUTABLE}" describe --abbrev=0 RESULT_VARIABLE RET OUTPUT_VARIABLE TAG OUTPUT_STRIP_TRAILING_WHITESPACE
-                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/monero)
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/wownero)
 
 if(RET)
     message(WARNING "Cannot determine most recent tag. Make sure that you are building either from a Git working tree or from a source archive.")

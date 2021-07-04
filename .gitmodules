@@ -1,10 +1,9 @@
 [submodule "contrib/KDMacTouchBar"]
 	path = contrib/KDMacTouchBar
 	url = https://github.com/KDAB/KDMacTouchBar.git
-[submodule "monero"]
-	path = monero
-	url = https://git.wownero.com/wownero/wownero
-	branch = wowlet
 [submodule "contrib/quirc"]
 	path = contrib/quirc
 	url = https://github.com/dlbeer/quirc.git
+[submodule "wownero"]
+	path = wownero
+	url = https://git.wownero.com/wownero/wownero.git
