@@ -104,8 +104,7 @@ Qt build on Mac OS:
 
 ```bash
 cd ~/Downloads/qt-everywhere-src-5.15.1
-./configure -prefix $PWD/qtbase -release -nomake tests
-bash
+./configure -prefix $PWD/qtbase -release -nomake examples -nomake tests -skip qtwebchannel -skip qtpurchasing -skip webengine -skip qtwebview
 make -j 4
 ```
 
