@@ -96,13 +96,29 @@ Clone the repository.
 ```bash
 git clone --recursive https://git.wownero.com/wowlet/wowlet.git
 ``` 
+Download Qt5.15.1 from here: 
+https://download.qt.io/archive/qt/5.15/5.15.1/single/ 
+and build Qt 5.15.1:
 
-Get the latest LTS from here: https://www.qt.io/offline-installers and install.
-
-Build WOWlet.
+Qt build on Mac OS:
 
 ```bash
-CMAKE_PREFIX_PATH=~/Qt5.15.1/5.15.1/clang_64 make mac-release
+cd ~/Downloads/qt-everywhere-src-5.15.1
+./configure -prefix $PWD/qtbase -release -nomake tests
+bash
+make -j 4
+```
+
+Build WOWlet:
+
+```bash
+CMAKE_PREFIX_PATH=/Users/$username/Downloads/qt-everywhere-src-5.15.1/qtbase/ make mac-release
+```
+
+Install and start tor service for ticker/forums: 
+```bash
+brew install tor
+brew services start tor
 ```
 
 The resulting Mac OS application can be found `build/bin/wowlet.app` and will **not** have Tor embedded.
