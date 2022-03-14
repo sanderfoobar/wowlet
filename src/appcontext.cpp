@@ -100,8 +100,21 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     connect(this, &AppContext::nodeSourceChanged, this->nodes, &Nodes::onNodeSourceChanged);
     connect(this, &AppContext::setCustomNodes, this->nodes, &Nodes::setCustomNodes);
 
-    // Tor & socks proxy
-    this->ws = new WSClient(this, wsUrl);
+    // init backend URLs
+    if(cmdargs->isSet("backend-host"))
+      this->backendHost = cmdargs->value("backend-host");
+    if(cmdargs->isSet("backend-host"))
+      this->backendPort = cmdargs->value("backend-port").toUInt();
+    if(cmdargs->isSet("backend-tls"))
+      this->backendTLS = true;
+
+    backendWSUrl = this->backendTLS ? "wss://" : "ws://";
+    backendWSUrl += QString("%1:%2").arg(this->backendHost).arg(this->backendPort);
+    backendHTTPUrl = this->backendTLS ? "https://" : "http://";
+    backendHTTPUrl += QString("%1:%2").arg(this->backendHost).arg(this->backendPort);
+
+    // init websocket client
+    this->ws = new WSClient(this);
     connect(this->ws, &WSClient::WSMessage, this, &AppContext::onWSMessage);
     connect(this->ws, &WSClient::connectionEstablished, this, &AppContext::wsConnected);
     connect(this->ws, &WSClient::closed, this, &AppContext::wsDisconnected);
@@ -177,7 +190,8 @@ void AppContext::initTor() {
     this->tor = new Tor(this, this);
     this->tor->start();
 
-    if (!isWhonix && wsUrl.contains(".onion")) {
+    if (!isWhonix && backendHost.contains(".onion")) {
+        qDebug() << "'backend-host' did not contain '.onion' - running without Tor proxy.";
         this->networkProxy = new QNetworkProxy(QNetworkProxy::Socks5Proxy, Tor::torHost, Tor::torPort);
         this->network->setProxy(*networkProxy);
         this->ws->webSocket.setProxy(*networkProxy);
@@ -421,7 +435,10 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
         if(changed)
             emit blockHeightWSUpdated(this->heights);
     }
-
+    else if(cmd == "yellwow") {
+        this->yellowPagesData = msg.value("data").toArray();
+        emit yellowUpdated();
+    }
     else if(cmd == "rpc_nodes") {
         this->onWSNodes(msg.value("data").toArray());
     }

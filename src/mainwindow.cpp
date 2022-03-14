@@ -303,6 +303,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
 
     // Contacts
     connect(ui->contactWidget, &ContactsWidget::fillAddress, ui->sendWidget, &SendWidget::fillAddress);
+    connect(m_ctx, &AppContext::yellowUpdated, ui->contactWidget, &ContactsWidget::loadYellowPages);
 
     // Open alias
     connect(ui->sendWidget, &SendWidget::resolveOpenAlias, m_ctx, &AppContext::onOpenAliasResolve);
@@ -632,6 +633,7 @@ void MainWindow::onWalletOpened(Wallet *wallet) {
 
     // contacts widget
     ui->contactWidget->setModel(m_ctx->currentWallet->addressBookModel());
+    ui->contactWidget->loadYellowPages();
 
     // coins page
     m_ctx->currentWallet->coins()->refresh(m_ctx->currentWallet->currentSubaddressAccount());

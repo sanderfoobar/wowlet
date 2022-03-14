@@ -22,6 +22,7 @@ class ContactsWidget : public QWidget
 public:
     explicit ContactsWidget(QWidget *parent = nullptr);
     void setModel(AddressBookModel * model);
+    QMap<QString, QString> data();
     ~ContactsWidget() override;
 
 public slots:
@@ -30,9 +31,11 @@ public slots:
     void payTo();
     void newContact(QString address = "", QString name = "");
     void deleteContact();
+    void visitYellowPage();
     void setShowFullAddresses(bool show);
     void setSearchFilter(const QString &filter);
     void resetModel();
+    void loadYellowPages();
 
 signals:
     void fillAddress(QString &address);
@@ -50,6 +53,8 @@ private:
     QMenu *m_headerMenu;
     AddressBookModel * m_model;
     AddressBookProxyModel * m_proxyModel;
+
+    unsigned int rowIndex(const QString &name);
 };
 
 #endif // CONTACTSWIDGET_H
