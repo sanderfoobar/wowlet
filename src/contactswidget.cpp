@@ -32,17 +32,22 @@ ContactsWidget::ContactsWidget(QWidget *parent) :
         this->newContact();
     });
 
-    // row context menu
-    m_rowMenu = new QMenu(ui->contacts);
-    m_rowMenu->addAction(QIcon(":/assets/images/copy.png"), "Copy address", this, &ContactsWidget::copyAddress);
-    m_rowMenu->addAction(QIcon(":/assets/images/copy.png"), "Copy name", this, &ContactsWidget::copyName);
-    m_rowMenu->addAction("Pay to", this, &ContactsWidget::payTo);
-    m_rowMenu->addAction("Delete", this, &ContactsWidget::deleteContact);
-
     connect(ui->contacts, &QTreeView::customContextMenuRequested, [=](const QPoint & point){
         QModelIndex index = ui->contacts->indexAt(point);
         if (index.isValid()) {
+            auto username = index.model()->data(index.siblingAtColumn(AddressBookModel::Description), Qt::UserRole).toString();
+
+            m_rowMenu = new QMenu(ui->contacts);
+            if(username.contains("(YellWOWPages)"))
+                m_rowMenu->addAction(QIcon(":/assets/images/network.png"), "Visit user's YellWOWPage", this, &ContactsWidget::visitYellowPage);
+
+            m_rowMenu->addAction(QIcon(":/assets/images/copy.png"), "Copy address", this, &ContactsWidget::copyAddress);
+            m_rowMenu->addAction(QIcon(":/assets/images/copy.png"), "Copy name", this, &ContactsWidget::copyName);
+            m_rowMenu->addAction("Pay to", this, &ContactsWidget::payTo);
+            m_rowMenu->addAction("Delete", this, &ContactsWidget::deleteContact);
+
             m_rowMenu->exec(ui->contacts->viewport()->mapToGlobal(point));
+            m_rowMenu->deleteLater();
         }
         else {
             m_contextMenu->exec(ui->contacts->viewport()->mapToGlobal(point));
@@ -50,6 +55,68 @@ ContactsWidget::ContactsWidget(QWidget *parent) :
     });
 
     connect(ui->search, &QLineEdit::textChanged, this, &ContactsWidget::setSearchFilter);
+}
+
+QMap<QString, QString> ContactsWidget::data() {
+  auto rtn = QMap<QString, QString>();
+  for (int i = 0; i < m_ctx->currentWallet->addressBook()->count(); i++) {
+    m_ctx->currentWallet->addressBook()->getRow(i, [&rtn](const AddressBookInfo &entry) {
+      rtn[entry.description()] = entry.address();
+    });
+  }
+  return rtn;
+}
+
+unsigned int ContactsWidget::rowIndex(const QString &name) {
+  // name -> row index lookup
+  int result = -1;
+  for (int i = 0; i < m_ctx->currentWallet->addressBook()->count(); i++) {
+    m_ctx->currentWallet->addressBook()->getRow(i, [i, name, &result](const AddressBookInfo &entry) {
+      if(entry.description() == name) result = i;
+      return;
+    });
+
+    if(result != -1)
+      return result;
+  }
+  return result;
+}
+
+void ContactsWidget::loadYellowPages() {
+  if (m_ctx->currentWallet == nullptr || m_ctx->yellowPagesData.empty())
+    return;
+
+  auto contacts = this->data();
+  for (auto item: m_ctx->yellowPagesData) {
+    auto obj = item.toObject();
+    const auto username = QString("%1 (YellWOWPages)").arg(obj.value("username").toString());
+    const auto address = obj.value("address").toString();
+
+    if(contacts.contains(username)) {
+      if(contacts[username] == address) continue;
+
+      // update the address
+      auto idx = this->rowIndex(username);
+      if(idx == -1) continue;
+      m_model->deleteRow((int)idx);
+    }
+
+    bool addressValid = WalletManager::addressValid(address, m_ctx->currentWallet->nettype());
+    if (!addressValid) {
+      continue;
+    }
+
+    m_ctx->currentWallet->addressBook()->addRow(address, "", username);
+  }
+}
+
+void ContactsWidget::visitYellowPage() {
+  auto index = ui->contacts->currentIndex();
+  auto username = index.model()->data(
+      index.siblingAtColumn(AddressBookModel::Description),
+      Qt::UserRole).toString();
+  username = username.replace(" (YellWOWPages)", "").trimmed();
+  Utils::externalLinkWarning(this, QString("https://yellow.wownero.com/user/%1").arg(username));
 }
 
 void ContactsWidget::copyAddress() {

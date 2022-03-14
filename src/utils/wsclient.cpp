@@ -8,18 +8,18 @@
 #include "wsclient.h"
 #include "appcontext.h"
 
-WSClient::WSClient(AppContext *ctx, const QString &url, QObject *parent) :
+WSClient::WSClient(AppContext *ctx, QObject *parent) :
         QObject(parent),
         m_ctx(ctx) {
+    // this class connects to `https://git.wownero.com/wowlet/wowlet-backend/`
     connect(&this->webSocket, &QWebSocket::binaryMessageReceived, this, &WSClient::onbinaryMessageReceived);
     connect(&this->webSocket, &QWebSocket::connected, this, &WSClient::onConnected);
     connect(&this->webSocket, &QWebSocket::disconnected, this, &WSClient::closed);
     connect(&this->webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &WSClient::onError);
 
-    m_tor = url.contains(".onion");
-    this->url = QString("ws://%1/ws").arg(url);
+    m_tor = m_ctx->backendHost.contains(".onion");
 
-    // Keep websocket connection alive
+    // keep-alive
     connect(&m_pingTimer, &QTimer::timeout, [this]{
         if (this->webSocket.state() == QAbstractSocket::ConnectedState)
             this->webSocket.ping();
@@ -40,7 +40,7 @@ void WSClient::start() {
     qDebug() << "WebSocket connect:" << url.url();
 #endif
     if((m_tor && this->m_ctx->tor->torConnected) || !m_tor)
-        this->webSocket.open(QUrl(this->url));
+        this->webSocket.open(QString("%1/ws").arg(m_ctx->backendWSUrl));
 
     if(!this->m_connectionTimer.isActive()) {
         connect(&this->m_connectionTimer, &QTimer::timeout, this, &WSClient::checkConnection);

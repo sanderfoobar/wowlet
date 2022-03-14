@@ -50,6 +50,7 @@ void DebugInfoDialog::updateInfo() {
     ui->label_synchronized->setText(m_ctx->currentWallet->synchronized() ? "True" : "False");
 
     auto node = m_ctx->nodes->connection();
+    ui->label_websocketURL->setText(m_ctx->backendWSUrl);
     ui->label_remoteNode->setText(node.full);
     ui->label_walletStatus->setText(this->statusToString(m_ctx->currentWallet->connectionStatus()));
     ui->label_torStatus->setText(torStatus);
@@ -101,6 +102,7 @@ void DebugInfoDialog::copyToClipboad() {
     text += QString("Remote node: %1  \n").arg(ui->label_remoteNode->text());
     text += QString("Wallet status: %1  \n").arg(ui->label_walletStatus->text());
     text += QString("Tor status: %1  \n").arg(ui->label_torStatus->text());
+    text += QString("Websocket URL: %1  \n").arg(ui->label_websocketURL->text());
     text += QString("Websocket status: %1  \n").arg(ui->label_websocketStatus->text());
 
     text += QString("Network type: %1  \n").arg(ui->label_netType->text());

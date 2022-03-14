@@ -107,6 +107,15 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     QCommandLineOption androidDebugOption(QStringList() << "android-debug", "Start the Android interface without actually running on Android - for debugging purposes. Requires -DANDROID_DEBUG=ON CMake definition.");
     parser.addOption(androidDebugOption);
 
+    QCommandLineOption backendHostOption(QStringList() << "backend-host", "specify your own `wowlet-backend` host", "backend-host");
+    parser.addOption(backendHostOption);
+
+    QCommandLineOption backendPortOption(QStringList() << "backend-port", "specify your own `wowlet-backend` port", "backend-port");
+    parser.addOption(backendPortOption);
+
+    QCommandLineOption backendTLS(QStringList() << "backend-tls", "`wowlet-backend` is running via TLS? 'wss://' and 'https://' will be used.", "backend-tls");
+    parser.addOption(backendTLS);
+
     auto parsed = parser.parse(argv_);
     if(!parsed) {
         qCritical() << parser.errorText();

@@ -66,7 +66,13 @@ public:
     QString defaultWalletDir;
     QString defaultWalletDirRoot;
     QString tmpTxDescription;
-    QString wsUrl = "6wku2m4zrv6j666crlo7lzofv6ud6enzllyhou3ijeigpukymi37caad.onion";
+
+    // https://git.wownero.com/wowlet/wowlet-backend/
+    QString backendHost = "6wku2m4zrv6j666crlo7lzofv6ud6enzllyhou3ijeigpukymi37caad.onion";
+    unsigned int backendPort = 80;
+    bool backendTLS = false;
+    QString backendWSUrl;
+    QString backendHTTPUrl;
 
     QString walletPath;
     QString walletPassword = "";
@@ -106,6 +112,7 @@ public:
     static QMap<QString, QString> txDescriptionCache;
     static QMap<QString, QString> txCache;
     static TxFiatHistory *txFiatHistory;
+    QJsonArray yellowPagesData;
     QJsonObject versionPending;
 
     // libwalletqt
@@ -205,6 +212,7 @@ signals:
     void nodesUpdated(QList<QSharedPointer<WowletNode>> &nodes);
     void ccsUpdated(QList<QSharedPointer<CCSEntry>> &entries);
     void suchWowUpdated(const QJsonArray &such_data);
+    void yellowUpdated();
     void nodeSourceChanged(NodeSource nodeSource);
     void XMRigDownloads(const QJsonObject &data);
     void pinLookupReceived(QString address, QString pin);
