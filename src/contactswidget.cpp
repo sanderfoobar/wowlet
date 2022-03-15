@@ -38,7 +38,7 @@ ContactsWidget::ContactsWidget(QWidget *parent) :
             auto username = index.model()->data(index.siblingAtColumn(AddressBookModel::Description), Qt::UserRole).toString();
 
             m_rowMenu = new QMenu(ui->contacts);
-            if(username.contains("(YellWOWPages)"))
+            if(username.contains("(yp)"))
                 m_rowMenu->addAction(QIcon(":/assets/images/network.png"), "Visit user's YellWOWPage", this, &ContactsWidget::visitYellowPage);
 
             m_rowMenu->addAction(QIcon(":/assets/images/copy.png"), "Copy address", this, &ContactsWidget::copyAddress);
@@ -89,7 +89,7 @@ void ContactsWidget::loadYellowPages() {
   auto contacts = this->data();
   for (auto item: m_ctx->yellowPagesData) {
     auto obj = item.toObject();
-    const auto username = QString("%1 (YellWOWPages)").arg(obj.value("username").toString());
+    const auto username = QString("%1 (yp)").arg(obj.value("username").toString());
     const auto address = obj.value("address").toString();
 
     if(contacts.contains(username)) {
@@ -115,7 +115,7 @@ void ContactsWidget::visitYellowPage() {
   auto username = index.model()->data(
       index.siblingAtColumn(AddressBookModel::Description),
       Qt::UserRole).toString();
-  username = username.replace(" (YellWOWPages)", "").trimmed();
+  username = username.replace(" (yp)", "").trimmed();
   Utils::externalLinkWarning(this, QString("https://yellow.wownero.com/user/%1").arg(username));
 }
 
