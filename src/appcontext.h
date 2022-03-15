@@ -215,6 +215,7 @@ signals:
     void yellowUpdated();
     void nodeSourceChanged(NodeSource nodeSource);
     void XMRigDownloads(const QJsonObject &data);
+    void WownerodDownloads(const QJsonObject &data);
     void pinLookupReceived(QString address, QString pin);
     void pinLookupErrorReceived();
     void pinReceived(QString pin);

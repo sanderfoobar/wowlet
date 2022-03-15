@@ -35,7 +35,7 @@ public:
         walletDirectory,
         walletPath,
         xmrigPath,
-        xmrigPool,
+        wownerodPath,
         nodes,
         websocketEnabled,
         nodeSource,

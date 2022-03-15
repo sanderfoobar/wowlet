@@ -14,6 +14,7 @@
 
 #include "utils/childproc.h"
 
+class AppContext;
 class XmRig : public QObject
 {
 Q_OBJECT
@@ -22,15 +23,14 @@ public:
     explicit XmRig(const QString &configDir, QObject *parent = nullptr);
     void prepare();
 
-    void start(const QString &path, int threads, const QString &address, const QString &username, const QString &password, bool tor = false, bool tls = true);
+    bool start(const QString &path, int threads);
     void stop();
-
-    QString rigDir;
-    QString rigPath;
 
 signals:
     void error(const QString &msg);
     void output(const QByteArray &data);
+    void stopped();
+    void blockReward();
     void hashrate(const QString &rate);
 
 private slots:
@@ -40,6 +40,9 @@ private slots:
 
 private:
     ChildProcess m_process;
+    AppContext *m_ctx;
+    QTimer *m_statusTimer;
+    bool mining_started = false;
 };
 
 #endif //WOWLET_XMRIG_H

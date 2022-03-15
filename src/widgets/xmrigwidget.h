@@ -30,33 +30,41 @@ public slots:
     void onWalletOpened(Wallet *wallet);
     void onStartClicked();
     void onStopClicked();
+    void onStopped();
     void onClearClicked();
-    void onDownloads(const QJsonObject &data);
-    void linkClicked();
+    void onBlockReward();
+    void onRigDownloads(const QJsonObject &data);
+    void onWownerodDownloads(const QJsonObject &data);
+    void rigLinkClicked();
+    void wownerodLinkClicked();
     void onProcessError(const QString &msg);
     void onProcessOutput(const QByteArray &msg);
     void onHashrate(const QString &hashrate);
-    void onSoloChecked(int state);
 
 private slots:
     void onBrowseClicked();
     void onThreadsValueChanged(int date);
-    void onPoolChanged(int pos);
 
 signals:
     void miningStarted();
     void miningEnded();
 
 private:
-    void showContextMenu(const QPoint &pos);
+    void showContextRigMenu(const QPoint &pos);
+    void showContextWownerodMenu(const QPoint &pos);
+    void appendText(const QString &line);
 
     AppContext *m_ctx;
     Ui::XMRigWidget *ui;
-    QStandardItemModel *m_model;
-    QMenu *m_contextMenu;
+    QStandardItemModel *m_modelRig;
+    QStandardItemModel *m_modelWownerod;
+    QMenu *m_contextMenuRig;
+    QMenu *m_contextMenuWownerod;
     int m_threads;
-    QStringList m_urls;
-    QStringList m_pools{"cryptonote.social:2223", "pool.hashvault.pro:8888"};
+    QStringList m_urlsRig;
+    QStringList m_urlsWownerod;
+    unsigned int m_consoleBuffer = 0;
+    unsigned int m_consoleBufferMax = 2000;
 };
 
 #endif // REDDITWIDGET_H

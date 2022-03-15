@@ -15,19 +15,28 @@ XMRigWidget::XMRigWidget(AppContext *ctx, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::XMRigWidget),
     m_ctx(ctx),
-    m_model(new QStandardItemModel(this)),
-    m_contextMenu(new QMenu(this))
+    m_modelRig(new QStandardItemModel(this)),
+    m_modelWownerod(new QStandardItemModel(this)),
+    m_contextMenuRig(new QMenu(this)),
+    m_contextMenuWownerod(new QMenu(this))
 {
     ui->setupUi(this);
 
-    QPixmap p(":assets/images/mining.png");
-    ui->lbl_logo->setPixmap(p.scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    QPixmap p(":assets/images/fire.png");
+    ui->lbl_logo->setPixmap(p.scaled(268, 271, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->lbl_reward->hide();
 
-    // table
-    ui->tableView->setModel(this->m_model);
-    m_contextMenu->addAction(QIcon(":/assets/images/network.png"), "Download file", this, &XMRigWidget::linkClicked);
-    connect(ui->tableView, &QHeaderView::customContextMenuRequested, this, &XMRigWidget::showContextMenu);
-    connect(ui->tableView, &QTableView::doubleClicked, this, &XMRigWidget::linkClicked);
+    // table XMRig
+    ui->tableRig->setModel(this->m_modelRig);
+    m_contextMenuRig->addAction(QIcon(":/assets/images/network.png"), "Download file", this, &XMRigWidget::rigLinkClicked);
+    connect(ui->tableRig, &QHeaderView::customContextMenuRequested, this, &XMRigWidget::showContextRigMenu);
+    connect(ui->tableRig, &QTableView::doubleClicked, this, &XMRigWidget::rigLinkClicked);
+
+    // table wownerod
+    ui->tableWownerod->setModel(this->m_modelWownerod);
+    m_contextMenuWownerod->addAction(QIcon(":/assets/images/network.png"), "Download file", this, &XMRigWidget::wownerodLinkClicked);
+    connect(ui->tableWownerod, &QHeaderView::customContextMenuRequested, this, &XMRigWidget::showContextWownerodMenu);
+    connect(ui->tableWownerod, &QTableView::doubleClicked, this, &XMRigWidget::wownerodLinkClicked);
 
     // threads
     ui->threadSlider->setMinimum(1);
@@ -47,75 +56,49 @@ XMRigWidget::XMRigWidget(AppContext *ctx, QWidget *parent) :
     // defaults
     ui->btn_stop->setEnabled(false);
     ui->check_autoscroll->setChecked(true);
-    ui->relayTor->setChecked(false);
-    ui->check_tls->setChecked(true);
+#ifdef Q_OS_WIN
+    ui->label_path->setText("Path to wownerod.exe");
+#endif
     ui->label_status->setTextInteractionFlags(Qt::TextSelectableByMouse);
     ui->label_status->hide();
-    ui->soloFrame->hide();
-    ui->poolFrame->hide();
 
-    // XMRig binary
-    auto path = config()->get(Config::xmrigPath).toString();
-    if(!path.isEmpty()) {
+    // wownerod binary
+    auto path = config()->get(Config::wownerodPath).toString();
+    if(!path.isEmpty())
         ui->lineEdit_path->setText(path);
-    }
 
-    // pools
-    ui->poolFrame->show();
-    ui->combo_pools->insertItems(0, m_pools);
-    auto preferredPool = config()->get(Config::xmrigPool).toString();
-    if (m_pools.contains(preferredPool))
-        ui->combo_pools->setCurrentIndex(m_pools.indexOf(preferredPool));
-    else {
-        preferredPool = m_pools.at(0);
-        config()->set(Config::xmrigPool, preferredPool);
-    }
-    connect(ui->combo_pools, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &XMRigWidget::onPoolChanged);
+    connect(ui->lineEdit_path, &QLineEdit::textChanged, [=] {
+      config()->set(Config::wownerodPath, ui->lineEdit_path->text().trimmed());
+    });
 
     // info
-    ui->console->appendPlainText(QString("Detected %1 CPU threads.").arg(threads));
-    if(!path.isEmpty() && !Utils::fileExists(path))
-        ui->console->appendPlainText("Invalid path to XMRig binary detected. Please reconfigure on the Settings tab.");
-    else
-        ui->console->appendPlainText(QString("XMRig path set to %1").arg(path));
+    this->appendText(QString("Detected %1 CPU threads.").arg(threads));
+    if(path.isEmpty())
+        this->appendText(QString("wownerod path is empty - please point towards the wownerod executable.").arg(path));
+    else if(!Utils::fileExists(path))
+        this->appendText("Invalid path to the wownerod executable detected. Please set the correct path.");
+    else {
+        this->appendText(QString("wownerod path set to '%1'").arg(path));
+        this->appendText("Ready to mine.");
+    }
+}
 
-    ui->console->appendPlainText("Ready to mine.");
-
-    // username/password
-    connect(ui->lineEdit_password, &QLineEdit::editingFinished, [=]() {
-        m_ctx->currentWallet->setCacheAttribute("wowlet.xmrig_password", ui->lineEdit_password->text());
-        m_ctx->storeWallet();
-    });
-    connect(ui->lineEdit_address, &QLineEdit::editingFinished, [=]() {
-        m_ctx->currentWallet->setCacheAttribute("wowlet.xmrig_username", ui->lineEdit_address->text());
-        m_ctx->storeWallet();
-    });
-
-    // checkbox connects
-    connect(ui->check_solo, &QCheckBox::stateChanged, this, &XMRigWidget::onSoloChecked);
+void XMRigWidget::appendText(const QString &line) {
+    ui->console->appendPlainText(line);
+    m_consoleBuffer += 1;
+    if(m_consoleBuffer >= m_consoleBufferMax) {
+        ui->console->clear();
+        m_consoleBuffer = 0;
+    }
 }
 
 void XMRigWidget::onWalletClosed() {
     this->onStopClicked();
     this->onClearClicked();
-    ui->lineEdit_password->setText("");
-    ui->lineEdit_address->setText("");
 }
 
 void XMRigWidget::onWalletOpened(Wallet *wallet){
-    // Xmrig username
-    auto username = m_ctx->currentWallet->getCacheAttribute("wowlet.xmrig_username");
-    if(!username.isEmpty())
-        ui->lineEdit_address->setText(username);
-
-    // Xmrig passwd
-    auto password = m_ctx->currentWallet->getCacheAttribute("wowlet.xmrig_password");
-    if(!password.isEmpty()) {
-        ui->lineEdit_password->setText(password);
-    } else {
-        ui->lineEdit_password->setText("wowlet");
-        m_ctx->currentWallet->setCacheAttribute("wowlet.xmrig_password", ui->lineEdit_password->text());
-    }
+    int egiwoge = 1;
 }
 
 void XMRigWidget::onThreadsValueChanged(int threads) {
@@ -123,16 +106,19 @@ void XMRigWidget::onThreadsValueChanged(int threads) {
     ui->label_threads->setText(QString("CPU threads: %1").arg(m_threads));
 }
 
-void XMRigWidget::onPoolChanged(int pos) {
-    config()->set(Config::xmrigPool, m_pools.at(pos));
-}
-
 void XMRigWidget::onBrowseClicked() {
     QString fileName = QFileDialog::getOpenFileName(
-            this, "Path to XMRig executable", QDir::homePath());
+        this, "Path to wownerod executable", QDir::homePath());
     if (fileName.isEmpty()) return;
-    config()->set(Config::xmrigPath, fileName);
+    config()->set(Config::wownerodPath, fileName);
     ui->lineEdit_path->setText(fileName);
+}
+
+void XMRigWidget::onBlockReward() {
+    QDateTime date = QDateTime::currentDateTime();
+    QString formattedTime = date.toString("yyyy/MM/dd hh:mm");
+    ui->lbl_reward->setText(QString("Congrats: new block found at %1").arg(formattedTime));
+    ui->lbl_reward->show();
 }
 
 void XMRigWidget::onClearClicked() {
@@ -140,33 +126,8 @@ void XMRigWidget::onClearClicked() {
 }
 
 void XMRigWidget::onStartClicked() {
-    QString xmrigPath;
-    bool solo = ui->check_solo->isChecked();
-    xmrigPath = config()->get(Config::xmrigPath).toString();
-
-    // username is receiving address usually
-    auto username = m_ctx->currentWallet->getCacheAttribute("wowlet.xmrig_username");
-    auto password = m_ctx->currentWallet->getCacheAttribute("wowlet.xmrig_password");
-
-    if(username.isEmpty()) {
-        QString err = "Please specify a receiving address on the Settings screen";
-        ui->console->appendPlainText(err);
-        QMessageBox::warning(this, "Error", err);
-        return;
-    }
-
-    QString address;
-    if(solo)
-        address = ui->lineEdit_solo->text().trimmed();
-    else
-        address = config()->get(Config::xmrigPool).toString();
-
-    if(address.contains("cryptonote.social") && !username.contains(".")) {
-        // cryptonote social requires <addr>.<username>, we'll just grab a few chars from primary addy
-        username = QString("%1.%2").arg(username, m_ctx->currentWallet->address(0, 0).mid(0, 6));
-    }
-
-    m_ctx->XMRig->start(xmrigPath, m_threads, address, username, password, ui->relayTor->isChecked(), ui->check_tls->isChecked());
+    auto binPath = config()->get(Config::wownerodPath).toString();
+    if(!m_ctx->XMRig->start(binPath, m_threads)) return;
 
     ui->btn_start->setEnabled(false);
     ui->btn_stop->setEnabled(true);
@@ -175,10 +136,6 @@ void XMRigWidget::onStartClicked() {
 
 void XMRigWidget::onStopClicked() {
     m_ctx->XMRig->stop();
-    ui->btn_start->setEnabled(true);
-    ui->btn_stop->setEnabled(false);
-    ui->label_status->hide();
-    emit miningEnded();
 }
 
 void XMRigWidget::onProcessOutput(const QByteArray &data) {
@@ -186,14 +143,21 @@ void XMRigWidget::onProcessOutput(const QByteArray &data) {
     if(output.endsWith("\n"))
         output = output.trimmed();
 
-    ui->console->appendPlainText(output);
+    this->appendText(output);
 
     if(ui->check_autoscroll->isChecked())
         ui->console->verticalScrollBar()->setValue(ui->console->verticalScrollBar()->maximum());
 }
 
+void XMRigWidget::onStopped() {
+    ui->btn_start->setEnabled(true);
+    ui->btn_stop->setEnabled(false);
+    ui->label_status->hide();
+    emit miningEnded();
+}
+
 void XMRigWidget::onProcessError(const QString &msg) {
-    ui->console->appendPlainText("\n" + msg);
+    this->appendText(msg);
     ui->btn_start->setEnabled(true);
     ui->btn_stop->setEnabled(false);
     ui->label_status->hide();
@@ -205,17 +169,12 @@ void XMRigWidget::onHashrate(const QString &hashrate) {
     ui->label_status->setText(QString("Mining at %1").arg(hashrate));
 }
 
-void XMRigWidget::onDownloads(const QJsonObject &data) {
-    // For the downloads table we'll manually update the table
-    // with items once, as opposed to creating a class in
-    // src/models/. Saves effort; full-blown model
-    // is unnecessary in this case.
-
-    m_model->clear();
-    m_urls.clear();
+void XMRigWidget::onWownerodDownloads(const QJsonObject &data) {
+    m_modelWownerod->clear();
+    m_urlsWownerod.clear();
 
     auto version = data.value("version").toString();
-    ui->label_latest_version->setText(QString("Latest version: %1").arg(version));
+    ui->label_latest_version_wownerod->setText(QString("Latest version: %1").arg(version));
     QJsonObject assets = data.value("assets").toObject();
 
     const auto _linux = assets.value("linux").toArray();
@@ -240,54 +199,104 @@ void XMRigWidget::onDownloads(const QJsonObject &data) {
         auto _url = _obj.value("url").toString();
         auto _created_at = _obj.value("created_at").toString();
 
-        m_urls.append(_url);
+        m_urlsWownerod.append(_url);
         auto download_count = _obj.value("download_count").toInt();
 
-        m_model->setItem(i, 0, Utils::qStandardItem(_name));
-        m_model->setItem(i, 1, Utils::qStandardItem(_created_at));
-        m_model->setItem(i, 2, Utils::qStandardItem(QString::number(download_count)));
+        m_modelWownerod->setItem(i, 0, Utils::qStandardItem(_name));
+        m_modelWownerod->setItem(i, 1, Utils::qStandardItem(_created_at));
+        m_modelWownerod->setItem(i, 2, Utils::qStandardItem(QString::number(download_count)));
         i++;
     }
 
-    m_model->setHeaderData(0, Qt::Horizontal, tr("Filename"), Qt::DisplayRole);
-    m_model->setHeaderData(1, Qt::Horizontal, tr("Date"), Qt::DisplayRole);
-    m_model->setHeaderData(2, Qt::Horizontal, tr("Downloads"), Qt::DisplayRole);
+    m_modelWownerod->setHeaderData(0, Qt::Horizontal, tr("Filename"), Qt::DisplayRole);
+    m_modelWownerod->setHeaderData(1, Qt::Horizontal, tr("Date"), Qt::DisplayRole);
+    m_modelWownerod->setHeaderData(2, Qt::Horizontal, tr("Downloads"), Qt::DisplayRole);
 
-    ui->tableView->verticalHeader()->setVisible(false);
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-    ui->tableView->setColumnWidth(2, 100);
+    ui->tableWownerod->verticalHeader()->setVisible(false);
+    ui->tableWownerod->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWownerod->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableWownerod->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->tableWownerod->setColumnWidth(2, 100);
 }
 
-void XMRigWidget::showContextMenu(const QPoint &pos) {
-    QModelIndex index = ui->tableView->indexAt(pos);
-        if (!index.isValid()) {
+void XMRigWidget::onRigDownloads(const QJsonObject &data) {
+    m_modelRig->clear();
+    m_urlsRig.clear();
+
+    auto version = data.value("version").toString();
+    ui->label_latest_version_rig->setText(QString("Latest version: %1").arg(version));
+    QJsonObject assets = data.value("assets").toObject();
+
+    const auto _linux = assets.value("linux").toArray();
+    const auto macos = assets.value("macos").toArray();
+    const auto windows = assets.value("windows").toArray();
+
+    auto info = QSysInfo::productType();
+    QJsonArray *os_assets;
+    if(info == "osx") {
+        os_assets = const_cast<QJsonArray *>(&macos);
+    } else if (info == "windows") {
+        os_assets = const_cast<QJsonArray *>(&windows);
+    } else {
+        // assume linux
+        os_assets = const_cast<QJsonArray *>(&_linux);
+    }
+
+    int i = 0;
+    for(const auto &entry: *os_assets) {
+        auto _obj = entry.toObject();
+        auto _name = _obj.value("name").toString();
+        auto _url = _obj.value("url").toString();
+        auto _created_at = _obj.value("created_at").toString();
+
+        m_urlsRig.append(_url);
+        auto download_count = _obj.value("download_count").toInt();
+
+        m_modelRig->setItem(i, 0, Utils::qStandardItem(_name));
+        m_modelRig->setItem(i, 1, Utils::qStandardItem(_created_at));
+        m_modelRig->setItem(i, 2, Utils::qStandardItem(QString::number(download_count)));
+        i++;
+    }
+
+    m_modelRig->setHeaderData(0, Qt::Horizontal, tr("Filename"), Qt::DisplayRole);
+    m_modelRig->setHeaderData(1, Qt::Horizontal, tr("Date"), Qt::DisplayRole);
+    m_modelRig->setHeaderData(2, Qt::Horizontal, tr("Downloads"), Qt::DisplayRole);
+
+    ui->tableRig->verticalHeader()->setVisible(false);
+    ui->tableRig->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableRig->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableRig->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->tableRig->setColumnWidth(2, 100);
+}
+
+void XMRigWidget::showContextRigMenu(const QPoint &pos) {
+    QModelIndex index = ui->tableRig->indexAt(pos);
+    if (!index.isValid())
         return;
-    }
-    m_contextMenu->exec(ui->tableView->viewport()->mapToGlobal(pos));
+    m_contextMenuRig->exec(ui->tableRig->viewport()->mapToGlobal(pos));
 }
 
-void XMRigWidget::onSoloChecked(int state) {
-    if(state == 2) {
-        ui->poolFrame->hide();
-        ui->soloFrame->show();
-        ui->check_tls->setChecked(false);
-    }
-    else {
-        ui->poolFrame->show();
-        ui->soloFrame->hide();
-    }
+void XMRigWidget::showContextWownerodMenu(const QPoint &pos) {
+    QModelIndex index = ui->tableWownerod->indexAt(pos);
+    if (!index.isValid())
+        return;
+    m_contextMenuRig->exec(ui->tableWownerod->viewport()->mapToGlobal(pos));
 }
 
-void XMRigWidget::linkClicked() {
-    QModelIndex index = ui->tableView->currentIndex();
-    auto download_link = m_urls.at(index.row());
+void XMRigWidget::wownerodLinkClicked() {
+    QModelIndex index = ui->tableRig->currentIndex();
+    auto download_link = m_urlsRig.at(index.row());
+    Utils::externalLinkWarning(this, download_link);
+}
+
+void XMRigWidget::rigLinkClicked() {
+    QModelIndex index = ui->tableRig->currentIndex();
+    auto download_link = m_urlsRig.at(index.row());
     Utils::externalLinkWarning(this, download_link);
 }
 
 QStandardItemModel *XMRigWidget::model() {
-    return m_model;
+    return m_modelRig;
 }
 
 XMRigWidget::~XMRigWidget() {

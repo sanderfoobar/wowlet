@@ -163,10 +163,8 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
     AppContext::prices = new Prices();
 
     // XMRig
-#ifdef HAS_XMRIG
     this->XMRig = new XmRig(this->configDirectory, this);
     this->XMRig->prepare();
-#endif
 
     this->walletManager = WalletManager::instance();
     QString logPath = QString("%1/daemon.log").arg(configDirectory);
@@ -447,11 +445,12 @@ void AppContext::onWSMessage(const QJsonObject &msg) {
     else if(cmd == "rpc_nodes") {
         this->onWSNodes(msg.value("data").toArray());
     }
-#if defined(HAS_XMRIG)
     else if(cmd == "xmrig") {
         this->XMRigDownloads(msg.value("data").toObject());
     }
-#endif
+    else if(cmd == "wownerod_releases") {
+        emit WownerodDownloads(msg.value("data").toObject());
+    }
     else if(cmd == "crypto_rates") {
         QJsonArray crypto_rates = msg.value("data").toArray();
         AppContext::prices->cryptoPricesReceived(crypto_rates);

@@ -171,22 +171,21 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     connect(m_ctx->nodes, &Nodes::WSNodeExhausted, this, &MainWindow::showWSNodeExhaustedMessage);
 
     // XMRig
-#ifdef HAS_XMRIG
     m_xmrig = new XMRigWidget(m_ctx, this);
     ui->xmrRigLayout->addWidget(m_xmrig);
     connect(m_ctx->XMRig, &XmRig::output, m_xmrig, &XMRigWidget::onProcessOutput);
     connect(m_ctx->XMRig, &XmRig::error, m_xmrig, &XMRigWidget::onProcessError);
+    connect(m_ctx->XMRig, &XmRig::stopped, m_xmrig, &XMRigWidget::onStopped);
+    connect(m_ctx->XMRig, &XmRig::blockReward, m_xmrig, &XMRigWidget::onBlockReward);
     connect(m_ctx->XMRig, &XmRig::hashrate, m_xmrig, &XMRigWidget::onHashrate);
 
     connect(m_ctx, &AppContext::walletClosed, m_xmrig, &XMRigWidget::onWalletClosed);
     connect(m_ctx, &AppContext::walletOpened, m_xmrig, &XMRigWidget::onWalletOpened);
-    connect(m_ctx, &AppContext::XMRigDownloads, m_xmrig, &XMRigWidget::onDownloads);
+    connect(m_ctx, &AppContext::XMRigDownloads, m_xmrig, &XMRigWidget::onRigDownloads);
+    connect(m_ctx, &AppContext::WownerodDownloads, m_xmrig, &XMRigWidget::onWownerodDownloads);
 
     connect(m_xmrig, &XMRigWidget::miningStarted, [=]{ m_ctx->setWindowTitle(true); });
     connect(m_xmrig, &XMRigWidget::miningEnded, [=]{ m_ctx->setWindowTitle(false); });
-#else
-    ui->tabWidget->setTabVisible(Tabs::XMRIG, false);
-#endif
 
     connect(ui->ccsWidget, &CCSWidget::selected, this, &MainWindow::showSendScreen);
     connect(m_ctx, &AppContext::ccsUpdated, ui->ccsWidget->model(), &CCSModel::updateEntries);
@@ -421,13 +420,9 @@ void MainWindow::initMenu() {
     m_tabShowHideMapper["Calc"] = new ToggleTab(ui->tabCalc, "Calc", "Calc", ui->actionShow_calc, Config::showTabCalc);
     m_tabShowHideSignalMapper->setMapping(ui->actionShow_calc, "Calc");
 
-#if defined(HAS_XMRIG)
     connect(ui->actionShow_XMRig, &QAction::triggered, m_tabShowHideSignalMapper, QOverload<>::of(&QSignalMapper::map));
     m_tabShowHideMapper["Mining"] = new ToggleTab(ui->tabXmrRig, "Mining", "Mining", ui->actionShow_XMRig, Config::showTabXMRig);
     m_tabShowHideSignalMapper->setMapping(ui->actionShow_XMRig, "Mining");
-#else
-    ui->actionShow_XMRig->setVisible(false);
-#endif
 
     for (const auto &key: m_tabShowHideMapper.keys()) {
         const auto toggleTab = m_tabShowHideMapper.value(key);

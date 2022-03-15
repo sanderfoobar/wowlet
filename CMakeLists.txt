@@ -10,7 +10,6 @@ set(VERSION_REVISION "0")
 set(VERSION "beta-4")
 
 option(FETCH_DEPS "Download dependencies if they are not found" ON)
-option(XMRIG "Include XMRig module")
 option(OPENVR "Include OpenVR support")
 option(QML "Include QtQuick (QML)")
 option(ANDROID "Android deployment")

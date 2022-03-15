@@ -207,6 +207,20 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tabXmrRig">
+       <attribute name="icon">
+        <iconset resource="assets.qrc">
+         <normaloff>:/assets/images/mining.png</normaloff>:/assets/images/mining.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Mining</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="xmrRigLayout"/>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="tabHistory">
        <attribute name="icon">
         <iconset resource="assets.qrc">
@@ -327,20 +341,6 @@
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
          <widget class="CalcWidget" name="conversionWidget" native="true"/>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tabXmrRig">
-       <attribute name="icon">
-        <iconset resource="assets.qrc">
-         <normaloff>:/assets/images/mining.png</normaloff>:/assets/images/mining.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>Mining</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="xmrRigLayout"/>
         </item>
        </layout>
       </widget>
