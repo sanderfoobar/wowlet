@@ -30,6 +30,11 @@ Settings::Settings(QWidget *parent) :
         m_ctx->updateBalance();
     });
 
+    connect(ui->checkBox_hideOnClose, &QCheckBox::toggled, [this](bool toggled){
+      config()->set(Config::hideOnClose, toggled);
+      QApplication::setQuitOnLastWindowClosed(toggled);
+    });
+
     connect(ui->closeButton, &QDialogButtonBox::accepted, this, &Settings::close);
 
     // nodes
@@ -40,6 +45,7 @@ Settings::Settings(QWidget *parent) :
     // setup checkboxes
     ui->checkBox_externalLink->setChecked(config()->get(Config::warnOnExternalLink).toBool());
     ui->checkBox_hideBalance->setChecked(config()->get(Config::hideBalance).toBool());
+    ui->checkBox_hideOnClose->setChecked(config()->get(Config::hideOnClose).toBool());
 
     // setup comboboxes
     this->setupSkinCombobox();
