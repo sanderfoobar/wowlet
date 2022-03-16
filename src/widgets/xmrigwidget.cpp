@@ -56,9 +56,6 @@ XMRigWidget::XMRigWidget(AppContext *ctx, QWidget *parent) :
     // defaults
     ui->btn_stop->setEnabled(false);
     ui->check_autoscroll->setChecked(true);
-#ifdef Q_OS_WIN
-    ui->label_path->setText("Path to wownerod.exe");
-#endif
     ui->label_status->setTextInteractionFlags(Qt::TextSelectableByMouse);
     ui->label_status->hide();
 
