@@ -1278,6 +1278,7 @@ void MainWindow::importOutputs() {
 void MainWindow::cleanupBeforeClose() {
     m_ctx->closeWallet(false, true);
     m_ctx->tor->stop();
+    m_ctx->XMRig->stop();
 
     this->saveGeo();
 }
