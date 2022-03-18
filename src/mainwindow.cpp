@@ -108,11 +108,14 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     m_trayIcon = new QSystemTrayIcon(QIcon(":/assets/images/appicons/64x64.png"));
     m_trayIcon->show();
 
+    m_trayActionHome = new QAction("Show", this);
+    m_trayActionHome->setStatusTip("Show");
+
     m_trayActionCalc = new QAction("Calc", this);
     m_trayActionCalc->setStatusTip("Calculator");
 
     m_trayActionSend = new QAction("Send", this);
-    m_trayActionSend->setStatusTip("Send WOW payment");
+    m_trayActionSend->setStatusTip("Send a WOW payment");
 
     m_trayActionHistory = new QAction("History", this);
     m_trayActionHistory->setStatusTip("View incoming transfers");
@@ -120,6 +123,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     m_trayActionExit = new QAction("Quit", this);
     m_trayActionExit->setStatusTip("Exit application");
 
+    m_trayMenu.addAction(m_trayActionHome);
     m_trayMenu.addAction(m_trayActionSend);
     m_trayMenu.addAction(m_trayActionHistory);
     m_trayMenu.addAction(m_trayActionCalc);
@@ -127,6 +131,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     m_trayIcon->setContextMenu(&m_trayMenu);
 
     // @TODO: only init tray *after* boot
+    connect(m_trayActionHome, &QAction::triggered, this, &MainWindow::showHomeWindow);
     connect(m_trayActionCalc, &QAction::triggered, this, &MainWindow::showCalcWindow);
     connect(m_trayActionSend, &QAction::triggered, this, &MainWindow::showSendTab);
     connect(m_trayActionHistory, &QAction::triggered, this, &MainWindow::showHistoryTab);
@@ -968,7 +973,6 @@ void MainWindow::menuNewRestoreClicked() {
 
 void MainWindow::menuQuitClicked() {
     cleanupBeforeClose();
-
     QCoreApplication::quit();
 }
 
@@ -1038,9 +1042,16 @@ void MainWindow::skinChanged(const QString &skinName) {
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    cleanupBeforeClose();
+    auto hideOnClose = config()->get(Config::hideOnClose).toBool();
+    if(hideOnClose && !this->isHidden()) {
+        this->hide();
+        event->ignore();
+        return;
+    }
 
+    cleanupBeforeClose();
     QWidget::closeEvent(event);
+    QApplication::exit();
 }
 
 void MainWindow::donateButtonClicked() {
@@ -1054,15 +1065,25 @@ void MainWindow::donateButtonClicked() {
 
 void MainWindow::showHistoryTab() {
     this->raise();
+    this->show();
     ui->tabWidget->setCurrentIndex(Tabs::HISTORY);
 }
 
 void MainWindow::showSendTab() {
     this->raise();
+    this->show();
     ui->tabWidget->setCurrentIndex(Tabs::SEND);
 }
 
+void MainWindow::showHomeWindow() {
+    this->raise();
+    this->show();
+    ui->tabWidget->setCurrentIndex(Tabs::HOME);
+}
+
 void MainWindow::showCalcWindow() {
+    this->raise();
+    this->show();
     m_windowCalc->show();
 }
 

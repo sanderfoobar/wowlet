@@ -49,6 +49,7 @@ public:
         firstRun,
         hideBalance,
         hideFiatBalance,
+        hideOnClose,
         redditFrontend,
         showHistorySyncNotice,
         ignoreUpdateWarning,

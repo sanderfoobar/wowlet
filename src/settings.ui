@@ -198,6 +198,13 @@
          </property>
         </widget>
        </item>
+       <item row="7" column="0">
+        <widget class="QCheckBox" name="checkBox_hideOnClose">
+         <property name="text">
+          <string>Hide application on close</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_node">

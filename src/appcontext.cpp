@@ -184,6 +184,11 @@ AppContext::AppContext(QCommandLineParser *cmdargs) {
 
     // libwallet connects
     connect(this->walletManager, &WalletManager::walletOpened, this, &AppContext::onWalletOpened);
+
+    // hideOnClose
+    auto hideOnClose = config()->get(Config::hideOnClose).toBool();
+    if(hideOnClose)
+        QApplication::setQuitOnLastWindowClosed(false);
 }
 
 void AppContext::initTor() {

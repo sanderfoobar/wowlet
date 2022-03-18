@@ -109,6 +109,7 @@ public slots:
     void showViewOnlyDialog();
     void donateButtonClicked();
     void showCalcWindow();
+    void showHomeWindow();
     void payToMany();
     void showWalletCacheDebugDialog();
     void showSendTab();
@@ -200,6 +201,7 @@ private:
 
     QSystemTrayIcon *m_trayIcon;
     QMenu m_trayMenu;
+    QAction *m_trayActionHome;
     QAction *m_trayActionCalc;
     QAction *m_trayActionExit;
     QAction *m_trayActionSend;
