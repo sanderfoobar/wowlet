@@ -175,17 +175,21 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     ui->xmrRigLayout->addWidget(m_xmrig);
     connect(m_ctx->XMRig, &XmRig::output, m_xmrig, &XMRigWidget::onProcessOutput);
     connect(m_ctx->XMRig, &XmRig::error, m_xmrig, &XMRigWidget::onProcessError);
-    connect(m_ctx->XMRig, &XmRig::stopped, m_xmrig, &XMRigWidget::onStopped);
+    connect(m_ctx->XMRig, &XmRig::output, m_xmrig, &XMRigWidget::daemonOutput);
+    connect(m_ctx->XMRig, &XmRig::error, m_xmrig, &XMRigWidget::daemonOutput);
     connect(m_ctx->XMRig, &XmRig::blockReward, m_xmrig, &XMRigWidget::onBlockReward);
     connect(m_ctx->XMRig, &XmRig::hashrate, m_xmrig, &XMRigWidget::onHashrate);
+    connect(m_ctx->XMRig, &XmRig::daemonStateChanged, m_xmrig, &XMRigWidget::onDaemonStateChanged);
+    connect(m_ctx->XMRig, &XmRig::syncStatus, m_xmrig, &XMRigWidget::onSyncStatus);
+    connect(m_ctx->XMRig, &XmRig::uptimeChanged, m_xmrig, &XMRigWidget::onUptimeChanged);
+    connect(m_ctx->XMRig, &XmRig::daemonStateChanged, [=](DaemonMiningState state) {
+        m_ctx->setWindowTitle(state >= DaemonMiningState::mining);
+    });
 
     connect(m_ctx, &AppContext::walletClosed, m_xmrig, &XMRigWidget::onWalletClosed);
     connect(m_ctx, &AppContext::walletOpened, m_xmrig, &XMRigWidget::onWalletOpened);
     connect(m_ctx, &AppContext::XMRigDownloads, m_xmrig, &XMRigWidget::onRigDownloads);
     connect(m_ctx, &AppContext::WownerodDownloads, m_xmrig, &XMRigWidget::onWownerodDownloads);
-
-    connect(m_xmrig, &XMRigWidget::miningStarted, [=]{ m_ctx->setWindowTitle(true); });
-    connect(m_xmrig, &XMRigWidget::miningEnded, [=]{ m_ctx->setWindowTitle(false); });
 
     connect(ui->ccsWidget, &CCSWidget::selected, this, &MainWindow::showSendScreen);
     connect(m_ctx, &AppContext::ccsUpdated, ui->ccsWidget->model(), &CCSModel::updateEntries);
@@ -196,8 +200,9 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
 
     connect(ui->redditWidget, &RedditWidget::setStatusText, this, &MainWindow::setStatusText);
 
+    connect(ui->tabWidget, &QTabWidget::currentChanged, m_xmrig, &XMRigWidget::onMenuTabChanged);
     connect(ui->tabHomeWidget, &QTabWidget::currentChanged, [](int index){
-        config()->set(Config::homeWidget, TabsHome(index));
+        config()->set(Config::homeWidget, globals::TabsHome(index));
     });
 
     connect(m_ctx, &AppContext::donationNag, [=]{
@@ -296,7 +301,7 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
     });
     connect(ui->receiveWidget, &ReceiveWidget::showTransactions, [this](const QString &text) {
         ui->historyWidget->setSearchText(text);
-        ui->tabWidget->setCurrentIndex(Tabs::HISTORY);
+        ui->tabWidget->setCurrentIndex(globals::Tabs::HISTORY);
     });
 
     // History
@@ -333,9 +338,9 @@ MainWindow::MainWindow(AppContext *ctx, QWidget *parent) :
 
     connect(m_ctx, &AppContext::walletAboutToClose, [=]{
         if (!config()->get(Config::showTabHome).toBool())
-            ui->tabWidget->setCurrentIndex(Tabs::HISTORY);
+            ui->tabWidget->setCurrentIndex(globals::Tabs::HISTORY);
         else
-            ui->tabWidget->setCurrentIndex(Tabs::HOME);
+            ui->tabWidget->setCurrentIndex(globals::Tabs::HOME);
 
         // Clear all tables when wallet is closed
         ui->historyWidget->resetModel();
@@ -521,7 +526,7 @@ void MainWindow::menuToggleTabVisible(const QString &key){
 
 void MainWindow::initWidgets() {
     int homeWidget = config()->get(Config::homeWidget).toInt();
-    ui->tabHomeWidget->setCurrentIndex(TabsHome(homeWidget));
+    ui->tabHomeWidget->setCurrentIndex(globals::TabsHome(homeWidget));
 }
 
 WalletWizard *MainWindow::createWizard(WalletWizard::Page startPage){
@@ -1055,25 +1060,25 @@ void MainWindow::donateButtonClicked() {
         donation = 0.1337;
 
     ui->sendWidget->fill(m_ctx->donationAddress, "Donation to the WOWlet development team", donation);
-    ui->tabWidget->setCurrentIndex(Tabs::SEND);
+    ui->tabWidget->setCurrentIndex(globals::Tabs::SEND);
 }
 
 void MainWindow::showHistoryTab() {
     this->raise();
     this->show();
-    ui->tabWidget->setCurrentIndex(Tabs::HISTORY);
+    ui->tabWidget->setCurrentIndex(globals::Tabs::HISTORY);
 }
 
 void MainWindow::showSendTab() {
     this->raise();
     this->show();
-    ui->tabWidget->setCurrentIndex(Tabs::SEND);
+    ui->tabWidget->setCurrentIndex(globals::Tabs::SEND);
 }
 
 void MainWindow::showHomeWindow() {
     this->raise();
     this->show();
-    ui->tabWidget->setCurrentIndex(Tabs::HOME);
+    ui->tabWidget->setCurrentIndex(globals::Tabs::HOME);
 }
 
 void MainWindow::showCalcWindow() {
@@ -1083,7 +1088,7 @@ void MainWindow::showCalcWindow() {
 }
 
 void MainWindow::payToMany() {
-    ui->tabWidget->setCurrentIndex(Tabs::SEND);
+    ui->tabWidget->setCurrentIndex(globals::Tabs::SEND);
     ui->sendWidget->payToMany();
     QMessageBox::information(this, "Pay to many", "Enter a list of outputs in the 'Pay to' field.\n"
                                                   "One output per line.\n"
@@ -1093,7 +1098,7 @@ void MainWindow::payToMany() {
 
 void MainWindow::showSendScreen(const CCSEntry &entry) {
     ui->sendWidget->fill(entry);
-    ui->tabWidget->setCurrentIndex(Tabs::SEND);
+    ui->tabWidget->setCurrentIndex(globals::Tabs::SEND);
 }
 
 void MainWindow::suchDonate(const QString address) {
@@ -1101,7 +1106,7 @@ void MainWindow::suchDonate(const QString address) {
     QString preferredCurrency = config()->get(Config::preferredFiatCurrency).toString();
     double donation = AppContext::prices->convert(preferredCurrency, "WOW", tipAmount);
     ui->sendWidget->fill(address, "SuchWow contribution :-)", donation);
-    ui->tabWidget->setCurrentIndex(Tabs::SEND);
+    ui->tabWidget->setCurrentIndex(globals::Tabs::SEND);
 }
 
 void MainWindow::onViewOnBlockExplorer(const QString &txid) {

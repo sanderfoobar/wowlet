@@ -21,10 +21,10 @@ XMRigWidget::XMRigWidget(AppContext *ctx, QWidget *parent) :
     m_contextMenuWownerod(new QMenu(this))
 {
     ui->setupUi(this);
+    this->resetUI();
 
     QPixmap p(":assets/images/fire.png");
     ui->lbl_logo->setPixmap(p.scaled(268, 271, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->lbl_reward->hide();
 
     // table XMRig
     ui->tableRig->setModel(this->m_modelRig);
@@ -53,11 +53,10 @@ XMRigWidget::XMRigWidget(AppContext *ctx, QWidget *parent) :
     connect(ui->btn_browse, &QPushButton::clicked, this, &XMRigWidget::onBrowseClicked);
     connect(ui->btn_clear, &QPushButton::clicked, this, &XMRigWidget::onClearClicked);
 
-    // defaults
-    ui->btn_stop->setEnabled(false);
-    ui->check_autoscroll->setChecked(true);
-    ui->label_status->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    ui->label_status->hide();
+    // graphics
+    bool simplifiedUI = config()->get(Config::simplifiedMiningInterface).toBool();
+    ui->comboBox_gfx->setCurrentIndex(simplifiedUI ? 1 : 0);
+    connect(ui->comboBox_gfx, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &XMRigWidget::onSimplifiedMiningChanged);
 
     // wownerod binary
     auto path = config()->get(Config::wownerodPath).toString();
@@ -78,6 +77,65 @@ XMRigWidget::XMRigWidget(AppContext *ctx, QWidget *parent) :
         this->appendText(QString("wownerod path set to '%1'").arg(path));
         this->appendText("Ready to mine.");
     }
+}
+
+void XMRigWidget::resetUI() {
+    ui->consoleFrame->hide();
+    ui->qmlFrame->hide();
+    ui->qmlFrameTxt->hide();
+
+    ui->check_autoscroll->setChecked(true);
+    ui->label_status->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    ui->label_status->hide();
+    ui->console->clear();
+
+    this->destroyQml();
+}
+
+void XMRigWidget::startUI() {
+    this->resetUI();
+    bool simplifiedUI = config()->get(Config::simplifiedMiningInterface).toBool();
+
+    if(simplifiedUI) {
+        this->initConsole();
+    } else {
+        this->initQML();
+    }
+}
+
+void XMRigWidget::initConsole() {
+    ui->consoleFrame->show();
+}
+
+void XMRigWidget::initQML() {
+    if(m_quickWidget != nullptr) return;
+    m_quickWidget = new QQuickWidget(this);
+
+    auto *qctx = m_quickWidget->rootContext();
+    qctx->setContextProperty("cfg", config());
+    qctx->setContextProperty("ctx", m_ctx);
+    qctx->setContextProperty("mining", this);
+
+    m_quickWidget->setSource(QUrl("qrc:/mining.qml"));
+    m_quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+
+    connect((QObject*)m_quickWidget->rootObject(), SIGNAL(startMining()),
+            this, SLOT(onStartClicked()));
+
+    connect((QObject*)m_quickWidget->rootObject(), SIGNAL(stopMining()),
+            this, SLOT(onStopClicked()));
+
+    ui->qmlFrame->layout()->addWidget(m_quickWidget);
+    ui->qmlFrame->show();
+    qDebug() << "created QML mining widget";
+}
+
+void XMRigWidget::destroyQml() {
+    if(m_quickWidget == nullptr) return;
+    m_quickWidget->disconnect();
+    m_quickWidget->deleteLater();
+    m_quickWidget = nullptr;
+    qDebug() << "destroyed QML mining widget";
 }
 
 void XMRigWidget::appendText(const QString &line) {
@@ -111,11 +169,37 @@ void XMRigWidget::onBrowseClicked() {
     ui->lineEdit_path->setText(fileName);
 }
 
+void XMRigWidget::onSyncStatus(unsigned int from, unsigned int to, unsigned int pct) {
+    emit syncStatus(from, to, pct);
+}
+
+void XMRigWidget::onDaemonStateChanged(DaemonMiningState state) {
+    if(state == DaemonMiningState::idle) {
+        ui->btn_stop->setEnabled(false);
+        ui->btn_start->setEnabled(true);
+        ui->label_status->hide();
+    } else {
+        ui->btn_stop->setEnabled(true);
+        ui->btn_start->setEnabled(false);
+        ui->label_status->show();
+    }
+
+    m_daemonMiningState = state;
+    emit daemonMiningStateChanged();
+}
+
+void XMRigWidget::onUptimeChanged(const QString &uptime) {
+    emit uptimeChanged(uptime);
+}
+
 void XMRigWidget::onBlockReward() {
     QDateTime date = QDateTime::currentDateTime();
     QString formattedTime = date.toString("yyyy/MM/dd hh:mm");
-    ui->lbl_reward->setText(QString("Congrats: new block found at %1").arg(formattedTime));
-    ui->lbl_reward->show();
+
+    auto reward = QString("Congrats: new block found at %1").arg(formattedTime);
+
+    // @TODO: this might be blocking, what if multiple rewards happen?
+    QMessageBox::information(this, "Reward found", reward);
 }
 
 void XMRigWidget::onClearClicked() {
@@ -128,42 +212,35 @@ void XMRigWidget::onStartClicked() {
 
     ui->btn_start->setEnabled(false);
     ui->btn_stop->setEnabled(true);
-    emit miningStarted();
 }
 
 void XMRigWidget::onStopClicked() {
-    m_ctx->XMRig->stop();
+    if(m_ctx->XMRig->daemonMiningState != DaemonMiningState::idle)
+        m_ctx->XMRig->stop();
 }
 
 void XMRigWidget::onProcessOutput(const QByteArray &data) {
-    auto output = Utils::barrayToString(data);
-    if(output.endsWith("\n"))
-        output = output.trimmed();
-
-    this->appendText(output);
+    auto line = Utils::barrayToString(data);
+    line = line.trimmed();
+    this->appendText(line);
 
     if(ui->check_autoscroll->isChecked())
         ui->console->verticalScrollBar()->setValue(ui->console->verticalScrollBar()->maximum());
 }
 
-void XMRigWidget::onStopped() {
-    ui->btn_start->setEnabled(true);
-    ui->btn_stop->setEnabled(false);
-    ui->label_status->hide();
-    emit miningEnded();
-}
-
 void XMRigWidget::onProcessError(const QString &msg) {
     this->appendText(msg);
-    ui->btn_start->setEnabled(true);
-    ui->btn_stop->setEnabled(false);
-    ui->label_status->hide();
-    emit miningEnded();
 }
 
-void XMRigWidget::onHashrate(const QString &hashrate) {
+void XMRigWidget::onSimplifiedMiningChanged(int idx) {
+    config()->set(Config::simplifiedMiningInterface, idx == 1);
+    this->startUI();
+}
+
+void XMRigWidget::onHashrate(const QString &rate) {
     ui->label_status->show();
-    ui->label_status->setText(QString("Mining at %1").arg(hashrate));
+    ui->label_status->setText(QString("Mining at %1").arg(rate));
+    emit hashrate(rate);
 }
 
 void XMRigWidget::onWownerodDownloads(const QJsonObject &data) {
@@ -214,6 +291,14 @@ void XMRigWidget::onWownerodDownloads(const QJsonObject &data) {
     ui->tableWownerod->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableWownerod->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     ui->tableWownerod->setColumnWidth(2, 100);
+}
+
+void XMRigWidget::onMenuTabChanged(int index) {
+    if(m_tabIndex == globals::Tabs::XMRIG && index != m_tabIndex)
+        this->resetUI();
+    else if(globals::Tabs(index + 1) == globals::Tabs::XMRIG)
+        this->startUI();
+    m_tabIndex = index + 1;
 }
 
 void XMRigWidget::onRigDownloads(const QJsonObject &data) {

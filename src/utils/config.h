@@ -50,6 +50,7 @@ public:
         hideBalance,
         hideFiatBalance,
         hideOnClose,
+        simplifiedMiningInterface,
         redditFrontend,
         showHistorySyncNotice,
         ignoreUpdateWarning,

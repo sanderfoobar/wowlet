@@ -47,6 +47,7 @@ static const QHash<Config::ConfigKey, ConfigDirective> configStrings = {
         {Config::firstRun,{QS("firstRun"), false}},
         {Config::hideBalance, {QS("hideBalance"), false}},
         {Config::hideOnClose, {QS("hideOnClose"), false}},
+        {Config::simplifiedMiningInterface, {QS("simplifiedMiningInterface"), false}},
         {Config::hideFiatBalance, {QS("hideFiatBalance"), false}},
         {Config::redditFrontend, {QS("redditFrontend"), "old.reddit.com"}},
         {Config::showHistorySyncNotice, {QS("showHistorySyncNotice"), true}},

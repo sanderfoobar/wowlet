@@ -193,12 +193,14 @@ void AppContext::initTor() {
     this->tor = new Tor(this, this);
     this->tor->start();
 
-    if (!isWhonix && backendHost.contains(".onion")) {
+    if (!isWhonix && !backendHost.contains(".onion")) {
         qDebug() << "'backend-host' did not contain '.onion' - running without Tor proxy.";
-        this->networkProxy = new QNetworkProxy(QNetworkProxy::Socks5Proxy, Tor::torHost, Tor::torPort);
-        this->network->setProxy(*networkProxy);
-        this->ws->webSocket.setProxy(*networkProxy);
+        return;
     }
+
+    this->networkProxy = new QNetworkProxy(QNetworkProxy::Socks5Proxy, Tor::torHost, Tor::torPort);
+    this->network->setProxy(*networkProxy);
+    this->ws->webSocket.setProxy(*networkProxy);
 }
 
 void AppContext::initWS() {

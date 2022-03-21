@@ -11,7 +11,6 @@ set(VERSION "beta-4")
 
 option(FETCH_DEPS "Download dependencies if they are not found" ON)
 option(OPENVR "Include OpenVR support")
-option(QML "Include QtQuick (QML)")
 option(ANDROID "Android deployment")
 option(ANDROID_DEBUG "View the Android app on desktop")
 option(TOR_BIN "Path to Tor binary to embed inside WOWlet")
@@ -32,9 +31,6 @@ set(BUILD_GUI_DEPS ON)
 set(BUILD_64 ON CACHE BOOL "Build 64-bit binaries")
 set(INSTALL_VENDORED_LIBUNBOUND ${STATIC})
 set(USE_SINGLE_BUILDDIR ON)
-if(OPENVR OR ANDROID_DEBUG)
-    set(QML ON)
-endif()
 
 # Are we in debug mode?
 set(_CMAKE_BUILD_TYPE "")

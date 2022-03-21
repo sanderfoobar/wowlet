@@ -31,6 +31,7 @@ Q_IMPORT_PLUGIN(QXcbIntegrationPlugin)
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(assets);
+    qputenv("QML_DISABLE_DISK_CACHE", "1");
 
 #if defined(Q_OS_MAC) && defined(HAS_TOR_BIN)
     Q_INIT_RESOURCE(assets_tor_macos);
@@ -140,16 +141,8 @@ if (AttachConsole(ATTACH_PARENT_PROCESS)) {
 #endif
     qRegisterMetaType<QVector<QString>>();
 
-#ifdef HAS_QML
-    qputenv("QML_DISABLE_DISK_CACHE", "1");
-#endif
-
 #ifdef __ANDROID__
     if(android || androidDebug) {
-#ifndef HAS_QML
-        qCritical() << "Wowlet compiled without QML support. Try -DQML=ON";
-        return 1;
-#endif
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
         QGuiApplication mobile_app(argc, argv);
         auto *ctx = new AppContext(&parser);

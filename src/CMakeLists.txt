@@ -39,11 +39,7 @@ file(GLOB SOURCE_FILES
         "dialog/*.cpp"
         )
 
-if(QML)
-    find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Network Svg Xml WebSockets Quick Qml QuickControls2 QmlImportScanner Multimedia)
-else()
-    find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Network Svg Xml WebSockets Multimedia)
-endif()
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Network Svg Xml WebSockets Quick QuickWidgets Qml QuickControls2 QuickCompiler QmlImportScanner Multimedia)
 
 if(OPENVR)
     # include some extra files
@@ -212,10 +208,7 @@ endif()
 
 target_compile_definitions(wowlet PUBLIC VR_API_PUBLIC)
 
-if(QML)
-    qt5_import_qml_plugins(${PROJECT_NAME})
-    target_compile_definitions(wowlet PRIVATE HAS_QML=1)
-endif()
+qt5_import_qml_plugins(${PROJECT_NAME})
 
 target_compile_definitions(wowlet
         PUBLIC
@@ -256,30 +249,20 @@ target_link_libraries(wowlet PUBLIC
         ${EXTRA_LIBRARIES})
 
 # Link Qt libraries
-if(QML)
-    target_link_libraries(wowlet PUBLIC
-            Qt5::Core
-            Qt5::Widgets
-            Qt5::Gui
-            Qt5::Network
-            Qt5::Svg
-            Qt5::QSvgPlugin
-            Qt5::QSvgIconPlugin
-            Qt5::Xml
-            Qt5::WebSockets
-            Qt5::Quick
-            Qt5::Qml
-            Qt5::QuickControls2)
-else()
-    target_link_libraries(wowlet PUBLIC
-            Qt5::Core
-            Qt5::Widgets
-            Qt5::Gui
-            Qt5::Network
-            Qt5::Svg
-            Qt5::Xml
-            Qt5::WebSockets)
-endif()
+target_link_libraries(wowlet PUBLIC
+        Qt5::Core
+        Qt5::Widgets
+        Qt5::Gui
+        Qt5::Network
+        Qt5::Svg
+        Qt5::QSvgPlugin
+        Qt5::QSvgIconPlugin
+        Qt5::Xml
+        Qt5::WebSockets
+        Qt5::Quick
+        Qt5::Qml
+        Qt5::QuickControls2
+        Qt5::QuickWidgets)
 
 if(ANDROID)
     # yolo some hardcoded paths
@@ -383,7 +366,6 @@ message(STATUS "VERSION_MAJOR: ${VERSION_MAJOR}")
 message(STATUS "VERSION_MINOR: ${VERSION_MINOR}")
 message(STATUS "VERSION_REVISION: ${VERSION_REVISION}")
 message(STATUS "STATIC: ${STATIC}")
-message(STATUS "Include QtQuick (QML): ${QML}")
 message(STATUS "VERSION: ${VERSION}")
 message(STATUS "Include Valve's OpenVR library: ${OPENVR}")
 message(STATUS "This build is for Android: ${ANDROID}")
