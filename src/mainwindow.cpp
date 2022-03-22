@@ -1110,8 +1110,11 @@ void MainWindow::suchDonate(const QString address) {
 }
 
 void MainWindow::onViewOnBlockExplorer(const QString &txid) {
-    QString blockExplorerLink = Utils::blockExplorerLink(config()->get(Config::blockExplorer).toString(), m_ctx->networkType, txid);
-    Utils::externalLinkWarning(this, blockExplorerLink);
+    QString blockExplorerLink = Utils::blockExplorerLink(txid);
+    if(!blockExplorerLink.isEmpty())
+        Utils::externalLinkWarning(this, blockExplorerLink);
+    else
+        QMessageBox::warning(this, "Error", "Could not generate block explorer URL");
 }
 
 void MainWindow::onResendTransaction(const QString &txid) {

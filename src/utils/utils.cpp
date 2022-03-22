@@ -238,8 +238,13 @@ QString Utils::copyFromClipboard() {
     return clipboard->text();
 }
 
-QString Utils::blockExplorerLink(const QString &blockExplorer, NetworkType::Type nettype, const QString &txid) {
-    return QString("https://explore.wownero.com/tx/%1").arg(txid);
+QString Utils::blockExplorerLink(const QString &txid) {
+    auto explorer = config()->get(Config::blockExplorer).toString();
+    if(explorer.startsWith("kryfi.com")) {
+        return QString("https://kryfi.com/explorer/wownero/tx/%1").arg(txid);
+    } else {
+        return QString("https://explore.wownero.com/tx/%1").arg(txid);
+    }
 }
 
 QStandardItem *Utils::qStandardItem(const QString& text) {
