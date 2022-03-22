@@ -42,9 +42,6 @@ NodeWidget::NodeWidget(QWidget *parent)
     ui->customView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->wsView, &QTreeView::customContextMenuRequested, this, &NodeWidget::onShowWSContextMenu);
     connect(ui->customView, &QTreeView::customContextMenuRequested, this, &NodeWidget::onShowCustomContextMenu);
-
-    connect(ui->customView, &QTreeView::doubleClicked, this, &NodeWidget::onContextConnect);
-    connect(ui->wsView, &QTreeView::doubleClicked, this, &NodeWidget::onContextConnect);
 }
 
 void NodeWidget::onShowWSContextMenu(const QPoint &pos) {
