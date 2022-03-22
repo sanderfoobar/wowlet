@@ -33,6 +33,7 @@
 #include "utils/config.h"
 #include "wizard/walletwizard.h"
 #include "settings.h"
+#include "globals.h"
 #include "dialog/aboutdialog.h"
 #include "dialog/signverifydialog.h"
 #include "dialog/verifyproofdialog.h"
@@ -73,23 +74,6 @@ public:
     qreal screenDpi;
     qreal screenDpiPhysical;
     qreal screenRatio;
-
-    enum Tabs {
-        HOME = 0,
-        HISTORY,
-        SEND,
-        RECEIVE,
-        COINS,
-        CALC,
-        XMRIG
-    };
-
-    enum TabsHome {
-        FORUM,
-        REDDIT,
-        SUCHWOW,
-        WFS
-    };
 
 public slots:
     void initWidgets();

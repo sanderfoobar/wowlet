@@ -316,20 +316,6 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabCalc">
-       <attribute name="icon">
-        <iconset resource="assets.qrc">
-         <normaloff>:/assets/images/gnome-calc.png</normaloff>:/assets/images/gnome-calc.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>Calc</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="CalcWidget" name="conversionWidget" native="true"/>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="tabXmrRig">
        <attribute name="icon">
         <iconset resource="assets.qrc">
@@ -341,6 +327,20 @@
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <layout class="QGridLayout" name="xmrRigLayout"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabCalc">
+       <attribute name="icon">
+        <iconset resource="assets.qrc">
+         <normaloff>:/assets/images/gnome-calc.png</normaloff>:/assets/images/gnome-calc.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Calc</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="CalcWidget" name="conversionWidget" native="true"/>
         </item>
        </layout>
       </widget>
